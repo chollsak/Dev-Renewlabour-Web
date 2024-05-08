@@ -61,15 +61,15 @@ const Sidebar: React.FC = () => {
             <ListItemText sx={{ fontWeight: activeLink === '/Location' ? 'bold' : 'normal' }} ><span style={FontStyle}>สถานที่ทำงาน</span></ListItemText>
           </ListItemButton>
         </Link>
-        <Link href="/AddAdmin" passHref style={{textDecoration:'none', color:'black'}}>
+        <Link href="/Admin" passHref style={{textDecoration:'none', color:'black'}}>
           <ListItemButton
             component="a"
             sx={{ textDecoration: 'none' }}
-            selected={activeLink === '/AddAdmin'}
-            onClick={() => handleLinkClick('/AddAdmin')}
+            selected={activeLink === '/Admin'}
+            onClick={() => handleLinkClick('/Admin')}
           >
             <ListItemIcon><HomeIcon color='primary'/></ListItemIcon>
-            <ListItemText sx={{ fontWeight: activeLink === '/AddAdmin' ? 'bold' : 'normal'}} ><span style={FontStyle}>รายชื่อผู้ดูเเล</span></ListItemText>
+            <ListItemText sx={{ fontWeight: activeLink === '/Admin' ? 'bold' : 'normal'}} ><span style={FontStyle}>รายชื่อผู้ดูเเล</span></ListItemText>
           </ListItemButton>
         </Link>
       </List>

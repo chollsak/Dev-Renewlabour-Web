@@ -37,10 +37,8 @@ interface UserData {
     name: string;
     nickname: string;
     province: string;
-    visa: number;
-    passport: number;
-    workpermit: number;
-    '90DaysDoc': number;
+    email: string;
+    telephone: string;
     company: string;
     branch: string;
 }
@@ -50,10 +48,8 @@ const defaultData: UserData = {
     name: '',
     nickname: '',
     province: '',
-    visa: 0,
-    passport: 0,
-    workpermit: 0,
-    '90DaysDoc': 0,
+    email: '',
+    telephone: '',
     company: '',
     branch: '',
 };
@@ -63,7 +59,7 @@ const FontStyle: React.CSSProperties = {
 };  
 
 
-const UserForm: React.FC = () => {
+const AddAdmin: React.FC = () => {
     const [userData, setUserData] = useState<UserData>(defaultData);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,9 +129,9 @@ const UserForm: React.FC = () => {
                         </Grid>
                         <Grid item xs={12} sm={4}>
                             <TextField
-                                name="visa"
-                                label="Visa (วัน)"
-                                type="number"
+                                name="email"
+                                label="Email"
+                                type="text"
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -144,21 +140,9 @@ const UserForm: React.FC = () => {
                         </Grid>
                         <Grid item xs={12} sm={4}>
                             <TextField
-                                name="passport"
-                                label="Passport (วัน)"
-                                type="number"
-                                onChange={handleChange}
-                                fullWidth
-                                required
-                                size='small'
-                            />
-                        </Grid>
-                        
-                        <Grid item xs={12} sm={4}>
-                            <TextField
-                                name="workpermit"
-                                label="ใบอนุญาตทำงาน (วัน)"
-                                type="number"
+                                name="telephone"
+                                label="เบอร์มือถือ"
+                                type="text"
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -167,9 +151,9 @@ const UserForm: React.FC = () => {
                         </Grid>
                         <Grid item xs={12} sm={4}>
                             <TextField
-                                name="90DaysDoc"
-                                label="เอกสาร 90 วัน (วัน)"
-                                type="number"
+                                name="branch"
+                                label="สาขา"
+                                type="text"
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -179,7 +163,7 @@ const UserForm: React.FC = () => {
                         <Grid item xs={12} sm={4}>
                             <TextField
                                 name="company"
-                                label="บริษัท/หน่วยงาน"
+                                label="บริษัทหรือหน่วยงาน"
                                 type="text"
                                 onChange={handleChange}
                                 fullWidth
@@ -197,4 +181,5 @@ const UserForm: React.FC = () => {
     );
 };
 
-export default UserForm;
+export default AddAdmin;
+

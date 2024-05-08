@@ -241,7 +241,7 @@ const MyTable: React.FC = () => {
                                 <TableCell sx={{ color: 'white', fontWeight: '600',...FontStyle }}>จังหวัด</TableCell>
                                 <TableCell sx={{ color: 'white', fontWeight: '600',...FontStyle }}>
                                     สถานะ
-                                    <IconButton onClick={toggleSortDirection} size="small">
+                                    <IconButton onClick={toggleSortDirection} size="small" sx={{color:'white'}}>
                                         {sortDirection === 'asc' ? <ArrowUpward /> : <ArrowDownward />}
                                     </IconButton>
                                 </TableCell>
@@ -259,9 +259,9 @@ const MyTable: React.FC = () => {
                                 return (
                                     <TableRow key={row.id}>
                                         {/* Other cells remain the same */}
-                                        <TableCell sx={{ color: 'Black', fontWeight: '600',...FontStyle }}>{row.name}</TableCell>
-                                        <TableCell sx={{ color: 'Black', fontWeight: '600',...FontStyle }}>{row.nickname}</TableCell>
-                                        <TableCell sx={{ color: 'Black', fontWeight: '600',...FontStyle }}>{row.province}</TableCell>
+                                        <TableCell sx={{ color: 'Black',...FontStyle }}>{row.name}</TableCell>
+                                        <TableCell sx={{ color: 'Black',...FontStyle }}>{row.nickname}</TableCell>
+                                        <TableCell sx={{ color: 'Black',...FontStyle }}>{row.province}</TableCell>
                                         <TableCell sx={{ color: color, fontWeight: '600' ,...FontStyle}}>{status}</TableCell>
                                         {/* Other cells remain the same */}
                                         <TableCell sx={{ color: 'Black', fontWeight: '600',...FontStyle }}><Chip sx={FontStyle} variant={isRed(row.visa)} color={getChipColor(row.visa)}>{getText(row.visa)}</Chip></TableCell>
