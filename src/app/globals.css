@@ -23,7 +23,7 @@
 body {
     color: black;
     background: white; /* Change this line */
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Kanit', sans-serif;
   }
 
 @layer utilities {

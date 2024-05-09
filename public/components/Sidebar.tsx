@@ -32,10 +32,7 @@ const Sidebar: React.FC = () => {
       backgroundColor: '#f5f5f5',
     }}>
       <Box textAlign="center" p={2} sx={{display: 'flex', flexDirection:'column', gap:'20px'}}>
-        <Link href={'/Dashboard'}> 
           <img onClick={() => handleLinkClick('/Dashboard')} src="./Logo/logo.png" alt="Company Logo" style={{ maxWidth: '200px' }} />
-        </Link>
-       
         <InteractiveCard/>
       </Box>
       <List>

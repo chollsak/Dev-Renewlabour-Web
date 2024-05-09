@@ -14,15 +14,18 @@
     "@fontsource/mitr": "^5.0.13",
     "@mui/icons-material": "^5.15.16",
     "@mui/joy": "^5.0.0-beta.36",
-    "@mui/material": "^5.15.16",
+    "@mui/material": "^5.15.17",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
+    "@mui/x-date-pickers": "^7.3.2",
+    "dayjs": "^1.11.11",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
     "react-select": "^5.8.0",
-    "styled-components": "^6.1.9",
-    "sweetalert2": "^11.10.8"
+    "styled-components": "^6.1.10",
+    "sweetalert2": "^11.10.8",
+    "thai-address-autocomplete-react": "^1.1.0"
   },
   "devDependencies": {
     "@types/node": "^20",

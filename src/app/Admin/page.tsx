@@ -5,6 +5,7 @@ import Layout from '../../../public/components/Layout'
 import { Button, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import AdminTable from '../../../public/components/AdminTable';
+import Footer from '../../../public/components/Footer';
 
 
 const FontStyle: React.CSSProperties = {

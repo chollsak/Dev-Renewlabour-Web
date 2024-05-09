@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Menu, MenuItem, TablePagination } from '@mui/material';
 import { MoreVert as MoreVertIcon } from '@mui/icons-material';
+import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -99,7 +100,9 @@ const DataTable: React.FC = () => {
                             </TableCell>
                             <TableCell sx={{ ...FontStyle }}>{row.name}</TableCell>
                             <TableCell sx={{ ...FontStyle }}>{row.nickname}</TableCell>
-                            <TableCell sx={{ ...FontStyle }}>{row.company}</TableCell>
+                            <TableCell sx={{ ...FontStyle }}>
+                                    {row.company}
+                            </TableCell>
                             <TableCell sx={{ ...FontStyle }}>{row.brance}</TableCell>
                             <TableCell sx={{ ...FontStyle }}>{row.province}</TableCell>
                             <TableCell>

@@ -32,10 +32,8 @@ const FontStyle: React.CSSProperties = {
 };
 
 
-const UserForm: React.FC = () => {
+const LocationForm: React.FC = () => {
     const [addresses, setAddresses] = useState<Address[]>([]);
-    const [filteredAddresses, setFilteredAddresses] = useState<Address[]>([]);
-    const [searchText, setSearchText] = useState('');
 
     const [searchTextWork, setSearchTextWork] = useState('');
     const [filteredAddressesWork, setFilteredAddressesWork] = useState<Address[]>([]);
@@ -49,12 +47,6 @@ const UserForm: React.FC = () => {
 
         fetchAddresses();
     }, []);
-
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
-        setSearchText(value);
-        filterAddresses(value, setFilteredAddresses);
-    };
 
     const handleSearchChangeWork = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
@@ -96,10 +88,6 @@ const UserForm: React.FC = () => {
         setFunction(matches);
     };
 
-    const handleListItemClick = (address: Address) => {
-        setSearchText(`${address.district}, ${address.amphoe}, ${address.province}, ${address.zipcode}`);
-        setFilteredAddresses([]);
-    };
 
     const handleListItemClickWork = (address: Address) => {
         setSearchTextWork(`${address.district}, ${address.amphoe}, ${address.province}, ${address.zipcode}`);
@@ -111,109 +99,7 @@ const UserForm: React.FC = () => {
         <Card sx={{ width: '100%', boxShadow: 3 }}>
             <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'left', marginBottom: 2, flexDirection: 'column' }}>
-                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>ข้อมูลส่วนบุคคล</Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs={4}>
-                            <TextField
-                                label="ชื่อจริง"
-                                variant="outlined"
-                                required
-
-                                size="small"
-                                sx={{ width: '100%', margin: 1 }}
-                            />
-                        </Grid>
-                        <Grid item xs={2}>
-                            <TextField
-                                label="ชื่อเล่น"
-                                variant="outlined"
-                                required
-
-
-                                size="small"
-                                sx={{ width: '100%', margin: 1 }}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="หมายเลขประจำตัวประชาชน"
-                                variant="outlined"
-                                required
-
-                                size="small"
-                                sx={{ width: '100%', margin: 1 }} />
-                        </Grid>
-                        <Grid container spacing={2} marginLeft={0.05}>
-                            <Grid item xs={2}>
-                                <TextField
-                                    label="วันเกิด" // "Birthday" in Thai
-                                    type="date"
-                                    variant="outlined"
-                                    required
-
-                                    size="small"
-                                    sx={{ width: '100%', margin: 1 }}
-                                    InputLabelProps={{
-                                        shrink: true, // This property ensures the label doesn't overlap with the date value
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <TextField
-                                    label="เบอร์โทรศัพท์"
-                                    variant="outlined"
-                                    required
-
-                                    size="small"
-                                    sx={{ width: '100%', margin: 1 }}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    label="อีเมลล์(หากมี)"
-                                    variant="outlined"
-
-
-                                    size="small"
-                                    sx={{ width: '100%', margin: 1 }}
-                                />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle, marginTop: '10px' }}>ข้อมูลที่อยู่</Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs={3}>
-                            <TextField
-                                label="เลขที่บ้าน/ที่พัก ชื่อที่พัก"
-                                variant='outlined'
-                                required
-                                size='small'
-                                sx={{ width: '100%', margin: 1 }}
-                            />
-                        </Grid>
-                        <Grid item xs={9}>
-                            <TextField
-                                label="ค้นหาที่อยู่ (จังหวัด อำเภอ ตำบล)"
-                                variant="outlined"
-                                value={searchText}
-                                required
-                                size='small'
-                                sx={{ width: '100%', margin: 1 }}
-                                onChange={handleSearchChange}
-                            />
-                            <List>
-                                {filteredAddresses.map((address, index) => (
-                                    <ListItem key={index} button onClick={() => handleListItemClick(address)}>
-                                        <ListItemText
-                                            primary={`${address.district}, ${address.amphoe}, ${address.province}, ${address.zipcode}`}
-                                            secondary={`${address.districtEng}, ${address.amphoeEng}, ${address.provinceEng}`}
-                                        />
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </Grid>
-                    </Grid>
-
+                   
                     <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle, marginBottom: '15px' }}>ข้อมูลที่ทำงาน</Typography>
                     <Grid container spacing={2}>
                         <Grid container spacing={2} marginLeft={0.05}>
@@ -291,4 +177,4 @@ const UserForm: React.FC = () => {
     );
 };
 
-export default UserForm;
+export default LocationForm;

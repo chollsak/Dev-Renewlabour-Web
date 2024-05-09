@@ -29,7 +29,7 @@ export default function employeePage() {
       </div>
       
       <MyTable/>
-      <Footer/>
+      
     </Layout>
   )
 }
