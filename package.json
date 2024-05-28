@@ -17,7 +17,9 @@
     "@mui/material": "^5.15.17",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@mui/x-date-pickers": "^7.3.2",
+    "cleave.js": "^1.6.0",
     "dayjs": "^1.11.11",
+    "mssql": "^10.0.2",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
@@ -28,6 +30,8 @@
     "thai-address-autocomplete-react": "^1.1.0"
   },
   "devDependencies": {
+    "@types/cleave.js": "^1.4.12",
+    "@types/mssql": "^9.1.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

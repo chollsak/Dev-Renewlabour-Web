@@ -29,9 +29,6 @@ export default function page() {
       <div style={{ marginTop: '20' }}>
         <DataTable/>
       </div>
-
-      
-      
     </Layout>
     
   )

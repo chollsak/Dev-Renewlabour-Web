@@ -31,42 +31,39 @@ const Sidebar: React.FC = () => {
       zIndex: 0,
       backgroundColor: '#f5f5f5',
     }}>
-      <Box textAlign="center" p={2} sx={{display: 'flex', flexDirection:'column', gap:'20px'}}>
-          <img onClick={() => handleLinkClick('/Dashboard')} src="./Logo/logo.png" alt="Company Logo" style={{ maxWidth: '200px' }} />
-        <InteractiveCard/>
+      <Box textAlign="center" p={2} sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <Box component="img" onClick={() => handleLinkClick('/Dashboard')} src="./Logo/logo.png" alt="Company Logo" style={{ maxWidth: '200px' }} />
+        <InteractiveCard />
       </Box>
       <List>
-        <Link href="/employees" passHref style={{textDecoration:'none', color:'black'}}>
+        <Link href="/employees" passHref style={{ textDecoration: 'none', color: 'black' }}>
           <ListItemButton
-            component="a"
             sx={{ textDecoration: 'none' }}
             selected={activeLink === '/employees'}
             onClick={() => handleLinkClick('/employees')}
           >
-            <ListItemIcon><PeopleIcon color='primary'/></ListItemIcon>
-            <ListItemText sx={{ fontWeight: activeLink === '/employees' ? 'bold' : 'normal'}} ><span style={FontStyle}>รายชื่อเเรงงาน</span></ListItemText>
+            <ListItemIcon><PeopleIcon color='primary' /></ListItemIcon>
+            <ListItemText sx={{ fontWeight: activeLink === '/employees' ? 'bold' : 'normal' }} ><span style={FontStyle}>รายชื่อเเรงงาน</span></ListItemText>
           </ListItemButton>
         </Link>
-        <Link href="/Location" passHref style={{textDecoration:'none', color:'black'}}>
+        <Link href="/Location" passHref style={{ textDecoration: 'none', color: 'black' }}>
           <ListItemButton
-            component="a"
             sx={{ textDecoration: 'none' }}
             selected={activeLink === '/Location'}
             onClick={() => handleLinkClick('/Location')}
           >
-            <ListItemIcon><WorkIcon color='primary'/></ListItemIcon>
+            <ListItemIcon><WorkIcon color='primary' /></ListItemIcon>
             <ListItemText sx={{ fontWeight: activeLink === '/Location' ? 'bold' : 'normal' }} ><span style={FontStyle}>สถานที่ทำงาน</span></ListItemText>
           </ListItemButton>
         </Link>
-        <Link href="/Admin" passHref style={{textDecoration:'none', color:'black'}}>
+        <Link href="/Admin" passHref style={{ textDecoration: 'none', color: 'black' }}>
           <ListItemButton
-            component="a"
             sx={{ textDecoration: 'none' }}
             selected={activeLink === '/Admin'}
             onClick={() => handleLinkClick('/Admin')}
           >
-            <ListItemIcon><HomeIcon color='primary'/></ListItemIcon>
-            <ListItemText sx={{ fontWeight: activeLink === '/Admin' ? 'bold' : 'normal'}} ><span style={FontStyle}>รายชื่อผู้ดูเเล</span></ListItemText>
+            <ListItemIcon><HomeIcon color='primary' /></ListItemIcon>
+            <ListItemText sx={{ fontWeight: activeLink === '/Admin' ? 'bold' : 'normal' }} ><span style={FontStyle}>รายชื่อผู้ดูเเล</span></ListItemText>
           </ListItemButton>
         </Link>
       </List>

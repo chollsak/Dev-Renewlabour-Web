@@ -1,8 +1,6 @@
-
 'use client';
 
-import React, { useState, useEffect } from 'react';
-
+import React, { useState } from 'react';
 import {
     Box,
     TextField,
@@ -11,215 +9,171 @@ import {
     Typography,
     Card,
     CardContent,
-    List,
-    ListItem,
-    ListItemText
+    Autocomplete,
+    FormControl,
+    SelectChangeEvent,
+    InputLabel,
+    Select,
+    MenuItem,
 } from '@mui/material';
-
-
-interface Address {
-    district: string;
-    amphoe: string;
-    province: string;
-    zipcode: string;
-    districtEng: string;
-    amphoeEng: string;
-    provinceEng: string;
-}
+import DialogComponent from './Dialog';
+import FilesOther from './FileOther';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
 };
 
+const data = [{ cpn_n: "Company Fake" }, { cpn_n: "Company Fake2" }];
 
 const UserForm: React.FC = () => {
-    const [addresses, setAddresses] = useState<Address[]>([]);
-    const [filteredAddresses, setFilteredAddresses] = useState<Address[]>([]);
-    const [searchText, setSearchText] = useState('');
+    const [person, setPerson] = useState({
+        prefix: '',
+        firstname: '',
+        lastname: '',
+        prefixth: '',
+        firstnameth: '',
+        lastnameth: '',
+        nickname: '',
+        nationality: '',
+        outlanderNo: ''
+    });
+    const [openDialog, setOpenDialog] = useState<string | null>(null);
+    const [formData, setFormData] = useState<{ [key: string]: { title: string; file: File | null; startDate: string; endDate: string } }>({});
+    const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+    const [profilePicture, setProfilePicture] = useState<File | null>(null);
 
-    const [searchTextWork, setSearchTextWork] = useState('');
-    const [filteredAddressesWork, setFilteredAddressesWork] = useState<Address[]>([]);
-
-    useEffect(() => {
-        const fetchAddresses = async () => {
-            const response = await fetch("../data/thailand.json");
-            const data: Address[] = await response.json();
-            setAddresses(data);
-        };
-
-        fetchAddresses();
-    }, []);
-
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
-        setSearchText(value);
-        filterAddresses(value, setFilteredAddresses);
+    const handleChange = (event: SelectChangeEvent) => {
+        setPerson({ ...person, [event.target.name]: event.target.value as string });
     };
 
-    const handleSearchChangeWork = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
-        setSearchTextWork(value);
-        if (!value) {
-            setFilteredAddressesWork([]);
-            return;
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            setProfilePicture(event.target.files[0]);
         }
-
-        const regex = new RegExp(`^${value}`, 'gi');
-        const matches = addresses.filter(address =>
-            address.district.match(regex) ||
-            address.districtEng.match(regex) ||
-            address.amphoe.match(regex) ||
-            address.amphoeEng.match(regex) ||
-            address.province.match(regex) ||
-            address.provinceEng.match(regex)
-        );
-
-        setFilteredAddressesWork(matches); // Ensure this line correctly updates the state
     };
 
-    const filterAddresses = (value: string, setFunction: React.Dispatch<React.SetStateAction<Address[]>>) => {
-        if (!value) {
-            setFunction([]);
-            return;
-        }
-
-        const regex = new RegExp(`^${value}`, 'gi');
-        const matches = addresses.filter(address =>
-            address.district.match(regex) ||
-            address.districtEng.match(regex) ||
-            address.amphoe.match(regex) ||
-            address.amphoeEng.match(regex) ||
-            address.province.match(regex) ||
-            address.provinceEng.match(regex)
-        );
-
-        setFunction(matches);
+    const handleOpenDialog = (type: string) => {
+        setOpenDialog(type);
     };
 
-    const handleListItemClick = (address: Address) => {
-        setSearchText(`${address.district}, ${address.amphoe}, ${address.province}, ${address.zipcode}`);
-        setFilteredAddresses([]);
+    const handleCloseDialog = () => {
+        setOpenDialog(null);
     };
 
-    const handleListItemClickWork = (address: Address) => {
-        setSearchTextWork(`${address.district}, ${address.amphoe}, ${address.province}, ${address.zipcode}`);
-        setFilteredAddressesWork([]);
+    const handleDialogSave = (type: string, data: { title: string; file: File | null; startDate: string; endDate: string }) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            [type]: data,
+        }));
     };
 
+    const handleFilesDialogSave = (files: File[]) => {
+        setUploadedFiles(files);
+    };
+
+    const handleSubmit = () => {
+        console.log('Form Data:', formData);
+        console.log('Uploaded Files:', uploadedFiles);
+        // Submit the combined formData and uploadedFiles to the API here
+    };
 
     return (
         <Card sx={{ width: '100%', boxShadow: 3 }}>
             <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'left', marginBottom: 2, flexDirection: 'column' }}>
+                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>รูปภาพแรงงาน</Typography>
+                    <Grid container spacing={2} mb={2}>
+                        <Grid item xs={12}>
+                            <input type="file" accept="image/*" onChange={handleFileChange} />
+                            {profilePicture && (
+                                <Typography variant="body1" sx={{ ...FontStyle, marginTop: 1 }}>
+                                    Uploaded file: {profilePicture.name}
+                                </Typography>
+                            )}
+                        </Grid>
+                    </Grid>
+
                     <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>ข้อมูลส่วนบุคคล</Typography>
                     <Grid container spacing={2}>
                         <Grid item xs={4}>
+                            <FormControl fullWidth>
+                                <InputLabel>คำนำหน้าชื่อ ภาษาอังกฤษ</InputLabel>
+                                <Select
+                                    name="prefix"
+                                    value={person.prefix}
+                                    label="คำนำหน้าชื่อ ภาษาอังกฤษ"
+                                    onChange={handleChange}
+                                    sx={{ width: '100%', margin: 1, height: "40px" }}
+                                >
+                                    <MenuItem value="Mr.">Mr.</MenuItem>
+                                    <MenuItem value="Mrs.">Mrs.</MenuItem>
+                                    <MenuItem value="Ms.">Ms.</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={4}>
                             <TextField
-                                label="ชื่อจริง"
+                                label="ชื่อจริง ภาษาอังกฤษ"
+                                name='firstname'
                                 variant="outlined"
                                 required
-
                                 size="small"
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={4}>
                             <TextField
-                                label="ชื่อเล่น"
+                                label="นามสกุล ภาษาอังกฤษ"
+                                name='lastname'
                                 variant="outlined"
                                 required
-
-
                                 size="small"
                                 sx={{ width: '100%', margin: 1 }}
                             />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="หมายเลขประจำตัวประชาชน"
-                                variant="outlined"
-                                required
-
-                                size="small"
-                                sx={{ width: '100%', margin: 1 }} />
                         </Grid>
                         <Grid container spacing={2} marginLeft={0.05}>
-                            <Grid item xs={2}>
+                            <Grid item xs={4}>
+                                <FormControl fullWidth>
+                                    <InputLabel>คำนำหน้าชื่อ ภาษาไทย</InputLabel>
+                                    <Select
+                                        name="prefixth"
+                                        value={person.prefixth}
+                                        label="คำนำหน้าชื่อ ภาษาไทย"
+                                        onChange={handleChange}
+                                        sx={{ width: '100%', margin: 1, height: "40px" }}
+                                    >
+                                        <MenuItem value="นาย">นาย</MenuItem>
+                                        <MenuItem value="นาง">นาง</MenuItem>
+                                        <MenuItem value="นางสาว">นางสาว</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={4}>
                                 <TextField
-                                    label="วันเกิด" // "Birthday" in Thai
-                                    type="date"
+                                    label="ชื่อจริง ภาษาไทย"
+                                    name='firstnameth'
                                     variant="outlined"
                                     required
-
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
-                                    InputLabelProps={{
-                                        shrink: true, // This property ensures the label doesn't overlap with the date value
-                                    }}
                                 />
                             </Grid>
                             <Grid item xs={4}>
                                 <TextField
-                                    label="เบอร์โทรศัพท์"
+                                    label="นามสกุล ภาษาไทย"
+                                    name='lastnameth'
                                     variant="outlined"
                                     required
-
-                                    size="small"
-                                    sx={{ width: '100%', margin: 1 }}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    label="อีเมลล์(หากมี)"
-                                    variant="outlined"
-
-
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
                         </Grid>
-                    </Grid>
-                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle, marginTop: '10px' }}>ข้อมูลที่อยู่</Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs={3}>
-                            <TextField
-                                label="เลขที่บ้าน/ที่พัก ชื่อที่พัก"
-                                variant='outlined'
-                                required
-                                size='small'
-                                sx={{ width: '100%', margin: 1 }}
-                            />
-                        </Grid>
-                        <Grid item xs={9}>
-                            <TextField
-                                label="ค้นหาที่อยู่ (จังหวัด อำเภอ ตำบล)"
-                                variant="outlined"
-                                value={searchText}
-                                required
-                                size='small'
-                                sx={{ width: '100%', margin: 1 }}
-                                onChange={handleSearchChange}
-                            />
-                            <List>
-                                {filteredAddresses.map((address, index) => (
-                                    <ListItem key={index} button onClick={() => handleListItemClick(address)}>
-                                        <ListItemText
-                                            primary={`${address.district}, ${address.amphoe}, ${address.province}, ${address.zipcode}`}
-                                            secondary={`${address.districtEng}, ${address.amphoeEng}, ${address.provinceEng}`}
-                                        />
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </Grid>
-                    </Grid>
-
-                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle, marginBottom: '15px' }}>ข้อมูลที่ทำงาน</Typography>
-                    <Grid container spacing={2}>
                         <Grid container spacing={2} marginLeft={0.05}>
                             <Grid item xs={2}>
                                 <TextField
-                                    label="ชื่อบริษัท"
+                                    label="ชื่อเล่น"
+                                    name='nickname'
                                     variant="outlined"
                                     required
                                     size="small"
@@ -228,64 +182,59 @@ const UserForm: React.FC = () => {
                             </Grid>
                             <Grid item xs={2}>
                                 <TextField
-                                    label="เลขที่/ชื่ออาคาร"
+                                    label="สัญชาติ"
+                                    name='nationality'
                                     variant="outlined"
                                     required
-
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item xs={8}>
+                            <Grid item xs={4}>
                                 <TextField
-                                    label="ค้นหาที่อยู่ (จังหวัด อำเภอ ตำบล)"
+                                    label="หมายเลขรหัสต่างด้าว"
+                                    name='outlanderNo'
                                     variant="outlined"
-                                    value={searchTextWork}
                                     required
-                                    size='small'
+                                    size="small"
                                     sx={{ width: '100%', margin: 1 }}
-                                    onChange={handleSearchChangeWork}
                                 />
-                                <List>
-                                    {filteredAddressesWork.map((address, index) => (
-                                        <ListItem key={index} button onClick={() => handleListItemClickWork(address)}>
-                                            <ListItemText
-                                                primary={`${address.district}, ${address.amphoe}, ${address.province}, ${address.zipcode}`}
-                                                secondary={`${address.districtEng}, ${address.amphoeEng}, ${address.provinceEng}`}
-                                            />
-                                        </ListItem>
-                                    ))}
-                                </List>
                             </Grid>
-                            <Grid container spacing={2} marginLeft={0.05} marginTop={'-30px'}>
-                                <Grid item xs={5}>
-                                    <TextField
-                                        label="เบอร์โทรศัพท์"
-                                        variant="outlined"
-                                        required
-
-                                        size="small"
-                                        sx={{ width: '100%', margin: 1 }}
-                                    />
-                                </Grid>
-                                <Grid item xs={7}>
-                                    <TextField
-                                        label="อีเมลล์(หากมี)"
-                                        variant="outlined"
-
-
-                                        size="small"
-                                        sx={{ width: '100%', margin: 1 }}
-                                    />
-                                </Grid>
-                            </Grid>
-
                         </Grid>
                     </Grid>
 
+                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>บริษัทที่แรงงานทำงาน</Typography>
+                    <Grid container spacing={2} mb={2}>
+                        <Grid item xs={12} md={4}>
+                            <Autocomplete
+                                disablePortal
+                                id="combo-box-demo"
+                                options={data.map((option) => option.cpn_n)}
+                                sx={{ width: 300, height: "40px" }}
+                                renderInput={(params) => <TextField {...params} name="cpn_n" label="Company" />}
+                            />
+                        </Grid>
+                    </Grid>
 
+                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>ไฟล์เอกสารของแรงงาน</Typography>
+                    <Grid container spacing={2}>
+                        <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Visa')}>Visa</Button></Grid>
+                        <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Passport')}>Passport</Button></Grid>
+                        <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Work permit')}>Work permit</Button></Grid>
+                        <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('90Days')}>90Days</Button></Grid>
+                        <DialogComponent title="Visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Visa', data)} />
+                        <DialogComponent title="Passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Passport', data)} />
+                        <DialogComponent title="Work permit" open={openDialog === 'Work permit'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Work permit', data)} />
+                        <DialogComponent title="90Days" open={openDialog === '90Days'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('90Days', data)} />
+                    </Grid>
+
+                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>อัปโหลดไฟล์เพิ่มเติม</Typography>
+                    <Grid container spacing={2}>
+                        <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Files')}>Upload Files</Button></Grid>
+                        <FilesOther open={openDialog === 'Files'} handleClose={handleCloseDialog} onSave={handleFilesDialogSave} />
+                    </Grid>
                 </Box>
-                <Button variant="contained" sx={{ width: '100%', marginTop: 2 }}>เพิ่ม</Button>
+                <Button variant="contained" sx={{ width: '100%', marginTop: 2 }} onClick={handleSubmit}>Submit</Button>
             </CardContent>
         </Card>
     );
