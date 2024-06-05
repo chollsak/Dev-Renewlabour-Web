@@ -72,8 +72,9 @@ const UserForm: React.FC = () => {
     };
 
     const handleSubmit = () => {
-        console.log('Form Data:', formData);
-        console.log('Uploaded Files:', uploadedFiles);
+        console.log('Data Employee')
+        console.log('Document Employee:', formData);
+        console.log('Other File Employee:', uploadedFiles);
         // Submit the combined formData and uploadedFiles to the API here
     };
 
