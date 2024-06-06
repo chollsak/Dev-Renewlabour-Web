@@ -26,6 +26,7 @@ const FontStyle: React.CSSProperties = {
 const data = [{ cpn_n: "Company Fake" }, { cpn_n: "Company Fake2" }];
 
 const UserForm: React.FC = () => {
+
     const [person, setPerson] = useState({
         prefix: '',
         firstname: '',
@@ -35,8 +36,25 @@ const UserForm: React.FC = () => {
         lastnameth: '',
         nickname: '',
         nationality: '',
-        outlanderNo: ''
+        outlanderNo: '',
+        pic_path: '',
+        visa_id: '',
+        visa_startdate: '',
+        visa_enddate: '',
+        visa_path: '',
+        passport_id: '',
+        passport_startdate: '',
+        passport_enddate: '',
+        passport_path: '',
+        workpermit_id: '',
+        workpermit_startdate: '',
+        workpermit_enddate: '',
+        workpermit_path: '',
+        ninetydays_startdate: '',
+        ninetydays_enddate: '',
+        ninetydays_path: '',
     });
+
     const [openDialog, setOpenDialog] = useState<string | null>(null);
     const [formData, setFormData] = useState<{ [key: string]: { title: string; file: File | null; startDate: string; endDate: string } }>({});
     const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -49,6 +67,7 @@ const UserForm: React.FC = () => {
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             setProfilePicture(event.target.files[0]);
+            setPerson({ ...person, pic_path: event.target.files[0].name })
         }
     };
 
@@ -60,10 +79,17 @@ const UserForm: React.FC = () => {
         setOpenDialog(null);
     };
 
-    const handleDialogSave = (type: string, data: { title: string; file: File | null; startDate: string; endDate: string }) => {
+    const handleDialogSave = (type: string, data: { title: string; id: string | null; file: File | null; startDate: string; endDate: string }) => {
         setFormData((prevData) => ({
             ...prevData,
             [type]: data,
+        }));
+        setPerson((prevPerson) => ({
+            ...prevPerson,
+            [`${type.toLowerCase()}_id`]: data.id,
+            [`${type.toLowerCase()}_startdate`]: data.startDate,
+            [`${type.toLowerCase()}_enddate`]: data.endDate,
+            [`${type.toLowerCase()}_path`]: data.file ? data.file.name : '',
         }));
     };
 
@@ -72,7 +98,8 @@ const UserForm: React.FC = () => {
     };
 
     const handleSubmit = () => {
-        console.log('Data Employee')
+        console.log('File Picture', profilePicture)
+        console.log('Data Employee', person);
         console.log('Document Employee:', formData);
         console.log('Other File Employee:', uploadedFiles);
         // Submit the combined formData and uploadedFiles to the API here
@@ -120,6 +147,8 @@ const UserForm: React.FC = () => {
                                 required
                                 size="small"
                                 sx={{ width: '100%', margin: 1 }}
+                                value={person.firstname}
+                                onChange={(e) => setPerson({ ...person, firstname: e.target.value })}
                             />
                         </Grid>
                         <Grid item xs={4}>
@@ -130,6 +159,8 @@ const UserForm: React.FC = () => {
                                 required
                                 size="small"
                                 sx={{ width: '100%', margin: 1 }}
+                                value={person.lastname}
+                                onChange={(e) => setPerson({ ...person, lastname: e.target.value })}
                             />
                         </Grid>
                         <Grid container spacing={2} marginLeft={0.05}>
@@ -157,6 +188,8 @@ const UserForm: React.FC = () => {
                                     required
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
+                                    value={person.firstnameth}
+                                    onChange={(e) => setPerson({ ...person, firstnameth: e.target.value })}
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -167,6 +200,8 @@ const UserForm: React.FC = () => {
                                     required
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
+                                    value={person.lastnameth}
+                                    onChange={(e) => setPerson({ ...person, lastnameth: e.target.value })}
                                 />
                             </Grid>
                         </Grid>
@@ -179,6 +214,8 @@ const UserForm: React.FC = () => {
                                     required
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
+                                    value={person.nickname}
+                                    onChange={(e) => setPerson({ ...person, nickname: e.target.value })}
                                 />
                             </Grid>
                             <Grid item xs={2}>
@@ -189,6 +226,8 @@ const UserForm: React.FC = () => {
                                     required
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
+                                    value={person.nationality}
+                                    onChange={(e) => setPerson({ ...person, nationality: e.target.value })}
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -199,6 +238,8 @@ const UserForm: React.FC = () => {
                                     required
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
+                                    value={person.outlanderNo}
+                                    onChange={(e) => setPerson({ ...person, outlanderNo: e.target.value })}
                                 />
                             </Grid>
                         </Grid>
@@ -221,12 +262,12 @@ const UserForm: React.FC = () => {
                     <Grid container spacing={2}>
                         <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Visa')}>Visa</Button></Grid>
                         <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Passport')}>Passport</Button></Grid>
-                        <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Work permit')}>Work permit</Button></Grid>
-                        <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('90Days')}>90Days</Button></Grid>
+                        <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Workpermit')}>Work permit</Button></Grid>
+                        <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('ninetydays')}>ninetydays</Button></Grid>
                         <DialogComponent title="Visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Visa', data)} />
                         <DialogComponent title="Passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Passport', data)} />
-                        <DialogComponent title="Work permit" open={openDialog === 'Work permit'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Work permit', data)} />
-                        <DialogComponent title="90Days" open={openDialog === '90Days'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('90Days', data)} />
+                        <DialogComponent title="Work permit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Workpermit', data)} />
+                        <DialogComponent title="ninetydays" open={openDialog === 'ninetydays'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('ninetydays', data)} />
                     </Grid>
 
                     <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>อัปโหลดไฟล์เพิ่มเติม</Typography>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, Typography, TextField } from '@mui/material';
 import InputTextMasked from './InputMasked';
 
 interface DialogComponentProps {
@@ -13,6 +13,7 @@ const DialogComponent: React.FC<DialogComponentProps> = ({ title, open, handleCl
     const [file, setFile] = useState<File | null>(null);
     const [startDate, setStartDate] = useState<string>('');
     const [endDate, setEndDate] = useState<string>('');
+    const [id, setId] = useState<string>('');
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -21,8 +22,11 @@ const DialogComponent: React.FC<DialogComponentProps> = ({ title, open, handleCl
     };
 
     const handleSave = () => {
-        if (title && file && startDate && endDate) {
+        if (title === 'ninetydays' && file && startDate && endDate) {
             onSave({ title, file, startDate, endDate });
+            handleClose();
+        } else if (title !== 'ninetydays' && id && file && startDate && endDate) {
+            onSave({ title: id, file, startDate, endDate });
             handleClose();
         } else {
             alert('Please fill out all fields.');
@@ -36,6 +40,15 @@ const DialogComponent: React.FC<DialogComponentProps> = ({ title, open, handleCl
                 <DialogContentText>
                     Please upload the required file and specify the start and end dates.
                 </DialogContentText>
+                {title !== 'ninetydays' && (
+                    <TextField
+                        label="ID"
+                        value={id}
+                        onChange={(e) => setId(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                    />
+                )}
                 <input type="file" onChange={handleFileChange} className="mb-4" />
                 <InputTextMasked
                     label="Start Date"
