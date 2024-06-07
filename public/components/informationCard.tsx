@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     TextField,
@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import DialogComponent from './Dialog';
 import FilesOther from './FileOther';
+import axios
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -26,6 +27,21 @@ const FontStyle: React.CSSProperties = {
 const data = [{ cpn_n: "Company Fake" }, { cpn_n: "Company Fake2" }];
 
 const UserForm: React.FC = () => {
+
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/companyform');
+                setData(response.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []); // Empty dependency array means this useEffect runs once on mount
 
     const [person, setPerson] = useState({
         prefix: '',
@@ -37,6 +53,7 @@ const UserForm: React.FC = () => {
         nickname: '',
         nationality: '',
         outlanderNo: '',
+        company: null,
         pic_path: '',
         visa_id: '',
         visa_startdate: '',
@@ -70,6 +87,10 @@ const UserForm: React.FC = () => {
             setPerson({ ...person, pic_path: event.target.files[0].name })
         }
     };
+
+    const handleCompany = (event: any, newValue: any) => {
+        setPerson({ ...person, company: newValue });
+    }
 
     const handleOpenDialog = (type: string) => {
         setOpenDialog(type);
@@ -144,7 +165,7 @@ const UserForm: React.FC = () => {
                                 label="ชื่อจริง ภาษาอังกฤษ"
                                 name='firstname'
                                 variant="outlined"
-                                required
+
                                 size="small"
                                 sx={{ width: '100%', margin: 1 }}
                                 value={person.firstname}
@@ -156,7 +177,7 @@ const UserForm: React.FC = () => {
                                 label="นามสกุล ภาษาอังกฤษ"
                                 name='lastname'
                                 variant="outlined"
-                                required
+
                                 size="small"
                                 sx={{ width: '100%', margin: 1 }}
                                 value={person.lastname}
@@ -185,7 +206,7 @@ const UserForm: React.FC = () => {
                                     label="ชื่อจริง ภาษาไทย"
                                     name='firstnameth'
                                     variant="outlined"
-                                    required
+
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                     value={person.firstnameth}
@@ -197,7 +218,7 @@ const UserForm: React.FC = () => {
                                     label="นามสกุล ภาษาไทย"
                                     name='lastnameth'
                                     variant="outlined"
-                                    required
+
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                     value={person.lastnameth}
@@ -211,7 +232,7 @@ const UserForm: React.FC = () => {
                                     label="ชื่อเล่น"
                                     name='nickname'
                                     variant="outlined"
-                                    required
+
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                     value={person.nickname}
@@ -223,7 +244,7 @@ const UserForm: React.FC = () => {
                                     label="สัญชาติ"
                                     name='nationality'
                                     variant="outlined"
-                                    required
+
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                     value={person.nationality}
@@ -235,7 +256,7 @@ const UserForm: React.FC = () => {
                                     label="หมายเลขรหัสต่างด้าว"
                                     name='outlanderNo'
                                     variant="outlined"
-                                    required
+
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                     value={person.outlanderNo}
@@ -253,7 +274,8 @@ const UserForm: React.FC = () => {
                                 id="combo-box-demo"
                                 options={data.map((option) => option.cpn_n)}
                                 sx={{ width: 300, height: "40px" }}
-                                renderInput={(params) => <TextField {...params} name="cpn_n" label="Company" />}
+                                onChange={handleCompany}
+                                renderInput={(params) => <TextField {...params} name="company" label="Company" />}
                             />
                         </Grid>
                     </Grid>
