@@ -6,7 +6,7 @@ interface DialogComponentProps {
     title: string;
     open: boolean;
     handleClose: () => void;
-    onSave: (data: { title: string; file: File | null, startDate: string, endDate: string }) => void;
+    onSave: (data: { title: string; id: string | null; file: File | null, startDate: string, endDate: string }) => void;
 }
 
 const DialogComponent: React.FC<DialogComponentProps> = ({ title, open, handleClose, onSave }) => {
@@ -23,10 +23,10 @@ const DialogComponent: React.FC<DialogComponentProps> = ({ title, open, handleCl
 
     const handleSave = () => {
         if (title === 'ninetydays' && file && startDate && endDate) {
-            onSave({ title, file, startDate, endDate });
+            onSave({ title, id, file, startDate, endDate });
             handleClose();
         } else if (title !== 'ninetydays' && id && file && startDate && endDate) {
-            onSave({ title: id, file, startDate, endDate });
+            onSave({ title, id, file, startDate, endDate });
             handleClose();
         } else {
             alert('Please fill out all fields.');
