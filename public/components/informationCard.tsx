@@ -18,17 +18,15 @@ import {
 } from '@mui/material';
 import DialogComponent from './Dialog';
 import FilesOther from './FileOther';
-import axios
+import axios from 'axios'
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
 };
 
-const data = [{ cpn_n: "Company Fake" }, { cpn_n: "Company Fake2" }];
-
 const UserForm: React.FC = () => {
 
-    const [data, setData] = useState([])
+    const [data, setData] = useState<any[]>([])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -118,12 +116,19 @@ const UserForm: React.FC = () => {
         setUploadedFiles(files);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         console.log('File Picture', profilePicture)
         console.log('Data Employee', person);
         console.log('Document Employee:', formData);
         console.log('Other File Employee:', uploadedFiles);
         // Submit the combined formData and uploadedFiles to the API here
+        try {
+            // Send the data to the API using Axios
+            const response = await axios.post('http://localhost:3000/api/persons', { person });
+            console.log('API Response:', response.data);
+        } catch (error) {
+            console.error('API Request failed:', error);
+        }
     };
 
     return (

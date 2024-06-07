@@ -2,36 +2,105 @@ import { NextRequest, NextResponse } from "next/server";
 import { sqlConnect } from "../../../../public/components/lib/db";
 import * as sql from "mssql";
 
-async function getCompanyId(pool: sql.ConnectionPool, username: string) {
+async function getCompanyId(pool: sql.ConnectionPool, person: any) {
   const request = new sql.Request(pool);
-  request.input("username", sql.VarChar, username);
+  request.input("cpn_n", sql.VarChar, person.company);
 
   const result = await request.query(`
-          SELECT id
-          FROM admin_user
-          WHERE username = @username;
+          SELECT cpn_id
+          FROM company
+          WHERE cpn_n = @cpn_n;
         `);
-
-  return result.recordset[0]?.id;
+  console.log(result);
+  return result.recordset[0]?.cpn_id;
 }
 
-async function createPersons(pool: sql.ConnectionPool, person: any) {
+async function createPersons(
+  pool: sql.ConnectionPool,
+  person: any,
+  companyId: number
+) {
   const request = new sql.Request(pool);
-  request.input("outlanderNo", sql.VarChar, person.outlanderNo);
-  request.input("prefix", sql.VarChar, person.prefix);
-  request.input("firstname", sql.VarChar, person.firstname);
-  request.input("lastname", sql.VarChar, person.lastname);
-  request.input("prefixth", sql.VarChar, person.prefixth);
-  request.input("firstnameth", sql.VarChar, person.firstnameth);
-  request.input("lastnameth", sql.VarChar, person.lastnameth);
-  request.input("nationality", sql.VarChar, person.nationality);
+
+  const inputs = [
+    { name: "outlanderNo", type: sql.VarChar, value: person.outlanderNo },
+    { name: "prefix", type: sql.VarChar, value: person.prefix },
+    { name: "firstname", type: sql.VarChar, value: person.firstname },
+    { name: "lastname", type: sql.VarChar, value: person.lastname },
+    { name: "prefixth", type: sql.VarChar, value: person.prefixth },
+    { name: "firstnameth", type: sql.VarChar, value: person.firstnameth },
+    { name: "lastnameth", type: sql.VarChar, value: person.lastnameth },
+    { name: "nationality", type: sql.VarChar, value: person.nationality },
+    { name: "company_id", type: sql.Int, value: companyId },
+    { name: "picpath", type: sql.VarChar, value: person.pic_path },
+    { name: "nickname", type: sql.VarChar, value: person.nickname },
+    { name: "visa_id", type: sql.VarChar, value: person.visa_id },
+    { name: "visa_startdate", type: sql.VarChar, value: person.visa_startdate },
+    { name: "visa_enddate", type: sql.VarChar, value: person.visa_enddate },
+    { name: "visa_path", type: sql.VarChar, value: person.visa_path },
+    { name: "passport_id", type: sql.VarChar, value: person.passport_id },
+    {
+      name: "passport_startdate",
+      type: sql.VarChar,
+      value: person.passport_startdate,
+    },
+    {
+      name: "passport_enddate",
+      type: sql.VarChar,
+      value: person.passport_enddate,
+    },
+    { name: "passport_path", type: sql.VarChar, value: person.passport_path },
+    { name: "workpermit_id", type: sql.VarChar, value: person.workpermit_id },
+    {
+      name: "workpermit_startdate",
+      type: sql.VarChar,
+      value: person.workpermit_startdate,
+    },
+    {
+      name: "workpermit_enddate",
+      type: sql.VarChar,
+      value: person.workpermit_enddate,
+    },
+    {
+      name: "workpermit_path",
+      type: sql.VarChar,
+      value: person.workpermit_path,
+    },
+    {
+      name: "ninetydays_startdate",
+      type: sql.VarChar,
+      value: person.ninetydays_startdate,
+    },
+    {
+      name: "ninetydays_enddate",
+      type: sql.VarChar,
+      value: person.ninetydays_enddate,
+    },
+    {
+      name: "ninetydays_path",
+      type: sql.VarChar,
+      value: person.ninetydays_path,
+    },
+  ];
+
+  inputs.forEach((input) => request.input(input.name, input.type, input.value));
 
   const insertResult = await request.query(`
-        INSERT INTO persons ()
-        OUTPUT inserted.id
-        VALUES ();
-      `);
-
+    INSERT INTO persons (
+      outlanderNo, prefix, firstname, lastname, prefixth, firstnameth, lastnameth, nationality, 
+      company_id, picpath, nickname, visa_id, visa_startdate, visa_enddate, visa_path, passport_id, 
+      passport_startdate, passport_enddate, passport_path, workpermit_id, workpermit_startdate, 
+      workpermit_enddate, workpermit_path, ninetydays_startdate, ninetydays_enddate, ninetydays_path
+    )
+    OUTPUT inserted.person_id
+    VALUES (
+      @outlanderNo, @prefix, @firstname, @lastname, @prefixth, @firstnameth, @lastnameth, @nationality, 
+      @company_id, @picpath, @nickname, @visa_id, @visa_startdate, @visa_enddate, @visa_path, @passport_id, 
+      @passport_startdate, @passport_enddate, @passport_path, @workpermit_id, @workpermit_startdate, 
+      @workpermit_enddate, @workpermit_path, @ninetydays_startdate, @ninetydays_enddate, @ninetydays_path
+    );
+  `);
+  console.log(insertResult);
   return insertResult.recordset[0].id;
 }
 
@@ -40,9 +109,12 @@ export async function POST(req: NextRequest) {
   const requestBody = await req.json();
   const { person } = requestBody;
   const pool = await sqlConnect();
-
+  console.log(person);
   try {
-    const maId = await createPersons(pool, person);
+    const companyId = await getCompanyId(pool, person);
+    console.log(companyId);
+    const maId = await createPersons(pool, person, companyId);
+    console.log(maId);
 
     return NextResponse.json({ message: `Maintenance created successfully` });
   } catch (error) {
