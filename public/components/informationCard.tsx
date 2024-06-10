@@ -71,7 +71,7 @@ const UserForm: React.FC = () => {
     });
 
     const [openDialog, setOpenDialog] = useState<string | null>(null);
-    const [formData, setFormData] = useState<{ [key: string]: { title: string; file: File | null; startDate: string; endDate: string } }>({});
+    const [fileFormData, setFileFormData] = useState<{ [key: string]: { title: string; file: File | null; startDate: string; endDate: string } }>({});
     const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
     const [profilePicture, setProfilePicture] = useState<File | null>(null);
 
@@ -99,7 +99,7 @@ const UserForm: React.FC = () => {
     };
 
     const handleDialogSave = (type: string, data: { title: string; id: string | null; file: File | null; startDate: string; endDate: string }) => {
-        setFormData((prevData) => ({
+        setFileFormData((prevData) => ({
             ...prevData,
             [type]: data,
         }));
@@ -119,15 +119,43 @@ const UserForm: React.FC = () => {
     const handleSubmit = async () => {
         console.log('File Picture', profilePicture)
         console.log('Data Employee', person);
-        console.log('Document Employee:', formData);
+        console.log('Document Employee:', fileFormData);
         console.log('Other File Employee:', uploadedFiles);
-        // Submit the combined formData and uploadedFiles to the API here
+        // Submit the combined fileFormData and uploadedFiles to the API here
         try {
             // Send the data to the API using Axios
             const response = await axios.post('http://localhost:3000/api/persons', { person });
             console.log('API Response:', response.data);
             const personId = response.data.personId
             console.log('ID แรงงาน:', personId)
+            if (personId) {
+                const formData = new FormData();
+                for (let key in fileFormData) {
+                    const fileData = fileFormData[key];
+                    if (fileData.file) {
+                        formData.append('filePaths', fileData.file);
+                        formData.append('outlanderNo', person.outlanderNo)
+                        formData.append('personId', personId)
+                        try {
+                            const responseFiles = await axios.post(`http://localhost:5052/upload/persons/${fileData.title}`, formData, {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            });
+                            console.log('Files upload response:', responseFiles.data);
+                        } catch (error) {
+                            console.error('Files upload failed:', error);
+                            // Handle file upload error
+                        }
+                        formData.delete("filePaths")
+                        formData.delete("outlanderNo")
+                        formData.delete('personId')
+                    }
+                }
+
+            } else {
+                console.log('Error:', response.data.error);
+            }
         } catch (error) {
             console.error('API Request failed:', error);
         }
