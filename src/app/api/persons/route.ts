@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sqlConnect } from "../../../../public/components/lib/db";
 import * as sql from "mssql";
+import moment from "moment";
 
 async function getCompanyId(pool: sql.ConnectionPool, person: any) {
   const request = new sql.Request(pool);
@@ -102,7 +103,57 @@ async function createPersons(
   return insertResult.recordset[0].person_id;
 }
 
-export async function GET(req: NextRequest) {}
+export async function GET(req: NextRequest) {
+  const pool = await sqlConnect();
+  try {
+    const query = `
+    SELECT 
+        person_id, outlanderNo, prefix, firstname, lastname, 
+        prefixth, firstnameth, lastnameth, nationality, company_id, 
+        picpath, nickname, visa_id, visa_startdate, visa_enddate, 
+        visa_path, passport_id, passport_startdate, passport_enddate, 
+        passport_path, workpermit_id, workpermit_startdate, 
+        workpermit_enddate, workpermit_path, ninetydays_startdate, 
+        ninetydays_enddate, ninetydays_path 
+    FROM persons
+`;
+
+    const result = await pool.request().query(query);
+
+    const persons = result.recordset.map((person) => {
+      const {
+        visa_enddate,
+        passport_enddate,
+        workpermit_enddate,
+        ninetydays_enddate,
+      } = person;
+
+      const dates = [
+        moment(visa_enddate),
+        moment(passport_enddate),
+        moment(workpermit_enddate),
+        moment(ninetydays_enddate),
+      ];
+
+      const status = dates.reduce((minDate, currentDate) =>
+        currentDate.isBefore(minDate) ? currentDate : minDate
+      );
+
+      return {
+        ...person,
+        status: status.format("YYYY-MM-DD"),
+      };
+    });
+
+    return NextResponse.json(persons);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
 export async function POST(req: NextRequest) {
   const requestBody = await req.json();
   const { person } = requestBody;
