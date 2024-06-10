@@ -11,7 +11,6 @@ async function getCompanyId(pool: sql.ConnectionPool, person: any) {
           FROM company
           WHERE cpn_n = @cpn_n;
         `);
-  console.log(result);
   return result.recordset[0]?.cpn_id;
 }
 
@@ -100,7 +99,6 @@ async function createPersons(
       @workpermit_enddate, @workpermit_path, @ninetydays_startdate, @ninetydays_enddate, @ninetydays_path
     );
   `);
-  console.log(insertResult);
   return insertResult.recordset[0].id;
 }
 
@@ -109,14 +107,14 @@ export async function POST(req: NextRequest) {
   const requestBody = await req.json();
   const { person } = requestBody;
   const pool = await sqlConnect();
-  console.log(person);
   try {
     const companyId = await getCompanyId(pool, person);
-    console.log(companyId);
-    const maId = await createPersons(pool, person, companyId);
-    console.log(maId);
+    const personId = await createPersons(pool, person, companyId);
 
-    return NextResponse.json({ message: `Maintenance created successfully` });
+    return NextResponse.json({
+      message: `Maintenance created successfully`,
+      personId: personId,
+    });
   } catch (error) {
     console.error("Database query failed:", error);
     return NextResponse.json(

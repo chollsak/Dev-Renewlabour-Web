@@ -126,6 +126,7 @@ const UserForm: React.FC = () => {
             // Send the data to the API using Axios
             const response = await axios.post('http://localhost:3000/api/persons', { person });
             console.log('API Response:', response.data);
+            const personId = response.data.personId
         } catch (error) {
             console.error('API Request failed:', error);
         }
