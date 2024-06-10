@@ -127,6 +127,7 @@ const UserForm: React.FC = () => {
             const response = await axios.post('http://localhost:3000/api/persons', { person });
             console.log('API Response:', response.data);
             const personId = response.data.personId
+            console.log('ID แรงงาน:', personId)
         } catch (error) {
             console.error('API Request failed:', error);
         }

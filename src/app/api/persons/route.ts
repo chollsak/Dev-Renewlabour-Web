@@ -99,7 +99,7 @@ async function createPersons(
       @workpermit_enddate, @workpermit_path, @ninetydays_startdate, @ninetydays_enddate, @ninetydays_path
     );
   `);
-  return insertResult.recordset[0].id;
+  return insertResult.recordset[0].person_id;
 }
 
 export async function GET(req: NextRequest) {}
@@ -112,7 +112,7 @@ export async function POST(req: NextRequest) {
     const personId = await createPersons(pool, person, companyId);
 
     return NextResponse.json({
-      message: `Maintenance created successfully`,
+      message: `เพิ่มข้อมูลแรงงานต่างด้าวสำเร็จ`,
       personId: personId,
     });
   } catch (error) {
