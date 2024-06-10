@@ -20,18 +20,34 @@ interface RowData {
 const statuses = ['ทั้งหมด', 'ต่ออายุด่วน', 'ใกล้หมดอายุ', 'หมดอายุ', 'ปกติ'];
 
 const getStatus = (row: any) => {
-    const values = [moment(row.visa_enddate, 'YYYY-MM-DD'), moment(row.passport_enddate, 'YYYY-MM-DD'), moment(row.workpermit_enddate, 'YYYY-MM-DD'), moment(row.ninetydays_enddate, 'YYYY-MM-DD')];
-    const minValue = moment.min(values);
-    const remainingDays = minValue.diff(moment(), 'days');
+    const values = [
+        row?.visa_enddate ? moment(row.visa_enddate, 'YYYY-MM-DD') : null,
+        row?.passport_enddate ? moment(row.passport_enddate, 'YYYY-MM-DD') : null,
+        row?.workpermit_enddate ? moment(row.workpermit_enddate, 'YYYY-MM-DD') : null,
+        row?.ninetydays_enddate ? moment(row.ninetydays_enddate, 'YYYY-MM-DD') : null,
+    ];
+    // Filter out null values
+    const validValues = values.filter(value => value !== null) as moment.Moment[];
 
-    if (remainingDays <= 0) {
-        return 'หมดอายุ';
-    } else if (remainingDays > 0 && remainingDays < 7) {
-        return 'ต่ออายุด่วน';
-    } else if (remainingDays >= 7 && remainingDays < 15) {
-        return 'ใกล้หมดอายุ';
+    // Calculate minValue only if there are valid values
+    const minValue = validValues.length > 0 ? moment.min(validValues) : null;
+    const remainingDays = minValue ? minValue.diff(moment(), 'days') : null;
+
+    console.log("Data: ", row.firstnameth, " Days: ", remainingDays)
+
+    if (remainingDays !== null) {
+        if (remainingDays <= 0) {
+            return 'หมดอายุ';
+        } else if (remainingDays > 0 && remainingDays < 7) {
+            return 'ต่ออายุด่วน';
+        } else if (remainingDays >= 7 && remainingDays < 15) {
+            return 'ใกล้หมดอายุ';
+        } else {
+            return 'ปกติ';
+        }
     } else {
-        return 'ปกติ';
+        // Handle case when all dates are null
+        return 'No date available';
     }
 };
 
@@ -139,8 +155,6 @@ const MyTable: React.FC = () => {
         }
     });
 
-
-
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
@@ -180,11 +194,15 @@ const MyTable: React.FC = () => {
     const getText = (value: string) => {
 
         const remainingDays = moment(value, 'YYYY-MM-DD').diff(moment(), 'days');
-
-        if (remainingDays <= 0) {
-            return 'หมดอายุมา' + " " + Math.abs(remainingDays) + ' วัน';
+        if (!isNaN(remainingDays)) {
+            if (remainingDays <= 0) {
+                return 'หมดอายุมา' + " " + Math.abs(remainingDays) + ' วัน';
+            } else {
+                return 'คงเหลือ ' + remainingDays + ' วัน';
+            }
         } else {
-            return 'คงเหลือ ' + remainingDays + ' วัน';
+            // Handle case when value is not a valid date
+            return 'No date available';
         }
     }
 
