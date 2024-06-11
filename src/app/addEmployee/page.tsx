@@ -2,14 +2,12 @@ import React from 'react'
 import Layout from '../../../public/components/Layout'
 import { Typography } from '@mui/material'
 import InformationCard from '../../../public/components/informationCard';
-import Footer from '../../../public/components/Footer';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
 };
 
 export default function page() {
-
 
     return (
         <Layout>

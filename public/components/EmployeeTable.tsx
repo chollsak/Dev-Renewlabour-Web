@@ -181,9 +181,10 @@ const MyTable: React.FC = () => {
         console.log('View clicked:', row);
     };
 
-    const handleEdit = (row: RowData) => {
+    const handleEdit = (row: any) => {
         // Handle edit action here
         console.log('Edit clicked:', row);
+        window.location.href = `UpdateEmployee/${row.person_id}/${encodeURIComponent(row.outlanderNo)}`;
     };
 
     const handleDelete = (row: RowData) => {

@@ -132,9 +132,12 @@ async function createOtherFiles(
 }
 
 export async function GET(req: NextRequest) {
+  const personId = req.nextUrl.searchParams.get("person_id");
+  const outlanderNo = req.nextUrl.searchParams.get("outlanderNo");
   const pool = await sqlConnect();
-  try {
-    const query = `
+  if (!personId || !outlanderNo) {
+    try {
+      const query = `
     SELECT 
         person_id, outlanderNo, prefix, firstname, lastname, 
         prefixth, firstnameth, lastnameth, nationality, company_id, 
@@ -146,40 +149,70 @@ export async function GET(req: NextRequest) {
     FROM persons
 `;
 
-    const result = await pool.request().query(query);
+      const result = await pool.request().query(query);
 
-    const persons = result.recordset.map((person) => {
-      const {
-        visa_enddate,
-        passport_enddate,
-        workpermit_enddate,
-        ninetydays_enddate,
-      } = person;
+      const persons = result.recordset.map((person) => {
+        const {
+          visa_enddate,
+          passport_enddate,
+          workpermit_enddate,
+          ninetydays_enddate,
+        } = person;
 
-      const dates = [
-        moment(visa_enddate),
-        moment(passport_enddate),
-        moment(workpermit_enddate),
-        moment(ninetydays_enddate),
-      ];
+        const dates = [
+          moment(visa_enddate),
+          moment(passport_enddate),
+          moment(workpermit_enddate),
+          moment(ninetydays_enddate),
+        ];
 
-      const status = dates.reduce((minDate, currentDate) =>
-        currentDate.isBefore(minDate) ? currentDate : minDate
+        const status = dates.reduce((minDate, currentDate) =>
+          currentDate.isBefore(minDate) ? currentDate : minDate
+        );
+
+        return {
+          ...person,
+          status: status.format("YYYY-MM-DD"),
+        };
+      });
+
+      return NextResponse.json(persons);
+    } catch (error) {
+      console.error(error);
+      return NextResponse.json(
+        { error: "Internal Server Error" },
+        { status: 500 }
       );
+    }
+  } else {
+    try {
+      const query = `
+  SELECT 
+    person_id, outlanderNo, prefix, firstname, lastname, 
+    prefixth, firstnameth, lastnameth, nationality, company_id, 
+    picpath, nickname, visa_id, visa_startdate, visa_enddate, 
+    visa_path, passport_id, passport_startdate, passport_enddate, 
+    passport_path, workpermit_id, workpermit_startdate, 
+    workpermit_enddate, workpermit_path, ninetydays_startdate, 
+    ninetydays_enddate, ninetydays_path 
+  FROM persons
+  WHERE person_id = @personId AND outlanderNo = @outlanderNo
+`;
 
-      return {
-        ...person,
-        status: status.format("YYYY-MM-DD"),
-      };
-    });
+      const result = await pool
+        .request()
+        .input("personId", sql.Int, personId)
+        .input("outlanderNo", sql.VarChar, outlanderNo)
+        .query(query);
 
-    return NextResponse.json(persons);
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+      return NextResponse.json(result.recordset);
+    } catch (error) {
+      console.error(error);
+      return NextResponse.json(
+        { error: "Internal Server Error" },
+        { status: 500 }
+      );
+    }
   }
 }
 export async function POST(req: NextRequest) {
