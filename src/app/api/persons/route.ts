@@ -103,6 +103,34 @@ async function createPersons(
   return insertResult.recordset[0].person_id;
 }
 
+async function createOtherFiles(
+  pool: sql.ConnectionPool,
+  personId: number,
+  data: any[]
+) {
+  console.log("Creating other files with data:", data); // Log data being processed
+  const promises = [];
+
+  for (const item of data) {
+    console.log("Processing item:", item); // Log each item
+    const request = new sql.Request(pool);
+    request.input("fileo_path", sql.VarChar, item);
+    request.input("person_id", sql.Int, personId);
+
+    promises.push(
+      request.query(`
+        INSERT INTO file_persons (fileo_path, person_id)
+        OUTPUT INSERTED.fileo_id
+        VALUES (@fileo_path, @person_id);
+      `)
+    );
+  }
+
+  const results = await Promise.all(promises);
+  console.log("Files inserted:", results); // Log insertion results
+  return results;
+}
+
 export async function GET(req: NextRequest) {
   const pool = await sqlConnect();
   try {
@@ -156,12 +184,15 @@ export async function GET(req: NextRequest) {
 }
 export async function POST(req: NextRequest) {
   const requestBody = await req.json();
-  const { person } = requestBody;
+  const { person, dataOtherFiles } = requestBody;
+  console.log("Received dataOtherFiles:", dataOtherFiles); // Add detailed log here
   const pool = await sqlConnect();
   try {
     const companyId = await getCompanyId(pool, person);
     const personId = await createPersons(pool, person, companyId);
-
+    if (personId) {
+      await createOtherFiles(pool, personId, dataOtherFiles);
+    }
     return NextResponse.json({
       message: `เพิ่มข้อมูลแรงงานต่างด้าวสำเร็จ`,
       personId: personId,
@@ -169,7 +200,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("Database query failed:", error);
     return NextResponse.json(
-      { message: "Failed to Create Maintenance", error: error },
+      { message: "ล้มเหลวในการเพิ่มแรงงาน", error: error },
       { status: 500 }
     );
   }
