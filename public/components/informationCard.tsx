@@ -133,40 +133,60 @@ const UserForm: React.FC = () => {
             const personId = response.data.personId
             console.log('ID แรงงาน:', personId)
             if (personId) {
-                // const formData = new FormData();
-                // for (let key in fileFormData) {
-                //     const fileData = fileFormData[key];
-                //     if (fileData.file) {
-                //         formData.append('filePaths', fileData.file);
-                //         formData.append('outlanderNo', person.outlanderNo)
-                //         formData.append('personId', personId)
-                //         try {
-                //             const responseFiles = await axios.post(`http://localhost:5052/upload/persons/${fileData.title}`, formData, {
-                //                 headers: {
-                //                     'Content-Type': 'multipart/form-data'
-                //                 }
-                //             });
-                //             console.log('Files upload response:', responseFiles.data);
-                //         } catch (error) {
-                //             console.error('Files upload failed:', error);
-                //             // Handle file upload error
-                //         }
-                //         formData.delete("filePaths")
-                //         formData.delete("outlanderNo")
-                //         formData.delete('personId')
-                //     }
-                // }
+                const formData = new FormData();
+                for (let key in fileFormData) {
+                    const fileData = fileFormData[key];
+                    if (fileData.file) {
+                        formData.append('filePaths', fileData.file);
+                        formData.append('outlanderNo', person.outlanderNo)
+                        formData.append('personId', personId)
+                        try {
+                            const responseFiles = await axios.post(`http://localhost:5052/upload/persons/${fileData.title}`, formData, {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            });
+                            console.log('Files upload response:', responseFiles.data);
+                        } catch (error) {
+                            console.error('Files upload failed:', error);
+                            // Handle file upload error
+                        }
+                        formData.delete("filePaths")
+                        formData.delete("outlanderNo")
+                        formData.delete('personId')
+                    }
+                }
+                if (profilePicture || profilePicture !== null) {
+                    const formData = new FormData()
+                    formData.append('filePaths', profilePicture)
+                    formData.append('outlanderNo', person.outlanderNo);
+                    formData.append('personId', personId);
+                    try {
+                        const responseFiles = await axios.post(`http://localhost:5052/upload/persons/picpath`, formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        });
+                        console.log('Files upload response:', responseFiles.data);
+                    } catch (error) {
+                        console.error('Files upload failed:', error);
+                        // Handle file upload error
+                    }
+                    formData.delete("filePaths")
+                    formData.delete("outlanderNo")
+                    formData.delete('personId')
+                }
                 // Upload other files from uploadedFiles
                 if (uploadedFiles.length > 0) {
                     const otherFilesFormData = new FormData();
                     uploadedFiles.forEach((file, index) => {
-                        otherFilesFormData.append('filePaths', file);
+                        otherFilesFormData.append('files', file);
                     });
                     otherFilesFormData.append('outlanderNo', person.outlanderNo);
                     otherFilesFormData.append('personId', personId);
 
                     try {
-                        const responseOtherFiles = await axios.post('http://localhost:5052/upload/persons/otherfile/multi', otherFilesFormData, {
+                        const responseOtherFiles = await axios.post('http://localhost:5052/upload', otherFilesFormData, {
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             }
