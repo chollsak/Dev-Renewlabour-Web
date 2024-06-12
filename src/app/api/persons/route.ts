@@ -105,7 +105,7 @@ async function createPersons(
 
 async function createOtherFiles(
   pool: sql.ConnectionPool,
-  personId: number,
+  personId: string,
   data: any[]
 ) {
   console.log("Creating other files with data:", data); // Log data being processed
@@ -134,7 +134,9 @@ async function createOtherFiles(
 async function updatePersons(
   pool: sql.ConnectionPool,
   person: any,
-  companyId: number
+  companyId: number,
+  personId: string,
+  outlanderNo: string
 ) {
   const request = new sql.Request(pool);
 
@@ -196,6 +198,16 @@ async function updatePersons(
       name: "ninetydays_path",
       type: sql.VarChar,
       value: person.ninetydays_path,
+    },
+    {
+      name: "person_id",
+      type: sql.VarChar,
+      value: personId,
+    },
+    {
+      name: "outlanderNo",
+      type: sql.VarChar,
+      value: outlanderNo,
     },
   ];
 
@@ -325,23 +337,29 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
+  const personId = req.nextUrl.searchParams.get("person_id");
+  const outlanderNo = req.nextUrl.searchParams.get("outlanderNo");
   const requestBody = await req.json();
   const { person, dataOtherFiles } = requestBody;
   const pool = await sqlConnect();
+
   try {
     const companyId = await getCompanyId(pool, person);
-    const personId = await createPersons(pool, person, companyId);
-    if (personId) {
-      await createOtherFiles(pool, personId, dataOtherFiles);
+    if (personId && outlanderNo) {
+      await updatePersons(pool, person, companyId, personId, outlanderNo);
+      if (personId) {
+        await createOtherFiles(pool, personId, dataOtherFiles);
+      }
+      return NextResponse.json({
+        message: `แก้ไขข้อมูลแรงงานต่างด้าวสำเร็จ`,
+      });
+    } else {
+      throw new Error("Invalid personId or outlanderNo");
     }
-    return NextResponse.json({
-      message: `เพิ่มข้อมูลแรงงานต่างด้าวสำเร็จ`,
-      personId: personId,
-    });
   } catch (error) {
     console.error("Database query failed:", error);
     return NextResponse.json(
-      { message: "ล้มเหลวในการเพิ่มแรงงาน", error: error },
+      { message: "ล้มเหลวในการแก้ไขข้อมูลแรงงาน", error: error },
       { status: 500 }
     );
   }

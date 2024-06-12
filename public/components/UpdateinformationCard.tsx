@@ -26,9 +26,10 @@ const FontStyle: React.CSSProperties = {
 
 interface UserFormProps {
     persons: any;
+    params: any
 }
 
-const UserForm: React.FC<UserFormProps> = ({ persons }) => {
+const UserForm: React.FC<UserFormProps> = ({ persons, params }) => {
 
     const [data, setData] = useState<any[]>([])
 
@@ -123,16 +124,19 @@ const UserForm: React.FC<UserFormProps> = ({ persons }) => {
         setDataOtherFiles(fileNames);
     };
 
+    const outlanderNo = decodeURIComponent(params.outlanderNo);
+
     const handleSubmit = async () => {
         console.log('File Picture', profilePicture)
         console.log('Data Employee', person);
         console.log('Document Employee:', fileFormData);
         console.log('Other File Employee:', uploadedFiles);
         console.log('Other File Name: ', dataOtherFiles)
+        console.log(outlanderNo)
         //Submit the combined fileFormData and uploadedFiles to the API here
         try {
             // Send the data to the API using Axios
-            const response = await axios.patch('http://localhost:3000/api/persons', { person, dataOtherFiles });
+            const response = await axios.patch(`http://localhost:3000/api/persons?person_id=${params.person_id}&outlanderNo=${outlanderNo}`, { person, dataOtherFiles });
             const personId = response.data.personId
             if (personId) {
                 const formData = new FormData();

@@ -46,7 +46,7 @@ export default function Home({
 
                     </div>
                     <div style={{ marginTop: '20px' }}>
-                        <UpdateInformationCard persons={persons} />
+                        <UpdateInformationCard persons={persons} params={params} />
                     </div>
                 </Layout>
             )}
