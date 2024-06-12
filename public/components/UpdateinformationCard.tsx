@@ -55,7 +55,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons }) => {
         nickname: persons[0].nickname,
         nationality: persons[0].nationality,
         outlanderNo: persons[0].outlanderNo,
-        company: null,
+        company: persons[0].cpn_n,
         pic_path: persons[0].picpath,
         visa_id: persons[0].visa_id,
         visa_startdate: persons[0].visa_startdate,
@@ -215,9 +215,9 @@ const UserForm: React.FC<UserFormProps> = ({ persons }) => {
                     <Grid container spacing={2} mb={2}>
                         <Grid item xs={12}>
                             <input type="file" accept="image/*" onChange={handleFileChange} />
-                            {profilePicture && (
+                            {person.pic_path && (
                                 <Typography variant="body1" sx={{ ...FontStyle, marginTop: 1 }}>
-                                    Uploaded file: {profilePicture.name}
+                                    Uploaded file: {person.pic_path}
                                 </Typography>
                             )}
                         </Grid>
@@ -246,7 +246,6 @@ const UserForm: React.FC<UserFormProps> = ({ persons }) => {
                                 label="ชื่อจริง ภาษาอังกฤษ"
                                 name='firstname'
                                 variant="outlined"
-
                                 size="small"
                                 sx={{ width: '100%', margin: 1 }}
                                 value={person.firstname}
@@ -258,7 +257,6 @@ const UserForm: React.FC<UserFormProps> = ({ persons }) => {
                                 label="นามสกุล ภาษาอังกฤษ"
                                 name='lastname'
                                 variant="outlined"
-
                                 size="small"
                                 sx={{ width: '100%', margin: 1 }}
                                 value={person.lastname}
@@ -287,7 +285,6 @@ const UserForm: React.FC<UserFormProps> = ({ persons }) => {
                                     label="ชื่อจริง ภาษาไทย"
                                     name='firstnameth'
                                     variant="outlined"
-
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                     value={person.firstnameth}
@@ -299,7 +296,6 @@ const UserForm: React.FC<UserFormProps> = ({ persons }) => {
                                     label="นามสกุล ภาษาไทย"
                                     name='lastnameth'
                                     variant="outlined"
-
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                     value={person.lastnameth}
@@ -313,7 +309,6 @@ const UserForm: React.FC<UserFormProps> = ({ persons }) => {
                                     label="ชื่อเล่น"
                                     name='nickname'
                                     variant="outlined"
-
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                     value={person.nickname}
@@ -325,7 +320,6 @@ const UserForm: React.FC<UserFormProps> = ({ persons }) => {
                                     label="สัญชาติ"
                                     name='nationality'
                                     variant="outlined"
-
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                     value={person.nationality}
@@ -337,7 +331,6 @@ const UserForm: React.FC<UserFormProps> = ({ persons }) => {
                                     label="หมายเลขรหัสต่างด้าว"
                                     name='outlanderNo'
                                     variant="outlined"
-
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                     value={person.outlanderNo}
@@ -355,6 +348,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons }) => {
                                 id="combo-box-demo"
                                 options={data.map((option) => option.cpn_n)}
                                 sx={{ width: 300, height: "40px" }}
+                                value={person.company}
                                 onChange={handleCompany}
                                 renderInput={(params) => <TextField {...params} name="company" label="Company" />}
                             />
@@ -367,10 +361,10 @@ const UserForm: React.FC<UserFormProps> = ({ persons }) => {
                         <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Passport')}>Passport</Button></Grid>
                         <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Workpermit')}>Work permit</Button></Grid>
                         <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('ninetydays')}>ninetydays</Button></Grid>
-                        <DialogComponent title="Visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Visa', data)} />
-                        <DialogComponent title="Passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Passport', data)} />
-                        <DialogComponent title="Work permit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Workpermit', data)} />
-                        <DialogComponent title="ninetydays" open={openDialog === 'ninetydays'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('ninetydays', data)} />
+                        <DialogComponent title="Visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Visa', data)} person={person} />
+                        <DialogComponent title="Passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Passport', data)} person={person} />
+                        <DialogComponent title="Workpermit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Workpermit', data)} person={person} />
+                        <DialogComponent title="ninetydays" open={openDialog === 'ninetydays'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('ninetydays', data)} person={person} />
                     </Grid>
 
                     <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>อัปโหลดไฟล์เพิ่มเติม</Typography>

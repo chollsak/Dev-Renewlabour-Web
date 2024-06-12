@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, Typography, TextField } from '@mui/material';
 import InputTextMasked from './InputMasked';
 
@@ -7,11 +7,12 @@ interface DialogComponentProps {
     open: boolean;
     handleClose: () => void;
     onSave: (data: { title: string; id: string | null; file: File | null, startDate: string, endDate: string }) => void;
+    person: any
 }
 
-const DialogComponent: React.FC<DialogComponentProps> = ({ title, open, handleClose, onSave }) => {
+const DialogComponent: React.FC<DialogComponentProps> = ({ title, open, handleClose, onSave, person }) => {
     const [file, setFile] = useState<File | null>(null);
-    const [startDate, setStartDate] = useState<string>('');
+    const [startDate, setStartDate] = useState<string>(``);
     const [endDate, setEndDate] = useState<string>('');
     const [id, setId] = useState<string>('');
 
@@ -20,6 +21,16 @@ const DialogComponent: React.FC<DialogComponentProps> = ({ title, open, handleCl
             setFile(event.target.files[0]);
         }
     };
+
+    console.log(`${title.toLowerCase()}`, person[`${title.toLowerCase()}_id`])
+
+    useEffect(() => {
+        if (person) {
+            setStartDate(person[`${title.toLowerCase()}_startdate`] || '');
+            setEndDate(person[`${title.toLowerCase()}_enddate`] || '');
+            setId(person[`${title.toLowerCase()}_id`] || '');
+        }
+    }, [person, title]);
 
     const handleSave = () => {
         if (title === 'ninetydays' && file && startDate && endDate) {
