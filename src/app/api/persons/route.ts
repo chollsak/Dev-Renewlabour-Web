@@ -224,7 +224,7 @@ async function updatePersons(
       WHERE person_id = @person_id AND outlanderNo = @outlanderNo
     ;
   `);
-  return insertResult.recordset[0].person_id;
+  return insertResult;
 }
 
 export async function GET(req: NextRequest) {
@@ -337,7 +337,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const personId = req.nextUrl.searchParams.get("person_id");
+  const personId = req.nextUrl.searchParams.get("personId");
   const outlanderNo = req.nextUrl.searchParams.get("outlanderNo");
   const requestBody = await req.json();
   const { person, dataOtherFiles } = requestBody;
@@ -347,9 +347,9 @@ export async function PATCH(req: NextRequest) {
     const companyId = await getCompanyId(pool, person);
     if (personId && outlanderNo) {
       await updatePersons(pool, person, companyId, personId, outlanderNo);
-      if (personId) {
-        await createOtherFiles(pool, personId, dataOtherFiles);
-      }
+      // if (personId) {
+      //   await createOtherFiles(pool, personId, dataOtherFiles);
+      // }
       return NextResponse.json({
         message: `แก้ไขข้อมูลแรงงานต่างด้าวสำเร็จ`,
       });

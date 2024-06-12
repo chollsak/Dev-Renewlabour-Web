@@ -5,6 +5,7 @@ import { Card, CardContent, Table, TableBody, TableCell, TableContainer, TableHe
 import { ArrowUpward, ArrowDownward, MoreVert as MoreVertIcon } from '@mui/icons-material';
 import axios from 'axios';
 import moment from 'moment';
+import TableRowAll from './TableRowAll';
 
 interface RowData {
     id: number;
@@ -32,8 +33,6 @@ const getStatus = (row: any) => {
     // Calculate minValue only if there are valid values
     const minValue = validValues.length > 0 ? moment.min(validValues) : null;
     const remainingDays = minValue ? minValue.diff(moment(), 'days') : null;
-
-    console.log("Data: ", row.firstnameth, " Days: ", remainingDays)
 
     if (remainingDays !== null) {
         if (remainingDays <= 0) {
@@ -263,39 +262,9 @@ const MyTable: React.FC = () => {
                             {sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
                                 const status = getStatus(row);
                                 const color = getColor(status);
+
                                 return (
-                                    <TableRow key={row.person_id}>
-                                        {/* Other cells remain the same */}
-                                        <TableCell sx={{ color: 'Black', ...FontStyle }}>{row.firstnameth + ' ' + row.lastnameth}</TableCell>
-                                        <TableCell sx={{ color: 'Black', ...FontStyle }}>{row.nickname}</TableCell>
-                                        <TableCell sx={{ color: color, fontWeight: '600', ...FontStyle }}>{status}</TableCell>
-                                        {/* Other cells remain the same */}
-                                        <TableCell sx={{ color: 'Black', fontWeight: '600', ...FontStyle }}><Chip sx={FontStyle} variant={isRed(row.visa_enddate)} color={getChipColor(row.visa_enddate)}>{getText(row.visa_enddate)}</Chip></TableCell>
-                                        <TableCell sx={{ color: 'Black', fontWeight: '600', ...FontStyle }}><Chip sx={FontStyle} variant={isRed(row.passport_enddate)} color={getChipColor(row.passport_enddate)}>{getText(row.passport_enddate)}</Chip></TableCell>
-                                        <TableCell sx={{ color: 'Black', fontWeight: '600', ...FontStyle }}><Chip sx={FontStyle} variant={isRed(row.workpermit_enddate)} color={getChipColor(row.workpermit_enddate)}>{getText(row.workpermit_enddate)}</Chip></TableCell>
-                                        <TableCell sx={{ color: 'Black', fontWeight: '600', ...FontStyle }}><Chip sx={FontStyle} variant={isRed(row.ninetydays_enddate)} color={getChipColor(row.ninetydays_enddate)}>{getText(row.ninetydays_enddate)}</Chip></TableCell>
-                                        <TableCell>
-                                            <IconButton
-                                                aria-controls="actions-menu"
-                                                aria-haspopup="true"
-                                                aria-expanded={anchorEl ? 'true' : undefined}
-                                                onClick={handleMenuOpen}
-                                                size="small"
-                                            >
-                                                <MoreVertIcon />
-                                            </IconButton>
-                                            <Menu
-                                                id="actions-menu"
-                                                anchorEl={anchorEl}
-                                                open={Boolean(anchorEl)}
-                                                onClose={handleMenuClose}
-                                            >
-                                                <MenuItem onClick={() => handleView(row)} sx={FontStyle}>ดูเพิ่มเติม</MenuItem>
-                                                <MenuItem onClick={() => handleEdit(row)} sx={FontStyle}>เเก้ไข</MenuItem>
-                                                <MenuItem onClick={() => handleDelete(row)} sx={FontStyle}>ลบ</MenuItem>
-                                            </Menu>
-                                        </TableCell>
-                                    </TableRow>
+                                    <TableRowAll row={row} key={row.person_id} />
                                 );
                             })}
                         </TableBody>
