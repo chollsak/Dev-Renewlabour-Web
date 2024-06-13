@@ -3,6 +3,8 @@ import { TableCell, IconButton, Menu, MenuItem } from '@mui/material';
 import Chip from '@mui/joy/Chip';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import moment from 'moment';
+import Loading2 from './Loading/Loading2';
+import PageLoader from './Loading/Loading2';
 
 interface TableRowProps {
     row: any;
@@ -117,12 +119,21 @@ const TableRowAll: React.FC<TableRowProps> = ({ row }) => {
     const handleEdit = (row: any) => {
         // Handle edit action here
         console.log('Edit clicked:', row);
+        <div>
+            <PageLoader />
+        </div>
         window.location.href = `UpdateEmployee/${row.person_id}/${encodeURIComponent(row.outlanderNo)}`;
     };
 
     const handleDelete = (row: any) => {
         // Handle delete action here
         console.log('Delete clicked:', row);
+        
+        return (
+            <div>
+                <PageLoader />
+            </div>
+        );
     };
 
     const status = getStatus(row);

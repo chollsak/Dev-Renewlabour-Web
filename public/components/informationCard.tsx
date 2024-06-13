@@ -20,6 +20,8 @@ import DialogComponent from './Dialog';
 import FilesOther from './FileOther';
 import axios from 'axios'
 import { uploadFileFormData, uploadOtherFiles, uploadProfilePicture } from '@/core/axiosEmployee';
+import { stat } from 'fs';
+import toast from 'react-hot-toast';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -129,12 +131,18 @@ const UserForm: React.FC = () => {
                 await uploadProfilePicture(profilePicture, person, personId);
                 await uploadFileFormData(fileFormData, person, personId);
                 await uploadOtherFiles(uploadedFiles, person, personId);
+                toast.success('Data saved successfully!');
+                window.location.href = '/employees'
             } else {
                 console.log('Error:', response.data.error);
+                toast.error('Error saving data');
             }
         } catch (error) {
             console.error('API Request failed:', error);
+            toast.error('Error saving data');
         }
+
+
     };
 
     return (

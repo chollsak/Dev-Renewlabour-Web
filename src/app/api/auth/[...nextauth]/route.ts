@@ -28,7 +28,7 @@ const handler = NextAuth({
             .input("username", sql.VarChar, credentials?.username)
             .input("password", sql.VarChar, credentials?.password)
             .query(
-              `SELECT * FROM admin_user
+              `SELECT * FROM members
               WHERE 
                   username = @username
                   AND BINARY_CHECKSUM(password) = BINARY_CHECKSUM(@password)`
@@ -40,7 +40,7 @@ const handler = NextAuth({
               .input("username", sql.VarChar, credentials?.username)
               .input("password", sql.VarChar, credentials?.password)
               .query(
-                `SELECT * FROM customer_user
+                `SELECT * FROM members
                 WHERE 
                     username = @username
                     AND BINARY_CHECKSUM(password) = BINARY_CHECKSUM(@password)`
