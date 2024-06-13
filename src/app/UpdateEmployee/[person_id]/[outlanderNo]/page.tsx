@@ -31,8 +31,6 @@ export default function Home({
         fetchData();
     }, [params.outlanderNo, params.person_id]); // Empty dependency array means this useEffect runs once on mount
 
-    console.log(persons)
-
     return (
         <>
             {persons.length === 0 ? (
@@ -43,7 +41,6 @@ export default function Home({
                 <Layout>
                     <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle }} marginLeft={2}>แก้ไขรายชื่อเเรงงาน {"personId: " + params.person_id + " outlanderNo: " + decodeURIComponent(params.outlanderNo)}</Typography>
-
                     </div>
                     <div style={{ marginTop: '20px' }}>
                         <UpdateInformationCard persons={persons} params={params} />

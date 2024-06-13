@@ -50,45 +50,6 @@ const getStatus = (row: any) => {
     }
 };
 
-const getChipColor = (value: string) => {
-    const remainingDays = moment(value, 'YYYY-MM-DD').diff(moment(), 'days');
-    if (remainingDays <= 0) {
-        return 'neutral';
-    } else if (remainingDays > 0 && remainingDays < 7) {
-        return 'danger';
-    } else if (remainingDays >= 7 && remainingDays < 15) {
-        return 'warning';
-    } else {
-        return 'success';
-    }
-
-}
-
-const isRed = (value: string): 'solid' | 'outlined' => {
-    const remainingDays = moment(value, 'YYYY-MM-DD').diff(moment(), 'days');
-
-    if ((remainingDays > 0 && remainingDays < 7) || remainingDays < 0) {
-        return 'solid';
-    } else {
-        return 'outlined';
-    }
-};
-
-const getColor = (status: string) => {
-    switch (status) {
-        case 'หมดอายุ':
-            return 'grey';
-        case 'ต่ออายุด่วน':
-            return 'red';
-        case 'ใกล้หมดอายุ':
-            return 'orange';
-        case 'ปกติ':
-            return 'green';
-        default:
-            return 'black';
-    }
-};
-
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
 };
@@ -99,7 +60,6 @@ const MyTable: React.FC = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const [data, setData] = useState<any[]>([])
 
@@ -167,45 +127,6 @@ const MyTable: React.FC = () => {
         setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     };
 
-    const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleView = (row: RowData) => {
-        // Handle view action here
-        console.log('View clicked:', row);
-    };
-
-    const handleEdit = (row: any) => {
-        // Handle edit action here
-        console.log('Edit clicked:', row);
-        window.location.href = `UpdateEmployee/${row.person_id}/${encodeURIComponent(row.outlanderNo)}`;
-    };
-
-    const handleDelete = (row: RowData) => {
-        // Handle delete action here
-        console.log('Delete clicked:', row);
-    };
-
-    const getText = (value: string) => {
-
-        const remainingDays = moment(value, 'YYYY-MM-DD').diff(moment(), 'days');
-        if (!isNaN(remainingDays)) {
-            if (remainingDays <= 0) {
-                return 'หมดอายุมา' + " " + Math.abs(remainingDays) + ' วัน';
-            } else {
-                return 'คงเหลือ ' + remainingDays + ' วัน';
-            }
-        } else {
-            // Handle case when value is not a valid date
-            return 'No date available';
-        }
-    }
-
 
     return (
         <Card sx={{ width: '100%', boxShadow: 3 }}>
@@ -260,9 +181,6 @@ const MyTable: React.FC = () => {
                         </TableHead>
                         <TableBody>
                             {sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
-                                const status = getStatus(row);
-                                const color = getColor(status);
-
                                 return (
                                     <TableRowAll row={row} key={row.person_id} />
                                 );
