@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Layout from '../../../../../public/components/Layout'
 import axios from 'axios';
 import { Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Paper, Typography } from '@mui/material';
+import PersonsAvatar from '../../../../../public/components/PersonsAvatar';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -16,10 +17,6 @@ interface DataType {
     path: string;
 }
 
-interface ViewerProps {
-    data: DataType[];
-}
-
 export default function Home({
     params,
 }: {
@@ -31,7 +28,7 @@ export default function Home({
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/persons?person_id=${params.person_id}&outlanderNo=${decodeURIComponent(params.outlanderNo)}`);
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/persons?person_id=${params.person_id}&outlanderNo=${decodeURIComponent(params.outlanderNo)}`);
                 setPersons(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -40,35 +37,6 @@ export default function Home({
 
         fetchData();
     }, [params.outlanderNo, params.person_id]); // Empty dependency array means this useEffect runs once on mount
-
-    function stringToColor(string: string) {
-        let hash = 0;
-        let i;
-
-        /* eslint-disable no-bitwise */
-        for (i = 0; i < string.length; i += 1) {
-            hash = string.charCodeAt(i) + ((hash << 5) - hash);
-        }
-
-        let color = '#';
-
-        for (i = 0; i < 3; i += 1) {
-            const value = (hash >> (i * 8)) & 0xff;
-            color += `00${value.toString(16)}`.slice(-2);
-        }
-        /* eslint-enable no-bitwise */
-
-        return color;
-    }
-
-    function stringAvatar(name: string) {
-        return {
-            sx: {
-                bgcolor: stringToColor(name),
-            },
-            children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
-        };
-    }
 
     const [open, setOpen] = useState(false);
     const [selectedData, setSelectedData] = useState<DataType | null>(null);
@@ -134,7 +102,7 @@ export default function Home({
                             <Grid item xs={12} md={6}>
                                 <Paper elevation={3}>
                                     <Box>
-                                        <Avatar {...stringAvatar(persons[0].firstname)} />
+                                        <PersonsAvatar outlanderNo={persons[0].outlanderNo} picpath={persons[0].picpath} />
                                     </Box>
                                     <Box>
                                         <Typography>English Name : {persons[0].prefix + " " + persons[0].firstname + " " + persons[0].lastname}</Typography>

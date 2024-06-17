@@ -7,7 +7,7 @@ interface AvatarProps {
     picpath: string
 }
 
-const CustomAvatar: React.FC<AvatarProps> = ({ outlanderNo, picpath }) => {
+const PersonsAvatar: React.FC<AvatarProps> = ({ outlanderNo, picpath }) => {
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
@@ -15,7 +15,7 @@ const CustomAvatar: React.FC<AvatarProps> = ({ outlanderNo, picpath }) => {
     useEffect(() => {
         const fetchImage = async () => {
             try {
-                const response = await fetch(`http://localhost:5052/file/persons/${outlanderNo}/picpath/${picpath}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_FILE_API}/file/persons/${outlanderNo}/picpath/${picpath}`);
                 if (response.ok) {
                     setImageSrc(response.url);
                 } else {
@@ -42,4 +42,4 @@ const CustomAvatar: React.FC<AvatarProps> = ({ outlanderNo, picpath }) => {
     return <Avatar src={imageSrc} />;
 };
 
-export default CustomAvatar;
+export default PersonsAvatar;
