@@ -24,12 +24,14 @@ export default function Home({
 }) {
 
     const [persons, setPersons] = useState<any[]>([])
+    const [fileOther, setFileOther] = useState<any[]>([])
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/persons?person_id=${params.person_id}&outlanderNo=${decodeURIComponent(params.outlanderNo)}`);
-                setPersons(response.data);
+                setPersons(response.data.persons);
+                setFileOther(response.data.fileOther);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -39,6 +41,7 @@ export default function Home({
     }, [params.outlanderNo, params.person_id]); // Empty dependency array means this useEffect runs once on mount
 
     const [open, setOpen] = useState(false);
+    const [openFile, setOpenFile] = useState(false);
     const [selectedData, setSelectedData] = useState<DataType | null>(null);
 
     const handleOpen = (data: any) => {
@@ -49,6 +52,14 @@ export default function Home({
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleOpenOtherFile = () => {
+        setOpenFile(true);
+    }
+
+    const handleCloseOtherFile = () => {
+        setOpenFile(false);
+    }
 
     const data = [
         {
@@ -131,11 +142,10 @@ export default function Home({
                                 <Paper>
                                     {data.map((item: any, index: any) => (
                                         item.type &&
-                                        <Box key={index}>
+                                        <Box key={index} mb={2}>
                                             <Button color={item.color} variant='contained' onClick={() => handleOpen(item)}>
                                                 {item.type.toUpperCase()}
                                             </Button>
-                                            <Typography>Status</Typography>
                                         </Box>
                                     ))}
                                     <Dialog open={open} onClose={handleClose}>
@@ -145,11 +155,41 @@ export default function Home({
                                             <Typography>Start Date: {selectedData?.startDate}</Typography>
                                             <Typography>End Date: {selectedData?.endDate}</Typography>
                                             <Typography>Path: {selectedData?.path}</Typography>
+                                            <Button variant="contained" color="primary"
+                                                href={`${process.env.NEXT_PUBLIC_FILE_API}/download/persons/${persons[0].outlanderNo}/${selectedData?.type.toLowerCase()}/${selectedData?.path}`}
+                                                download
+                                                target="_blank"
+                                                rel="noopener noreferrer">
+                                                {selectedData?.path}
+                                            </Button>
                                         </DialogContent>
                                         <DialogActions>
                                             <Button onClick={handleClose}>Close</Button>
                                         </DialogActions>
                                     </Dialog>
+                                    {fileOther.length === 0 ? <></> : (
+                                        <Box>
+                                            <Box my={2}>
+                                                <Button color='primary' variant='contained' onClick={() => handleOpenOtherFile()}>Other File</Button>
+                                            </Box>
+                                            <Dialog open={openFile} onClose={handleCloseOtherFile}>
+                                                <DialogTitle>ไฟล์อื่นๆ ทั้งหมด</DialogTitle>
+                                                <DialogContent>
+                                                    {fileOther.map((item: any, index: any) => (
+                                                        <Box key={index} mb={2}>
+                                                            <Button variant="contained" color="primary"
+                                                                href={`${process.env.NEXT_PUBLIC_FILE_API}/download/persons/${persons[0].outlanderNo}/otherfile/${item?.fileo_path}`}
+                                                                download
+                                                                target="_blank"
+                                                                rel="noopener noreferrer">
+                                                                {item?.fileo_path}
+                                                            </Button>
+                                                        </Box>
+                                                    ))}
+                                                </DialogContent>
+                                            </Dialog>
+                                        </Box>
+                                    )}
                                 </Paper>
                             </Grid>
                         </Grid>
