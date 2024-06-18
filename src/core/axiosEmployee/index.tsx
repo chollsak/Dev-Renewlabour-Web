@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const uploadProfilePicture = async (profilePicture: any, person: any, personId: any) => {
-    if (profilePicture || profilePicture !== null) {
+    if (profilePicture && profilePicture !== null) {
         const formData = new FormData();
         formData.append('filePaths', profilePicture);
         formData.append('outlanderNo', person.outlanderNo);
@@ -14,9 +14,13 @@ export const uploadProfilePicture = async (profilePicture: any, person: any, per
                 }
             });
             console.log('Profile picture upload response:', response.data);
+            return response;
         } catch (error) {
             console.error('Profile picture upload failed:', error);
+            return { status: 500 };
         }
+    } else {
+        return { status: 400 };
     }
 };
 
@@ -36,17 +40,20 @@ export const uploadFileFormData = async (fileFormData: any, person: any, personI
                     }
                 });
                 console.log('Files upload response:', response.data);
+                return response;
             } catch (error) {
                 console.error('Files upload failed:', error);
+                return { status: 500 };
             }
         }
     }
+    return { status: 200 };
 };
 
 export const uploadOtherFiles = async (uploadedFiles: any, person: any, personId: any) => {
     if (uploadedFiles.length > 0) {
         const otherFilesFormData = new FormData();
-        uploadedFiles.forEach((file: any, index: any) => {
+        uploadedFiles.forEach((file: any) => {
             otherFilesFormData.append('files', file);
         });
         otherFilesFormData.append('outlanderNo', person.outlanderNo);
@@ -59,8 +66,12 @@ export const uploadOtherFiles = async (uploadedFiles: any, person: any, personId
                 }
             });
             console.log('Other files upload response:', response.data);
+            return response;
         } catch (error) {
             console.error('Other files upload failed:', error);
+            return { status: 500 };
         }
+    } else {
+        return { status: 400 };
     }
 };

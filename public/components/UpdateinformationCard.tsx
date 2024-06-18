@@ -20,6 +20,8 @@ import DialogComponent from './UpdateDialog';
 import FilesOther from './FileOther';
 import axios from 'axios'
 import { uploadFileFormData, uploadOtherFiles, uploadProfilePicture } from '@/core/axiosEmployee';
+import Swal, { SweetAlertResult } from 'sweetalert2';
+import { useRouter } from 'next/navigation';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -27,17 +29,19 @@ const FontStyle: React.CSSProperties = {
 
 interface UserFormProps {
     persons: any;
+    fileOther: any;
     params: any
 }
 
-const UserForm: React.FC<UserFormProps> = ({ persons, params }) => {
+const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
 
     const [data, setData] = useState<any[]>([])
+    const router = useRouter(); // Use the useRouter hook
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/companyform');
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/companyform`);
                 setData(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -49,31 +53,31 @@ const UserForm: React.FC<UserFormProps> = ({ persons, params }) => {
 
     const [person, setPerson] = useState({
         prefix: persons[0]?.prefix,
-        firstname: persons[0].firstname,
-        lastname: persons[0].lastname,
-        prefixth: persons[0].prefixth,
-        firstnameth: persons[0].firstnameth,
-        lastnameth: persons[0].lastnameth,
-        nickname: persons[0].nickname,
-        nationality: persons[0].nationality,
-        outlanderNo: persons[0].outlanderNo,
-        company: persons[0].cpn_n,
-        pic_path: persons[0].picpath,
-        visa_id: persons[0].visa_id,
-        visa_startdate: persons[0].visa_startdate,
-        visa_enddate: persons[0].visa_enddate,
-        visa_path: persons[0].visa_path,
-        passport_id: persons[0].passport_id,
-        passport_startdate: persons[0].passport_startdate,
-        passport_enddate: persons[0].passport_enddate,
-        passport_path: persons[0].passport_path,
-        workpermit_id: persons[0].workpermit_id,
-        workpermit_startdate: persons[0].workpermit_startdate,
-        workpermit_enddate: persons[0].workpermit_enddate,
-        workpermit_path: persons[0].workpermit_path,
-        ninetydays_startdate: persons[0].ninetydays_startdate,
-        ninetydays_enddate: persons[0].ninetydays_enddate,
-        ninetydays_path: persons[0].ninetydays_path,
+        firstname: persons[0]?.firstname,
+        lastname: persons[0]?.lastname,
+        prefixth: persons[0]?.prefixth,
+        firstnameth: persons[0]?.firstnameth,
+        lastnameth: persons[0]?.lastnameth,
+        nickname: persons[0]?.nickname,
+        nationality: persons[0]?.nationality,
+        outlanderNo: persons[0]?.outlanderNo,
+        company: persons[0]?.cpn_n,
+        pic_path: persons[0]?.picpath,
+        visa_id: persons[0]?.visa_id,
+        visa_startdate: persons[0]?.visa_startdate,
+        visa_enddate: persons[0]?.visa_enddate,
+        visa_path: persons[0]?.visa_path,
+        passport_id: persons[0]?.passport_id,
+        passport_startdate: persons[0]?.passport_startdate,
+        passport_enddate: persons[0]?.passport_enddate,
+        passport_path: persons[0]?.passport_path,
+        workpermit_id: persons[0]?.workpermit_id,
+        workpermit_startdate: persons[0]?.workpermit_startdate,
+        workpermit_enddate: persons[0]?.workpermit_enddate,
+        workpermit_path: persons[0]?.workpermit_path,
+        ninetydays_startdate: persons[0]?.ninetydays_startdate,
+        ninetydays_enddate: persons[0]?.ninetydays_enddate,
+        ninetydays_path: persons[0]?.ninetydays_path,
     });
 
     const [openDialog, setOpenDialog] = useState<string | null>(null);
@@ -87,7 +91,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, params }) => {
     };
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files[0]) {
+        if (event.target.files && event.target.files) {
             setProfilePicture(event.target.files[0]);
             setPerson({ ...person, pic_path: event.target.files[0].name })
         }
@@ -125,7 +129,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, params }) => {
         setDataOtherFiles(fileNames);
     };
 
-    const personId = persons[0].person_id
+    const personId = persons[0]?.person_id
 
     const handleSubmit = async () => {
 
@@ -133,15 +137,57 @@ const UserForm: React.FC<UserFormProps> = ({ persons, params }) => {
             // Send the data to the API using Axios
             const response = await axios.patch(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${params.person_id}&outlanderNo=${decodeURIComponent(params.outlanderNo)}`, { person, dataOtherFiles });
 
-            if (personId) {
-                await uploadProfilePicture(profilePicture, person, personId);
-                await uploadFileFormData(fileFormData, person, personId);
-                await uploadOtherFiles(uploadedFiles, person, personId);
+            if (response.status === 200) {
+                const uploadPicPath = await uploadProfilePicture(profilePicture, person, personId);
+                const uploadDocumentPath = await uploadFileFormData(fileFormData, person, personId);
+                const uploadOtherPath = await uploadOtherFiles(uploadedFiles, person, personId);
+
+                console.log("uploadPicPath :", uploadPicPath)
+                console.log("uploadDocumentPath :", uploadDocumentPath)
+                console.log("uploadOtherPath :", uploadOtherPath)
+
+                if ((uploadPicPath.status === 200 || !uploadPicPath || uploadPicPath.status === 400) && (uploadDocumentPath.status === 200 || uploadDocumentPath.status === 400 || !uploadDocumentPath) && (uploadOtherPath.status === 200 || uploadOtherPath.status === 400 || !uploadOtherPath)) {
+                    Swal.fire({
+                        title: 'สำเร็จ!',
+                        text: 'เพิ่มข้อมูลแรงงานได้สำเร็จ!',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 1000,
+                    }).then((result: SweetAlertResult) => {
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            router.push("/employees");
+                        }
+                    });
+                } else {
+                    //ลบข้อมูล persons 
+                    await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${personId}&outlanderNo=${person.outlanderNo}`)
+
+                    Swal.fire({
+                        title: 'ล้มเหลว!',
+                        text: "ล้มเหลวในการเพิ่มข้อมูลแรงงาน เรื่องไฟล์",
+                        icon: 'error',
+                        showConfirmButton: true,
+                        allowOutsideClick: false,
+                    })
+                }
             } else {
-                console.log('Error:', response.data.error);
+                Swal.fire({
+                    title: 'ล้มเหลว!',
+                    text: "ล้มเหลวในการเพิ่มข้อมูลแรงงาน เรื่องข้อมูล",
+                    icon: 'error',
+                    showConfirmButton: true,
+                    allowOutsideClick: false,
+                })
             }
         } catch (error) {
-            console.error('API Request failed:', error);
+            Swal.fire({
+                title: 'ล้มเหลว!',
+                text: "การเชื่อมต่อกับ Database ล้มเหลว",
+                icon: 'error',
+                showConfirmButton: true,
+                allowOutsideClick: false,
+            })
         }
     };
 
@@ -270,6 +316,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, params }) => {
                                     name='outlanderNo'
                                     variant="outlined"
                                     size="small"
+                                    disabled
                                     sx={{ width: '100%', margin: 1 }}
                                     value={person.outlanderNo}
                                     onChange={(e) => setPerson({ ...person, outlanderNo: e.target.value })}

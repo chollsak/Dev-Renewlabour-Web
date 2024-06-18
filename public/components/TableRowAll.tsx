@@ -114,6 +114,7 @@ const TableRowAll: React.FC<TableRowProps> = ({ row }) => {
     const handleView = (row: any) => {
         // Handle view action here
         console.log('View clicked:', row);
+        window.location.href = `ViewEmployee/${row.person_id}/${encodeURIComponent(row.outlanderNo)}`;
     };
 
     const handleEdit = (row: any) => {

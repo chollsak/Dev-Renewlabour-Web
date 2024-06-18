@@ -20,8 +20,8 @@ import DialogComponent from './Dialog';
 import FilesOther from './FileOther';
 import axios from 'axios'
 import { uploadFileFormData, uploadOtherFiles, uploadProfilePicture } from '@/core/axiosEmployee';
-import { stat } from 'fs';
-import toast from 'react-hot-toast';
+import Swal, { SweetAlertResult } from 'sweetalert2';
+import { useRouter } from 'next/navigation'
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -30,11 +30,11 @@ const FontStyle: React.CSSProperties = {
 const UserForm: React.FC = () => {
 
     const [data, setData] = useState<any[]>([])
-
+    const router = useRouter(); // Use the useRouter hook
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/companyform');
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/companyform`);
                 setData(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -127,19 +127,53 @@ const UserForm: React.FC = () => {
             // Send the data to the API using Axios
             const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/api/persons`, { person, dataOtherFiles });
             const personId = response.data.personId
-            if (personId) {
-                await uploadProfilePicture(profilePicture, person, personId);
-                await uploadFileFormData(fileFormData, person, personId);
-                await uploadOtherFiles(uploadedFiles, person, personId);
-                toast.success('Data saved successfully!');
-                window.location.href = '/employees'
+            if (response.status === 200 && personId) {
+                const uploadPicPath = await uploadProfilePicture(profilePicture, person, personId);
+                const uploadDocumentPath = await uploadFileFormData(fileFormData, person, personId);
+                const uploadOtherPath = await uploadOtherFiles(uploadedFiles, person, personId);
+
+                if (uploadPicPath.status === 200 && uploadDocumentPath.status === 200 && (uploadOtherPath.status === 200 || !uploadOtherPath)) {
+                    Swal.fire({
+                        title: 'สำเร็จ!',
+                        text: 'เพิ่มข้อมูลแรงงานได้สำเร็จ!',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 1000,
+                    }).then((result: SweetAlertResult) => {
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            router.push("/employees");
+                        }
+                    });
+                } else {
+                    //ลบข้อมูล persons 
+                    await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${personId}&outlanderNo=${person.outlanderNo}`)
+
+                    Swal.fire({
+                        title: 'ล้มเหลว!',
+                        text: "ล้มเหลวในการเพิ่มข้อมูลแรงงาน เรื่องไฟล์",
+                        icon: 'error',
+                        showConfirmButton: true,
+                        allowOutsideClick: false,
+                    })
+                }
             } else {
-                console.log('Error:', response.data.error);
-                toast.error('Error saving data');
+                Swal.fire({
+                    title: 'ล้มเหลว!',
+                    text: "ล้มเหลวในการเพิ่มข้อมูลแรงงาน เรื่องข้อมูล",
+                    icon: 'error',
+                    showConfirmButton: true,
+                    allowOutsideClick: false,
+                })
             }
         } catch (error) {
-            console.error('API Request failed:', error);
-            toast.error('Error saving data');
+            Swal.fire({
+                title: 'ล้มเหลว!',
+                text: "การเชื่อมต่อกับ Database ล้มเหลว",
+                icon: 'error',
+                showConfirmButton: true,
+                allowOutsideClick: false,
+            })
         }
 
 
@@ -305,10 +339,10 @@ const UserForm: React.FC = () => {
                         <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Passport')}>Passport</Button></Grid>
                         <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Workpermit')}>Work permit</Button></Grid>
                         <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('ninetydays')}>ninetydays</Button></Grid>
-                        <DialogComponent title="Visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Visa', data)} />
-                        <DialogComponent title="Passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Passport', data)} />
-                        <DialogComponent title="Work permit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Workpermit', data)} />
-                        <DialogComponent title="ninetydays" open={openDialog === 'ninetydays'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('ninetydays', data)} />
+                        <DialogComponent title="visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('visa', data)} />
+                        <DialogComponent title="passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('passport', data)} />
+                        <DialogComponent title="workpermit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('workpermit', data)} />
+                        <DialogComponent title="ninetydays" open={openDialog === 'Ninetydays'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('ninetydays', data)} />
                     </Grid>
 
                     <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>อัปโหลดไฟล์เพิ่มเติม</Typography>

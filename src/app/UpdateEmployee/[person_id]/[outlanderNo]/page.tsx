@@ -18,12 +18,14 @@ export default function Home({
 }) {
 
     const [persons, setPersons] = useState<any[]>([])
+    const [fileOther, setFileOther] = useState<any[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/persons?person_id=${params.person_id}&outlanderNo=${decodeURIComponent(params.outlanderNo)}`);
-                setPersons(response.data);
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/persons?person_id=${params.person_id}&outlanderNo=${decodeURIComponent(params.outlanderNo)}`);
+                setPersons(response.data.persons);
+                setFileOther(response.data.fileOther);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -83,7 +85,7 @@ export default function Home({
                         <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle }} marginLeft={2}>แก้ไขรายชื่อเเรงงาน {"personId: " + params.person_id + " outlanderNo: " + decodeURIComponent(params.outlanderNo)}</Typography>
                     </div>
                     <div style={{ marginTop: '20px' }}>
-                        <UpdateInformationCard persons={persons} params={params} />
+                        <UpdateInformationCard persons={persons} fileOther={fileOther} params={params} />
                     </div>
                 </Layout>
             )}

@@ -22,8 +22,6 @@ const DialogComponent: React.FC<DialogComponentProps> = ({ title, open, handleCl
         }
     };
 
-    console.log(`${title.toLowerCase()}`, person[`${title.toLowerCase()}_id`])
-
     useEffect(() => {
         if (person) {
             setStartDate(person[`${title.toLowerCase()}_startdate`] || '');

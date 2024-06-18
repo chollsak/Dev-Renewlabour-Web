@@ -108,11 +108,9 @@ async function createOtherFiles(
   personId: string,
   data: any[]
 ) {
-  console.log("Creating other files with data:", data); // Log data being processed
   const promises = [];
 
   for (const item of data) {
-    console.log("Processing item:", item); // Log each item
     const request = new sql.Request(pool);
     request.input("fileo_path", sql.VarChar, item);
     request.input("person_id", sql.Int, personId);
@@ -127,7 +125,6 @@ async function createOtherFiles(
   }
 
   const results = await Promise.all(promises);
-  console.log("Files inserted:", results); // Log insertion results
   return results;
 }
 
@@ -227,6 +224,64 @@ async function updatePersons(
   return insertResult;
 }
 
+async function updateOtherFiles(
+  pool: sql.ConnectionPool,
+  personId: string,
+  data: any[]
+) {
+  const promises = [];
+
+  const deleteOld = await pool
+    .request()
+    .input("personId", sql.Int, personId)
+    .input("person_id", sql.VarChar, personId)
+    .query(`DELETE FROM file_persons WHERE person_id = @person_id`);
+
+  if (deleteOld) {
+    for (const item of data) {
+      const request = new sql.Request(pool);
+      request.input("fileo_path", sql.VarChar, item);
+      request.input("person_id", sql.Int, personId);
+
+      promises.push(
+        request.query(`
+        INSERT INTO file_persons (fileo_path, person_id)
+        OUTPUT INSERTED.fileo_id
+        VALUES (@fileo_path, @person_id);
+      `)
+      );
+    }
+  }
+
+  const results = await Promise.all(promises);
+  return results;
+}
+
+async function deletePersons(
+  pool: sql.ConnectionPool,
+  personId: any,
+  outlanderNo: any
+) {
+  const request = new sql.Request(pool);
+  request.input("person_id", sql.Int, personId);
+  request.input("outlanderNo", sql.VarChar, outlanderNo);
+
+  const insertResult = await request.query(`
+      DELETE FROM persons WHERE person_id = @person_id AND outlanderNo = @outlanderNo;
+    `);
+  return insertResult;
+}
+
+async function deleteFileOther(pool: sql.ConnectionPool, personId: any) {
+  const request = new sql.Request(pool);
+  request.input("person_id", sql.Int, personId);
+
+  const insertResult = await request.query(`
+      DELETE FROM file_persons WHERE person_id = @person_id;
+    `);
+  return insertResult;
+}
+
 export async function GET(req: NextRequest) {
   const personId = req.nextUrl.searchParams.get("person_id");
   const outlanderNo = req.nextUrl.searchParams.get("outlanderNo");
@@ -302,7 +357,22 @@ export async function GET(req: NextRequest) {
         .input("outlanderNo", sql.VarChar, outlanderNo)
         .query(query);
 
-      return NextResponse.json(result.recordset);
+      const result_file_other = await pool
+        .request()
+        .input("personId", sql.Int, personId)
+        .query(
+          `SELECT * FROM file_persons WHERE file_persons.person_id = @personId`
+        );
+
+      const data: {
+        persons: any;
+        fileOther: any;
+      } = {
+        persons: result.recordset,
+        fileOther: result_file_other.recordset,
+      };
+
+      return NextResponse.json(data);
     } catch (error) {
       console.error(error);
       return NextResponse.json(
@@ -350,6 +420,9 @@ export async function PATCH(req: NextRequest) {
       // if (personId) {
       //   await createOtherFiles(pool, personId, dataOtherFiles);
       // }
+      if (dataOtherFiles) {
+        await updateOtherFiles(pool, personId, dataOtherFiles);
+      }
       return NextResponse.json({
         message: `แก้ไขข้อมูลแรงงานต่างด้าวสำเร็จ`,
       });
@@ -365,4 +438,21 @@ export async function PATCH(req: NextRequest) {
   }
 }
 
-export async function DELETE(req: NextRequest) {}
+export async function DELETE(req: NextRequest) {
+  const personId = req.nextUrl.searchParams.get("personId");
+  const outlanderNo = req.nextUrl.searchParams.get("outlanderNo");
+  const pool = await sqlConnect();
+  try {
+    await deletePersons(pool, personId, outlanderNo);
+    await deleteFileOther(pool, personId);
+    return NextResponse.json({
+      message: `ลบข้อมูลแรงงานต่างด้าวสำเร็จ`,
+    });
+  } catch (error) {
+    console.error("Database query failed:", error);
+    return NextResponse.json(
+      { message: "ล้มเหลวในการลบข้อมูลแรงงาน", error: error },
+      { status: 500 }
+    );
+  }
+}
