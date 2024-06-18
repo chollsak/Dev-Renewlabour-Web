@@ -337,10 +337,10 @@ const UserForm: React.FC = () => {
                         <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Passport')}>Passport</Button></Grid>
                         <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Workpermit')}>Work permit</Button></Grid>
                         <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('ninetydays')}>ninetydays</Button></Grid>
-                        <DialogComponent title="Visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Visa', data)} />
-                        <DialogComponent title="Passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Passport', data)} />
-                        <DialogComponent title="Work permit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Workpermit', data)} />
-                        <DialogComponent title="ninetydays" open={openDialog === 'ninetydays'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('ninetydays', data)} />
+                        <DialogComponent title="visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('visa', data)} />
+                        <DialogComponent title="passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('passport', data)} />
+                        <DialogComponent title="workpermit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('workpermit', data)} />
+                        <DialogComponent title="ninetydays" open={openDialog === 'Ninetydays'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('ninetydays', data)} />
                     </Grid>
 
                     <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>อัปโหลดไฟล์เพิ่มเติม</Typography>

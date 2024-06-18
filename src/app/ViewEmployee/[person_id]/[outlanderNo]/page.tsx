@@ -6,6 +6,7 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, P
 import PersonsAvatar from '../../../../../public/components/PersonsAvatar';
 import moment from 'moment';
 import Chip from '@mui/joy/Chip';
+import ButtonJoy from '@mui/joy/Button';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -139,6 +140,19 @@ export default function Home({
         }
     };
 
+    const buttonColor = (value: string) => {
+        const remainingDays = moment(value, 'YYYY-MM-DD').diff(moment(), 'days');
+        if (remainingDays <= 0) {
+            return 'neutral';
+        } else if (remainingDays > 0 && remainingDays < 7) {
+            return 'danger';
+        } else if (remainingDays >= 7 && remainingDays < 15) {
+            return 'warning';
+        } else {
+            return 'success';
+        }
+    }
+
     const status = getStatus(persons[0]);
     const color = getColor(status);
 
@@ -196,9 +210,9 @@ export default function Home({
                                     {data.map((item: any, index: any) => (
                                         item.type &&
                                         <Box key={index} mb={2}>
-                                            <Button color={item.color} variant='contained' onClick={() => handleOpen(item)}>
+                                            <ButtonJoy color={buttonColor(item.endDate)} onClick={() => handleOpen(item)}>
                                                 {item.type.toUpperCase()}
-                                            </Button>
+                                            </ButtonJoy>
                                         </Box>
                                     ))}
                                     <Dialog open={open} onClose={handleClose}>
@@ -223,7 +237,7 @@ export default function Home({
                                     {fileOther.length === 0 ? <></> : (
                                         <Box>
                                             <Box my={2}>
-                                                <Button color='primary' variant='contained' onClick={() => handleOpenOtherFile()}>Other File</Button>
+                                                <ButtonJoy color='primary' onClick={() => handleOpenOtherFile()}>Other File</ButtonJoy>
                                             </Box>
                                             <Dialog open={openFile} onClose={handleCloseOtherFile}>
                                                 <DialogTitle>ไฟล์อื่นๆ ทั้งหมด</DialogTitle>
