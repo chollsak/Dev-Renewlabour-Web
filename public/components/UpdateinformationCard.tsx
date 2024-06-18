@@ -29,10 +29,11 @@ const FontStyle: React.CSSProperties = {
 
 interface UserFormProps {
     persons: any;
+    fileOther: any;
     params: any
 }
 
-const UserForm: React.FC<UserFormProps> = ({ persons, params }) => {
+const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
 
     const [data, setData] = useState<any[]>([])
     const router = useRouter(); // Use the useRouter hook
@@ -52,31 +53,31 @@ const UserForm: React.FC<UserFormProps> = ({ persons, params }) => {
 
     const [person, setPerson] = useState({
         prefix: persons[0]?.prefix,
-        firstname: persons[0].firstname,
-        lastname: persons[0].lastname,
-        prefixth: persons[0].prefixth,
-        firstnameth: persons[0].firstnameth,
-        lastnameth: persons[0].lastnameth,
-        nickname: persons[0].nickname,
-        nationality: persons[0].nationality,
-        outlanderNo: persons[0].outlanderNo,
-        company: persons[0].cpn_n,
-        pic_path: persons[0].picpath,
-        visa_id: persons[0].visa_id,
-        visa_startdate: persons[0].visa_startdate,
-        visa_enddate: persons[0].visa_enddate,
-        visa_path: persons[0].visa_path,
-        passport_id: persons[0].passport_id,
-        passport_startdate: persons[0].passport_startdate,
-        passport_enddate: persons[0].passport_enddate,
-        passport_path: persons[0].passport_path,
-        workpermit_id: persons[0].workpermit_id,
-        workpermit_startdate: persons[0].workpermit_startdate,
-        workpermit_enddate: persons[0].workpermit_enddate,
-        workpermit_path: persons[0].workpermit_path,
-        ninetydays_startdate: persons[0].ninetydays_startdate,
-        ninetydays_enddate: persons[0].ninetydays_enddate,
-        ninetydays_path: persons[0].ninetydays_path,
+        firstname: persons[0]?.firstname,
+        lastname: persons[0]?.lastname,
+        prefixth: persons[0]?.prefixth,
+        firstnameth: persons[0]?.firstnameth,
+        lastnameth: persons[0]?.lastnameth,
+        nickname: persons[0]?.nickname,
+        nationality: persons[0]?.nationality,
+        outlanderNo: persons[0]?.outlanderNo,
+        company: persons[0]?.cpn_n,
+        pic_path: persons[0]?.picpath,
+        visa_id: persons[0]?.visa_id,
+        visa_startdate: persons[0]?.visa_startdate,
+        visa_enddate: persons[0]?.visa_enddate,
+        visa_path: persons[0]?.visa_path,
+        passport_id: persons[0]?.passport_id,
+        passport_startdate: persons[0]?.passport_startdate,
+        passport_enddate: persons[0]?.passport_enddate,
+        passport_path: persons[0]?.passport_path,
+        workpermit_id: persons[0]?.workpermit_id,
+        workpermit_startdate: persons[0]?.workpermit_startdate,
+        workpermit_enddate: persons[0]?.workpermit_enddate,
+        workpermit_path: persons[0]?.workpermit_path,
+        ninetydays_startdate: persons[0]?.ninetydays_startdate,
+        ninetydays_enddate: persons[0]?.ninetydays_enddate,
+        ninetydays_path: persons[0]?.ninetydays_path,
     });
 
     const [openDialog, setOpenDialog] = useState<string | null>(null);
@@ -90,7 +91,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, params }) => {
     };
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files[0]) {
+        if (event.target.files && event.target.files) {
             setProfilePicture(event.target.files[0]);
             setPerson({ ...person, pic_path: event.target.files[0].name })
         }
@@ -128,15 +129,15 @@ const UserForm: React.FC<UserFormProps> = ({ persons, params }) => {
         setDataOtherFiles(fileNames);
     };
 
-    const personId = persons[0].person_id
+    const personId = persons[0]?.person_id
 
     const handleSubmit = async () => {
 
         try {
             // Send the data to the API using Axios
-            const response = await axios.patch(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${params.person_id}&outlanderNo=${decodeURIComponent(params.outlanderNo)}`, { person, dataOtherFiles });
+            const response = await axios.patch(`${process.env.NEXT_PUBLIC_API}/api/persons[0]?personId=${params.person_id}&outlanderNo=${decodeURIComponent(params.outlanderNo)}`, { person, dataOtherFiles });
 
-            if (personId) {
+            if (response.status === 200 && personId) {
                 const uploadPicPath = await uploadProfilePicture(profilePicture, person, personId);
                 const uploadDocumentPath = await uploadFileFormData(fileFormData, person, personId);
                 const uploadOtherPath = await uploadOtherFiles(uploadedFiles, person, personId);
@@ -156,7 +157,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, params }) => {
                     });
                 } else {
                     //ลบข้อมูล persons 
-                    await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${personId}&outlanderNo=${person.outlanderNo}`)
+                    await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/persons[0]?personId=${personId}&outlanderNo=${person.outlanderNo}`)
 
                     Swal.fire({
                         title: 'ล้มเหลว!',

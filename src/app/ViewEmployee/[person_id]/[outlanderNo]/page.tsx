@@ -2,11 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../../../../../public/components/Layout';
 import axios from 'axios';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Paper, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Paper, Typography } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import PersonsAvatar from '../../../../../public/components/PersonsAvatar';
 import moment from 'moment';
 import Chip from '@mui/joy/Chip';
 import ButtonJoy from '@mui/joy/Button';
+import { useRouter } from 'next/navigation';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -156,6 +158,12 @@ export default function Home({
     const status = getStatus(persons[0]);
     const color = getColor(status);
 
+    const router = useRouter();
+
+    const handleEditClick = () => {
+        router.push(`/UpdateEmployee/${params.person_id}/${params.outlanderNo}`);
+    };
+
     return (
         <>
             {persons.length === 0 ? (
@@ -166,6 +174,9 @@ export default function Home({
                 <Layout>
                     <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle }} marginLeft={2}>รายละเอียดเเรงงาน</Typography>
+                        <IconButton color="primary" onClick={handleEditClick}>
+                            <EditIcon />
+                        </IconButton>
                     </div>
 
                     <div style={{ marginTop: "20px" }}>

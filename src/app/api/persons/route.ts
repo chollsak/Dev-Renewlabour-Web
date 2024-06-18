@@ -420,7 +420,9 @@ export async function PATCH(req: NextRequest) {
       // if (personId) {
       //   await createOtherFiles(pool, personId, dataOtherFiles);
       // }
-      await updateOtherFiles(pool, personId, dataOtherFiles);
+      if (dataOtherFiles) {
+        await updateOtherFiles(pool, personId, dataOtherFiles);
+      }
       return NextResponse.json({
         message: `แก้ไขข้อมูลแรงงานต่างด้าวสำเร็จ`,
       });
