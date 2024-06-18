@@ -108,11 +108,9 @@ async function createOtherFiles(
   personId: string,
   data: any[]
 ) {
-  console.log("Creating other files with data:", data); // Log data being processed
   const promises = [];
 
   for (const item of data) {
-    console.log("Processing item:", item); // Log each item
     const request = new sql.Request(pool);
     request.input("fileo_path", sql.VarChar, item);
     request.input("person_id", sql.Int, personId);
@@ -127,7 +125,6 @@ async function createOtherFiles(
   }
 
   const results = await Promise.all(promises);
-  console.log("Files inserted:", results); // Log insertion results
   return results;
 }
 
@@ -232,7 +229,6 @@ async function updateOtherFiles(
   personId: string,
   data: any[]
 ) {
-  console.log("Creating other files with data:", data); // Log data being processed
   const promises = [];
 
   const deleteOld = await pool
@@ -243,7 +239,6 @@ async function updateOtherFiles(
 
   if (deleteOld) {
     for (const item of data) {
-      console.log("Processing item:", item); // Log each item
       const request = new sql.Request(pool);
       request.input("fileo_path", sql.VarChar, item);
       request.input("person_id", sql.Int, personId);
@@ -259,8 +254,32 @@ async function updateOtherFiles(
   }
 
   const results = await Promise.all(promises);
-  console.log("Files inserted:", results); // Log insertion results
   return results;
+}
+
+async function deletePersons(
+  pool: sql.ConnectionPool,
+  personId: any,
+  outlanderNo: any
+) {
+  const request = new sql.Request(pool);
+  request.input("person_id", sql.Int, personId);
+  request.input("outlanderNo", sql.VarChar, outlanderNo);
+
+  const insertResult = await request.query(`
+      DELETE FROM persons WHERE person_id = @person_id AND outlanderNo = @outlanderNo;
+    `);
+  return insertResult;
+}
+
+async function deleteFileOther(pool: sql.ConnectionPool, personId: any) {
+  const request = new sql.Request(pool);
+  request.input("person_id", sql.Int, personId);
+
+  const insertResult = await request.query(`
+      DELETE FROM file_persons WHERE person_id = @person_id;
+    `);
+  return insertResult;
 }
 
 export async function GET(req: NextRequest) {
@@ -417,4 +436,21 @@ export async function PATCH(req: NextRequest) {
   }
 }
 
-export async function DELETE(req: NextRequest) {}
+export async function DELETE(req: NextRequest) {
+  const personId = req.nextUrl.searchParams.get("personId");
+  const outlanderNo = req.nextUrl.searchParams.get("outlanderNo");
+  const pool = await sqlConnect();
+  try {
+    await deletePersons(pool, personId, outlanderNo);
+    await deleteFileOther(pool, personId);
+    return NextResponse.json({
+      message: `ลบข้อมูลแรงงานต่างด้าวสำเร็จ`,
+    });
+  } catch (error) {
+    console.error("Database query failed:", error);
+    return NextResponse.json(
+      { message: "ล้มเหลวในการลบข้อมูลแรงงาน", error: error },
+      { status: 500 }
+    );
+  }
+}

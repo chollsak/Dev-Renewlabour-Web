@@ -20,6 +20,8 @@ import DialogComponent from './UpdateDialog';
 import FilesOther from './FileOther';
 import axios from 'axios'
 import { uploadFileFormData, uploadOtherFiles, uploadProfilePicture } from '@/core/axiosEmployee';
+import Swal, { SweetAlertResult } from 'sweetalert2';
+import { useRouter } from 'next/navigation';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -33,11 +35,12 @@ interface UserFormProps {
 const UserForm: React.FC<UserFormProps> = ({ persons, params }) => {
 
     const [data, setData] = useState<any[]>([])
+    const router = useRouter(); // Use the useRouter hook
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/companyform');
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/companyform`);
                 setData(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -134,14 +137,52 @@ const UserForm: React.FC<UserFormProps> = ({ persons, params }) => {
             const response = await axios.patch(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${params.person_id}&outlanderNo=${decodeURIComponent(params.outlanderNo)}`, { person, dataOtherFiles });
 
             if (personId) {
-                await uploadProfilePicture(profilePicture, person, personId);
-                await uploadFileFormData(fileFormData, person, personId);
-                await uploadOtherFiles(uploadedFiles, person, personId);
+                const uploadPicPath = await uploadProfilePicture(profilePicture, person, personId);
+                const uploadDocumentPath = await uploadFileFormData(fileFormData, person, personId);
+                const uploadOtherPath = await uploadOtherFiles(uploadedFiles, person, personId);
+
+                if (uploadPicPath.status === 200 && uploadDocumentPath.status === 200 && (uploadOtherPath.status === 200 || !uploadOtherPath)) {
+                    Swal.fire({
+                        title: 'สำเร็จ!',
+                        text: 'เพิ่มข้อมูลแรงงานได้สำเร็จ!',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 1000,
+                    }).then((result: SweetAlertResult) => {
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            router.push("/employees");
+                        }
+                    });
+                } else {
+                    //ลบข้อมูล persons 
+                    await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${personId}&outlanderNo=${person.outlanderNo}`)
+
+                    Swal.fire({
+                        title: 'ล้มเหลว!',
+                        text: "ล้มเหลวในการเพิ่มข้อมูลแรงงาน เรื่องไฟล์",
+                        icon: 'error',
+                        showConfirmButton: true,
+                        allowOutsideClick: false,
+                    })
+                }
             } else {
-                console.log('Error:', response.data.error);
+                Swal.fire({
+                    title: 'ล้มเหลว!',
+                    text: "ล้มเหลวในการเพิ่มข้อมูลแรงงาน เรื่องข้อมูล",
+                    icon: 'error',
+                    showConfirmButton: true,
+                    allowOutsideClick: false,
+                })
             }
         } catch (error) {
-            console.error('API Request failed:', error);
+            Swal.fire({
+                title: 'ล้มเหลว!',
+                text: "การเชื่อมต่อกับ Database ล้มเหลว",
+                icon: 'error',
+                showConfirmButton: true,
+                allowOutsideClick: false,
+            })
         }
     };
 
