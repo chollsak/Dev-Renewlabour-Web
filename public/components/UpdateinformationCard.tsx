@@ -207,7 +207,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                         </Grid>
                     </Grid>
 
-                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>ข้อมูลส่วนบุคคล</Typography>
+                    <Typography variant="h6" className='m-2 p-2' fontWeight={600} sx={{ ...FontStyle }}>ข้อมูลส่วนบุคคล</Typography>
                     <Grid container spacing={2}>
                         <Grid item xs={4}>
                             <FormControl fullWidth>
@@ -325,7 +325,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                         </Grid>
                     </Grid>
 
-                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>บริษัทที่แรงงานทำงาน</Typography>
+                    <Typography variant="h6" className='m-2 p-2' fontWeight={600} sx={{ ...FontStyle }}>บริษัทที่แรงงานทำงาน</Typography>
                     <Grid container spacing={2} mb={2}>
                         <Grid item xs={12} md={4}>
                             <Autocomplete
@@ -340,7 +340,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                         </Grid>
                     </Grid>
 
-                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>ไฟล์เอกสารของแรงงาน</Typography>
+                    <Typography variant="h6" fontWeight={600} className='m-2 p-2' sx={{ ...FontStyle }}>ไฟล์เอกสารของแรงงาน</Typography>
                     <Grid container spacing={2}>
                         <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Visa')}>Visa</Button></Grid>
                         <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Passport')}>Passport</Button></Grid>
@@ -352,7 +352,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                         <DialogComponent title="ninetydays" open={openDialog === 'ninetydays'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('ninetydays', data)} person={person} />
                     </Grid>
 
-                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>อัปโหลดไฟล์เพิ่มเติม</Typography>
+                    <Typography variant="h6" fontWeight={600} className='m-2 p-2' sx={{ ...FontStyle }}>อัปโหลดไฟล์เพิ่มเติม</Typography>
                     <Grid container spacing={2}>
                         <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Files')}>Upload Files</Button></Grid>
                         <FilesOther open={openDialog === 'Files'} handleClose={handleCloseDialog} onSave={handleFilesDialogSave} />
