@@ -135,14 +135,18 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
 
         try {
             // Send the data to the API using Axios
-            const response = await axios.patch(`${process.env.NEXT_PUBLIC_API}/api/persons[0]?personId=${params.person_id}&outlanderNo=${decodeURIComponent(params.outlanderNo)}`, { person, dataOtherFiles });
+            const response = await axios.patch(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${params.person_id}&outlanderNo=${decodeURIComponent(params.outlanderNo)}`, { person, dataOtherFiles });
 
-            if (response.status === 200 && personId) {
+            if (response.status === 200) {
                 const uploadPicPath = await uploadProfilePicture(profilePicture, person, personId);
                 const uploadDocumentPath = await uploadFileFormData(fileFormData, person, personId);
                 const uploadOtherPath = await uploadOtherFiles(uploadedFiles, person, personId);
 
-                if (uploadPicPath.status === 200 && uploadDocumentPath.status === 200 && (uploadOtherPath.status === 200 || !uploadOtherPath)) {
+                console.log("uploadPicPath :", uploadPicPath)
+                console.log("uploadDocumentPath :", uploadDocumentPath)
+                console.log("uploadOtherPath :", uploadOtherPath)
+
+                if ((uploadPicPath.status === 200 || !uploadPicPath || uploadPicPath.status === 400) && (uploadDocumentPath.status === 200 || uploadDocumentPath.status === 400 || !uploadDocumentPath) && (uploadOtherPath.status === 200 || uploadOtherPath.status === 400 || !uploadOtherPath)) {
                     Swal.fire({
                         title: 'สำเร็จ!',
                         text: 'เพิ่มข้อมูลแรงงานได้สำเร็จ!',
@@ -157,7 +161,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                     });
                 } else {
                     //ลบข้อมูล persons 
-                    await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/persons[0]?personId=${personId}&outlanderNo=${person.outlanderNo}`)
+                    await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${personId}&outlanderNo=${person.outlanderNo}`)
 
                     Swal.fire({
                         title: 'ล้มเหลว!',
@@ -312,6 +316,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                                     name='outlanderNo'
                                     variant="outlined"
                                     size="small"
+                                    disabled
                                     sx={{ width: '100%', margin: 1 }}
                                     value={person.outlanderNo}
                                     onChange={(e) => setPerson({ ...person, outlanderNo: e.target.value })}
