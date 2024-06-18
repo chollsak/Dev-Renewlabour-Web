@@ -1,9 +1,11 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-import Layout from '../../../../../public/components/Layout'
+import React, { useEffect, useState } from 'react';
+import Layout from '../../../../../public/components/Layout';
 import axios from 'axios';
-import { Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Paper, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Paper, Typography } from '@mui/material';
 import PersonsAvatar from '../../../../../public/components/PersonsAvatar';
+import moment from 'moment';
+import Chip from '@mui/joy/Chip';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -23,8 +25,8 @@ export default function Home({
     params: { person_id: string; outlanderNo: string };
 }) {
 
-    const [persons, setPersons] = useState<any[]>([])
-    const [fileOther, setFileOther] = useState<any[]>([])
+    const [persons, setPersons] = useState<any[]>([]);
+    const [fileOther, setFileOther] = useState<any[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -38,7 +40,7 @@ export default function Home({
         };
 
         fetchData();
-    }, [params.outlanderNo, params.person_id]); // Empty dependency array means this useEffect runs once on mount
+    }, [params.outlanderNo, params.person_id]);
 
     const [open, setOpen] = useState(false);
     const [openFile, setOpenFile] = useState(false);
@@ -93,8 +95,52 @@ export default function Home({
             path: persons[0]?.ninetydays_path,
             color: 'warning',
         },
-        // เพิ่มข้อมูลอื่นๆ ตามต้องการ
     ];
+
+    const getStatus = (row: any) => {
+        const values = [
+            row?.visa_enddate ? moment(row.visa_enddate, 'YYYY-MM-DD') : null,
+            row?.passport_enddate ? moment(row.passport_enddate, 'YYYY-MM-DD') : null,
+            row?.workpermit_enddate ? moment(row.workpermit_enddate, 'YYYY-MM-DD') : null,
+            row?.ninetydays_enddate ? moment(row.ninetydays_enddate, 'YYYY-MM-DD') : null,
+        ];
+        const validValues = values.filter(value => value !== null) as moment.Moment[];
+
+        const minValue = validValues.length > 0 ? moment.min(validValues) : null;
+        const remainingDays = minValue ? minValue.diff(moment(), 'days') : null;
+
+        if (remainingDays !== null) {
+            if (remainingDays <= 0) {
+                return 'หมดอายุ';
+            } else if (remainingDays > 0 && remainingDays < 7) {
+                return 'ต่ออายุด่วน';
+            } else if (remainingDays >= 7 && remainingDays < 15) {
+                return 'ใกล้หมดอายุ';
+            } else {
+                return 'ปกติ';
+            }
+        } else {
+            return 'No date available';
+        }
+    };
+
+    const getColor = (status: string) => {
+        switch (status) {
+            case 'หมดอายุ':
+                return 'neutral';
+            case 'ต่ออายุด่วน':
+                return 'danger';
+            case 'ใกล้หมดอายุ':
+                return 'warning';
+            case 'ปกติ':
+                return 'success';
+            default:
+                return 'neutral';
+        }
+    };
+
+    const status = getStatus(persons[0]);
+    const color = getColor(status);
 
     return (
         <>
@@ -135,6 +181,13 @@ export default function Home({
                                     </Box>
                                     <Box>
                                         <Typography>สาขา : </Typography>
+                                    </Box>
+                                    <Box>
+                                        <Typography>สถานะ :
+                                            <Chip sx={FontStyle} variant='solid' color={color}>
+                                                {status}
+                                            </Chip>
+                                        </Typography>
                                     </Box>
                                 </Paper>
                             </Grid>
@@ -197,5 +250,5 @@ export default function Home({
                 </Layout>
             )}
         </>
-    )
+    );
 }
