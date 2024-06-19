@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Menu, MenuItem, TablePagination } from '@mui/material';
-import { MoreVert as MoreVertIcon } from '@mui/icons-material';
+import { ArrowUpward, ArrowDownward, MoreVert as MoreVertIcon } from '@mui/icons-material';
+import axios from 'axios';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -21,11 +22,14 @@ const DataTable: React.FC = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
     useEffect(() => {
-        fetch('/api/companies/route')
-            .then(response => response.json())
-            .then(data => setData(data))
+        axios.get('/api/companyform')
+            .then(response => {
+                console.log('Fetched Data:', response.data);  // Log the fetched data
+                setData(response.data);
+            })
             .catch(error => console.error('Error fetching companies:', error));
     }, []);
 
@@ -34,12 +38,20 @@ const DataTable: React.FC = () => {
     };
 
     const filteredData = data.filter(row =>
-        row.name.includes(searchTerm) ||
-        row.build.includes(searchTerm) ||
-        row.ad.includes(searchTerm) ||
-        row.fl.includes(searchTerm) ||
-        row.vill.includes(searchTerm)
+        (row.name && row.name.includes(searchTerm)) ||
+        (row.build && row.build.includes(searchTerm)) ||
+        (row.ad && row.ad.includes(searchTerm)) ||
+        (row.fl && row.fl.includes(searchTerm)) ||
+        (row.vill && row.vill.includes(searchTerm))
     );
+
+    const sortedData = filteredData.slice().sort((a, b) => {
+        if (sortDirection === 'asc') {
+            return a.name.localeCompare(b.name);
+        } else {
+            return b.name.localeCompare(a.name);
+        }
+    });
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
@@ -58,6 +70,10 @@ const DataTable: React.FC = () => {
         setAnchorEl(null);
     };
 
+    const toggleSortDirection = () => {
+        setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    };
+
     return (
         <TableContainer component={Paper} sx={{ width: '100%' }}>
             <TextField
@@ -72,16 +88,21 @@ const DataTable: React.FC = () => {
                 <TableHead sx={{ backgroundColor: '#0e74bc' }}>
                     <TableRow>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>รหัสประจำตัว</TableCell>
-                        <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ชื่อจริง</TableCell>
-                        <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ชื่อเล่น</TableCell>
+                        <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ชื่อ</TableCell>
+                        <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ตึก</TableCell>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>บริษัท/หน่วยงาน</TableCell>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>สาขา</TableCell>
-                        <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>จังหวัด</TableCell>
+                        <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>
+                            จังหวัด
+                            <IconButton onClick={toggleSortDirection} size="small" sx={{ color: 'white' }}>
+                                {sortDirection === 'asc' ? <ArrowUpward /> : <ArrowDownward />}
+                            </IconButton>
+                        </TableCell>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>จัดการ</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {filteredData
+                    {sortedData
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row) => (
                             <TableRow key={row.id}>
@@ -90,9 +111,7 @@ const DataTable: React.FC = () => {
                                 </TableCell>
                                 <TableCell sx={{ ...FontStyle }}>{row.name}</TableCell>
                                 <TableCell sx={{ ...FontStyle }}>{row.build}</TableCell>
-                                <TableCell sx={{ ...FontStyle }}>
-                                    {row.ad}
-                                </TableCell>
+                                <TableCell sx={{ ...FontStyle }}>{row.ad}</TableCell>
                                 <TableCell sx={{ ...FontStyle }}>{row.fl}</TableCell>
                                 <TableCell sx={{ ...FontStyle }}>{row.vill}</TableCell>
                                 <TableCell>
