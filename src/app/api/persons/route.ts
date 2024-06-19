@@ -340,7 +340,7 @@ export async function GET(req: NextRequest) {
       const query = `
   SELECT 
     person_id, outlanderNo, prefix, firstname, lastname, 
-    prefixth, firstnameth, lastnameth, nationality, cpn_n, 
+    prefixth, firstnameth, lastnameth, nationality, cpn_n, cpn_prov, branch,
     picpath, nickname, visa_id, visa_startdate, visa_enddate, 
     visa_path, passport_id, passport_startdate, passport_enddate, 
     passport_path, workpermit_id, workpermit_startdate, 
