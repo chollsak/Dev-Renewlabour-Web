@@ -14,6 +14,9 @@ interface RowData {
     ad: string;
     fl: string;
     vill: string;
+    branch: string;
+    dist: string;
+    prov: string;
 }
 
 const DataTable: React.FC = () => {
@@ -42,7 +45,10 @@ const DataTable: React.FC = () => {
         (row.build && row.build.includes(searchTerm)) ||
         (row.ad && row.ad.includes(searchTerm)) ||
         (row.fl && row.fl.includes(searchTerm)) ||
-        (row.vill && row.vill.includes(searchTerm))
+        (row.vill && row.vill.includes(searchTerm))||
+        (row.branch && row.branch.includes(searchTerm))||
+        (row.dist && row.dist.includes(searchTerm))||
+        (row.prov && row.prov.includes(searchTerm))
     );
 
     const sortedData = filteredData.slice().sort((a, b) => {
@@ -87,11 +93,11 @@ const DataTable: React.FC = () => {
             <Table sx={{ minWidth: '100%', margin: 1 }} aria-label="simple table">
                 <TableHead sx={{ backgroundColor: '#0e74bc' }}>
                     <TableRow>
-                        <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>รหัสประจำตัว</TableCell>
+                    <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ID</TableCell>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ชื่อ</TableCell>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ตึก</TableCell>
-                        <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>บริษัท/หน่วยงาน</TableCell>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>สาขา</TableCell>
+                        <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>อำเภอ</TableCell>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>
                             จังหวัด
                             <IconButton onClick={toggleSortDirection} size="small" sx={{ color: 'white' }}>
@@ -111,9 +117,9 @@ const DataTable: React.FC = () => {
                                 </TableCell>
                                 <TableCell sx={{ ...FontStyle }}>{row.name}</TableCell>
                                 <TableCell sx={{ ...FontStyle }}>{row.build}</TableCell>
-                                <TableCell sx={{ ...FontStyle }}>{row.ad}</TableCell>
-                                <TableCell sx={{ ...FontStyle }}>{row.fl}</TableCell>
-                                <TableCell sx={{ ...FontStyle }}>{row.vill}</TableCell>
+                                <TableCell sx={{ ...FontStyle }}>{row.branch}</TableCell>
+                                <TableCell sx={{ ...FontStyle }}>{row.dist}</TableCell>
+                                <TableCell sx={{ ...FontStyle }}>{row.prov}</TableCell>
                                 <TableCell>
                                     <IconButton
                                         aria-controls="actions-menu"
@@ -130,9 +136,9 @@ const DataTable: React.FC = () => {
                                         open={Boolean(anchorEl)}
                                         onClose={handleMenuClose}
                                     >
-                                        <MenuItem onClick={handleMenuClose} sx={FontStyle}>View Details</MenuItem>
-                                        <MenuItem onClick={handleMenuClose} sx={FontStyle}>Edit</MenuItem>
-                                        <MenuItem onClick={handleMenuClose} sx={FontStyle}>Delete</MenuItem>
+                                        <MenuItem onClick={handleMenuClose} sx={FontStyle}>ดูเพิ่มเติม</MenuItem>
+                                        <MenuItem onClick={handleMenuClose} sx={FontStyle}>เเก้ไข</MenuItem>
+                                        <MenuItem onClick={handleMenuClose} sx={FontStyle}>ลบ</MenuItem>
                                     </Menu>
                                 </TableCell>
                             </TableRow>

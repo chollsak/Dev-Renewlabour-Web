@@ -6,7 +6,7 @@ async function getCompany(pool: sql.ConnectionPool) {
   try {
     const request = new sql.Request(pool);
     const result = await request.query(`
-      SELECT cpn_id AS id, cpn_n AS name, cpn_build AS build, cpn_ad AS ad, cpn_fl AS fl, cpn_vill AS vill
+      SELECT cpn_id AS id, cpn_n AS name, cpn_build AS build, cpn_ad AS ad, cpn_fl AS fl, cpn_vill AS vill, branch AS branch, cpn_dist AS dist, cpn_prov AS prov
       FROM company
     `);
     return result.recordset;
