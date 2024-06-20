@@ -1,3 +1,21 @@
+//Comment ตัวโตๆ
+/* 
+เพิ่ม Company ต้องมีดังนี้
+cpn_n ชื่อของบริษัท ใช้ Text-Field โดยมี Place Holder ว่า ชื่อบริษัท (ชื่อสาขาย่อย ถ้ามี โดยชื่อสาขาย่อยต้องอยู่ในวงเล็บด้วย)
+cpn_build ตึกของบริษัท ใช้ Text-Field
+cpn_fl ชั้นของบริษัท ใช้ Text-Field
+cpn_vil หมู่บ้านที่บริษัทตั้ง ใช้ Text-Field
+cpn_room ห้องที่ตั้งของบริษัท ใช้ Text-Field
+cpn_moo หมู่ที่ตั้งของบริษัท ใช้ Text-Field
+cpn_soi ซอยที่ตั้งของบริษัท ใช้ Text-Field
+cpn_st ถนนที่ตั้งของบริษัท ใช้ Text-Field
+cpn_coun เมืองที่ตั้งของบริษัท 
+cpn_zip รหัสไปรษณีย์ของบริษัท เพิ่มมาด้วย ใช้ใน จังหวัด อำเภอ ตำบล
+logo โลโก้บริษัท ใช้ input type file กับ Avatar ของ Mui ผสมกัน ถ้าถามใน ChatGbt น่าจะช่วยเรื่องนี้อยู่
+
+หน้าแสดงข้อมูลบริษัทไปดูที่โฟลเดอร์ ViewLocation
+หน้าอัพเดตข้อมูลบริษัทไปดูที่โฟลเดอร์ UpdateLocation
+*/
 
 'use client';
 
@@ -99,7 +117,7 @@ const LocationForm: React.FC = () => {
         <Card sx={{ width: '100%', boxShadow: 3 }}>
             <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'left', marginBottom: 2, flexDirection: 'column' }}>
-                   
+
                     <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle, marginBottom: '15px' }}>ข้อมูลที่ทำงาน</Typography>
                     <Grid container spacing={2}>
                         <Grid container spacing={2} marginLeft={0.05}>
