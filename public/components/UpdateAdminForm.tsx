@@ -38,12 +38,13 @@ interface AdminData {
     password: string;
     email: string;
     tel: string;
+
     company: string;
     m_picpath: File | null;
     lineID: string;
 }
 
-const AddAdmin: React.FC = () => {
+const UpdateAdmin: React.FC = () => {
     const [userData, setUserData] = useState<AdminData>({
         member_name: '',
         member_lastname: '',
@@ -91,6 +92,7 @@ const AddAdmin: React.FC = () => {
                                 type="text"
                                 onChange={handleChange}
                                 fullWidth
+                                defaultValue={'น้องรอคเองฮาบ'}
                                 required
                                 size="small"
                             />
@@ -203,4 +205,4 @@ const AddAdmin: React.FC = () => {
     );
 };
 
-export default AddAdmin;
+export default UpdateAdmin;

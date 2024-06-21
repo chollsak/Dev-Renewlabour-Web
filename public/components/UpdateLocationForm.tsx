@@ -35,7 +35,7 @@ const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
 };
 
-const LocationForm: React.FC = () => {
+const UpdateLocationForm: React.FC = () => {
     const [addresses, setAddresses] = useState<Address[]>([]);
     const [searchTextWork, setSearchTextWork] = useState('');
     const [filteredAddressesWork, setFilteredAddressesWork] = useState<Address[]>([]);
@@ -100,6 +100,7 @@ const LocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
+                                defaultValue={'บริษัท ออกแลนด์ จำกัด (สาขา สำนักงานใหญ่)'}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -109,6 +110,7 @@ const LocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
+                                defaultValue={'อาคาร ออกแลนด์ ทาวเวอร์'}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -118,6 +120,7 @@ const LocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
+                                defaultValue={'ชั้น 16'}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -127,6 +130,7 @@ const LocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
+                                defaultValue={'หมู่บ้าน ออกแลนด์ พาร์ค'}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -136,6 +140,7 @@ const LocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
+                                defaultValue={'ห้อง 1601'}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -145,6 +150,7 @@ const LocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
+                                defaultValue={'หมู่ 1'}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -154,6 +160,7 @@ const LocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
+                                defaultValue={'ซอย ออกแลนด์ พาร์ค'}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -163,6 +170,7 @@ const LocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
+                                defaultValue={'ถนน สุขุมวิท'}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -172,6 +180,7 @@ const LocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
+                                defaultValue={'เมืองกรุงเทพ'}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -183,6 +192,7 @@ const LocationForm: React.FC = () => {
                                 required
                                 size='small'
                                 sx={{ width: '100%', margin: 1 }}
+                                
                                 onChange={handleSearchChangeWork}
                             />
                             <List>
@@ -202,6 +212,7 @@ const LocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
+                                defaultValue={'10500'}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -213,6 +224,7 @@ const LocationForm: React.FC = () => {
                                     id="branch-type"
                                     value={branchType}
                                     label="ประเภทสาขา"
+                                    defaultValue='หลัก'
                                     onChange={(event) => setBranchType(event.target.value)}
                                 >
                                     <MenuItem value="หลัก">หลัก</MenuItem>
@@ -251,4 +263,4 @@ const LocationForm: React.FC = () => {
     );
 };
 
-export default LocationForm;
+export default UpdateLocationForm;
