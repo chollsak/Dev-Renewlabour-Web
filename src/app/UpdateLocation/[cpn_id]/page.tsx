@@ -22,8 +22,6 @@ const Home = ({
       .catch(error => console.error('Error fetching companies:', error));
   }, [params.cpn_id]);
 
-  console.log(companys)
-
   return (
     <>
       {companys.length === 0 ? (

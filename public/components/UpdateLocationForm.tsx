@@ -49,7 +49,6 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
     const [searchTextWork, setSearchTextWork] = useState(`${companys[0]?.cpn_subdist}, ${companys[0]?.cpn_dist}, ${companys[0]?.cpn_prov}, ${companys[0]?.cpn_zip}`);
     const [filteredAddressesWork, setFilteredAddressesWork] = useState<Address[]>([]);
     const [logo, setLogo] = useState<File | null>(null);
-    const [branchType, setBranchType] = useState<string>('หลัก');
 
     const [company, setCompany] = useState({
         cpn_n: companys[0]?.cpn_n,

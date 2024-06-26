@@ -123,6 +123,7 @@ export async function GET(req: NextRequest) {
   SELECT 
     *
   FROM members
+  LEFT JOIN company ON members.company_id = company.cpn_id
   WHERE mem_id = @memberId
 `;
 
