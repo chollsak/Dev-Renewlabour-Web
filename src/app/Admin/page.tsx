@@ -19,21 +19,19 @@ const tempRouter = () => {
 
 
 export default function page() {
-  
+
 
   return (
     <Layout>
-    <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle }} marginLeft={2}>รายชื่อผู้ดูเเล</Typography>
         <Button
           onClick={tempRouter}
-        variant='contained' size='small' sx={FontStyle}>󠀫󠀫<AddIcon/>เพิ่มผู้ดูเเล</Button>
-    </div>
-    <div style={{marginTop:'50px'}}>
-        <AdminTable/>
-    </div>
-        
-    
-</Layout>
+          variant='contained' size='small' sx={FontStyle}>󠀫󠀫<AddIcon />เพิ่มผู้ดูเเล</Button>
+      </div>
+      <div style={{ marginTop: '50px' }}>
+        <AdminTable />
+      </div>
+    </Layout>
   )
 }

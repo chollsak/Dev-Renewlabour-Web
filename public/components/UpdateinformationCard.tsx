@@ -137,14 +137,10 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
             // Send the data to the API using Axios
             const response = await axios.patch(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${params.person_id}&outlanderNo=${decodeURIComponent(params.outlanderNo)}`, { person, dataOtherFiles });
 
-            if (response.status === 200) {
-                const uploadPicPath = await uploadProfilePicture(profilePicture, person, personId);
+            if (response.status === 200 && profilePicture) {
+                const uploadPicPath = await uploadProfilePicture(profilePicture, "person", person.outlanderNo, "picpath");
                 const uploadDocumentPath = await uploadFileFormData(fileFormData, person, personId);
                 const uploadOtherPath = await uploadOtherFiles(uploadedFiles, person, personId);
-
-                console.log("uploadPicPath :", uploadPicPath)
-                console.log("uploadDocumentPath :", uploadDocumentPath)
-                console.log("uploadOtherPath :", uploadOtherPath)
 
                 if ((uploadPicPath.status === 200 || !uploadPicPath || uploadPicPath.status === 400) && (uploadDocumentPath.status === 200 || uploadDocumentPath.status === 400 || !uploadDocumentPath) && (uploadOtherPath.status === 200 || uploadOtherPath.status === 400 || !uploadOtherPath)) {
                     Swal.fire({

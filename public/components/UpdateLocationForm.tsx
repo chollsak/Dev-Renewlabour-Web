@@ -20,6 +20,10 @@ import {
     InputLabel
 } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { uploadProfilePicture } from '@/core/axiosEmployee';
+import Swal, { SweetAlertResult } from 'sweetalert2';
 
 interface Address {
     district: string;
@@ -35,12 +39,37 @@ const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
 };
 
-const UpdateLocationForm: React.FC = () => {
+interface UserFormProps {
+    companys: any;
+    params: any
+}
+
+const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
     const [addresses, setAddresses] = useState<Address[]>([]);
-    const [searchTextWork, setSearchTextWork] = useState('');
+    const [searchTextWork, setSearchTextWork] = useState(`${companys[0]?.cpn_subdist}, ${companys[0]?.cpn_dist}, ${companys[0]?.cpn_prov}, ${companys[0]?.cpn_zip}`);
     const [filteredAddressesWork, setFilteredAddressesWork] = useState<Address[]>([]);
     const [logo, setLogo] = useState<File | null>(null);
     const [branchType, setBranchType] = useState<string>('หลัก');
+
+    const [company, setCompany] = useState({
+        cpn_n: companys[0]?.cpn_n,
+        cpn_build: companys[0]?.cpn_build,
+        cpn_fl: companys[0]?.cpn_fl,
+        cpn_vill: companys[0]?.cpn_vill,
+        cpn_room: companys[0]?.cpn_room,
+        cpn_moo: companys[0]?.cpn_moo,
+        cpn_soi: companys[0]?.cpn_soi,
+        cpn_st: companys[0]?.cpn_st,
+        cpn_coun: companys[0]?.cpn_coun,
+        cpn_subdist: companys[0]?.cpn_subdist,
+        cpn_dist: companys[0]?.cpn_dist,
+        cpn_prov: companys[0]?.cpn_prov,
+        cpn_zip: companys[0]?.cpn_zip,
+        logo: companys[0]?.logo,
+        branch: companys[0]?.branch
+    });
+
+    const router = useRouter(); // Use the useRouter hook
 
     useEffect(() => {
         const fetchAddresses = async () => {
@@ -79,14 +108,73 @@ const UpdateLocationForm: React.FC = () => {
 
     const handleListItemClickWork = (address: Address) => {
         setSearchTextWork(`${address.district}, ${address.amphoe}, ${address.province}, ${address.zipcode}`);
+        setCompany({
+            ...company,
+            cpn_subdist: address.district,
+            cpn_dist: address.amphoe,
+            cpn_prov: address.province,
+            cpn_zip: address.zipcode.toString()
+        });
         setFilteredAddressesWork([]);
     };
 
     const handleLogoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             setLogo(event.target.files[0]);
+            setCompany({ ...company, logo: event.target.files[0].name })
         }
     };
+
+    const handleSubmit = async () => {
+        try {
+            // Send the data to the API using Axios
+            const response = await axios.patch(`${process.env.NEXT_PUBLIC_API}/api/companies?companyId=${params.cpn_id}`, { company });
+            if (response.status === 200 && logo) {
+                const uploadPicPath = await uploadProfilePicture(logo, "companys", params.cpn_id, "logo");
+
+                if (uploadPicPath.status === 200 || !uploadPicPath || uploadPicPath.status === 400) {
+                    Swal.fire({
+                        title: 'สำเร็จ!',
+                        text: 'แก้ไขข้อมูลบริษัทได้สำเร็จ!',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 1000,
+                    }).then((result: SweetAlertResult) => {
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            router.push("/Location");
+                        }
+                    });
+                } else {
+                    //ลบข้อมูล persons 
+                    await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/companies?companyId=${params.cpn_id}`)
+                    Swal.fire({
+                        title: 'ล้มเหลว!',
+                        text: "ล้มเหลวในการแก้ไขข้อมูลบริษัท เรื่องไฟล์โลโก้",
+                        icon: 'error',
+                        showConfirmButton: true,
+                        allowOutsideClick: false,
+                    })
+                }
+            } else {
+                Swal.fire({
+                    title: 'ล้มเหลว!',
+                    text: "ล้มเหลวในการแก้ไขข้อมูลบริษัท เรื่องข้อมูล",
+                    icon: 'error',
+                    showConfirmButton: true,
+                    allowOutsideClick: false,
+                })
+            }
+        } catch (error) {
+            Swal.fire({
+                title: 'ล้มเหลว!',
+                text: "การเชื่อมต่อกับ Database ล้มเหลว",
+                icon: 'error',
+                showConfirmButton: true,
+                allowOutsideClick: false,
+            })
+        }
+    }
 
     return (
         <Card sx={{ width: '100%', boxShadow: 3 }}>
@@ -100,7 +188,9 @@ const UpdateLocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
-                                defaultValue={'บริษัท ออกแลนด์ จำกัด (สาขา สำนักงานใหญ่)'}
+                                name='cpn_n'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                value={company.cpn_n}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -110,7 +200,9 @@ const UpdateLocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
-                                defaultValue={'อาคาร ออกแลนด์ ทาวเวอร์'}
+                                name='cpn_build'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                value={company.cpn_build}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -120,7 +212,9 @@ const UpdateLocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
-                                defaultValue={'ชั้น 16'}
+                                name='cpn_fl'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                value={company.cpn_fl}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -130,7 +224,9 @@ const UpdateLocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
-                                defaultValue={'หมู่บ้าน ออกแลนด์ พาร์ค'}
+                                name='cpn_vill'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                value={company.cpn_vill}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -140,7 +236,9 @@ const UpdateLocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
-                                defaultValue={'ห้อง 1601'}
+                                name='cpn_room'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                value={company.cpn_room}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -150,7 +248,9 @@ const UpdateLocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
-                                defaultValue={'หมู่ 1'}
+                                name='cpn_moo'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                value={company.cpn_moo}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -160,7 +260,9 @@ const UpdateLocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
-                                defaultValue={'ซอย ออกแลนด์ พาร์ค'}
+                                name='cpn_soi'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                value={company.cpn_soi}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -170,7 +272,9 @@ const UpdateLocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
-                                defaultValue={'ถนน สุขุมวิท'}
+                                name='cpn_st'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                value={company.cpn_st}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -180,7 +284,9 @@ const UpdateLocationForm: React.FC = () => {
                                 variant="outlined"
                                 required
                                 size="small"
-                                defaultValue={'เมืองกรุงเทพ'}
+                                name='cpn_coun'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                value={company.cpn_coun}
                                 sx={{ width: '100%', margin: 1 }}
                             />
                         </Grid>
@@ -192,7 +298,7 @@ const UpdateLocationForm: React.FC = () => {
                                 required
                                 size='small'
                                 sx={{ width: '100%', margin: 1 }}
-                                
+
                                 onChange={handleSearchChangeWork}
                             />
                             <List>
@@ -207,25 +313,15 @@ const UpdateLocationForm: React.FC = () => {
                             </List>
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                label="รหัสไปรษณีย์ของบริษัท"
-                                variant="outlined"
-                                required
-                                size="small"
-                                defaultValue={'10500'}
-                                sx={{ width: '100%', margin: 1 }}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
                             <FormControl fullWidth size="small" sx={{ margin: 1 }}>
                                 <InputLabel id="branch-type-label">ประเภทสาขา</InputLabel>
                                 <Select
                                     labelId="branch-type-label"
                                     id="branch-type"
-                                    value={branchType}
+                                    name='branch'
+                                    value={company.branch}
                                     label="ประเภทสาขา"
-                                    defaultValue='หลัก'
-                                    onChange={(event) => setBranchType(event.target.value)}
+                                    onChange={(event) => setCompany({ ...company, [event.target.name]: event.target.value })}
                                 >
                                     <MenuItem value="หลัก">หลัก</MenuItem>
                                     <MenuItem value="ย่อย">ย่อย</MenuItem>
@@ -236,7 +332,7 @@ const UpdateLocationForm: React.FC = () => {
                             <Box sx={{ display: 'flex', alignItems: 'center', margin: 1 }}>
                                 <Avatar sx={{ marginRight: 2 }}>
                                     {logo ? (
-                                        <img src={URL.createObjectURL(logo)} alt="Logo" width="40" height="40" />
+                                        <Box component="img" src={URL.createObjectURL(logo)} alt="Logo" width="40" height="40" />
                                     ) : (
                                         <PhotoCamera />
                                     )}
@@ -257,7 +353,7 @@ const UpdateLocationForm: React.FC = () => {
                         </Grid>
                     </Grid>
                 </Box>
-                <Button variant="contained" sx={{ width: '100%', marginTop: 2 }}>เพิ่ม</Button>
+                <Button variant="contained" sx={{ width: '100%', marginTop: 2 }} onClick={handleSubmit}>เพิ่ม</Button>
             </CardContent>
         </Card>
     );

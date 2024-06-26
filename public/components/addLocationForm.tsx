@@ -17,9 +17,14 @@ import {
     Select,
     MenuItem,
     FormControl,
-    InputLabel
+    InputLabel,
+    SelectChangeEvent
 } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import axios from 'axios';
+import Swal, { SweetAlertResult } from 'sweetalert2';
+import { useRouter } from 'next/navigation';
+import { uploadProfilePicture } from '@/core/axiosEmployee';
 
 interface Address {
     district: string;
@@ -40,7 +45,26 @@ const LocationForm: React.FC = () => {
     const [searchTextWork, setSearchTextWork] = useState('');
     const [filteredAddressesWork, setFilteredAddressesWork] = useState<Address[]>([]);
     const [logo, setLogo] = useState<File | null>(null);
-    const [branchType, setBranchType] = useState<string>('หลัก');
+
+    const [company, setCompany] = useState({
+        cpn_n: '',
+        cpn_build: '',
+        cpn_fl: '',
+        cpn_vill: '',
+        cpn_room: '',
+        cpn_moo: '',
+        cpn_soi: '',
+        cpn_st: '',
+        cpn_coun: '',
+        cpn_subdist: '',
+        cpn_dist: '',
+        cpn_prov: '',
+        cpn_zip: '',
+        logo: '',
+        branch: 'หลัก'
+    });
+
+    const router = useRouter(); // Use the useRouter hook
 
     useEffect(() => {
         const fetchAddresses = async () => {
@@ -79,14 +103,74 @@ const LocationForm: React.FC = () => {
 
     const handleListItemClickWork = (address: Address) => {
         setSearchTextWork(`${address.district}, ${address.amphoe}, ${address.province}, ${address.zipcode}`);
+        setCompany({
+            ...company,
+            cpn_subdist: address.district,
+            cpn_dist: address.amphoe,
+            cpn_prov: address.province,
+            cpn_zip: address.zipcode.toString()
+        });
         setFilteredAddressesWork([]);
     };
 
     const handleLogoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             setLogo(event.target.files[0]);
+            setCompany({ ...company, logo: event.target.files[0].name })
         }
     };
+
+    const handleSubmit = async () => {
+        try {
+            // Send the data to the API using Axios
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/api/companies`, { company });
+            const companyId = response.data.companyId
+            if (response.status === 200 && companyId) {
+                const uploadPicPath = await uploadProfilePicture(logo, "companys", companyId, "logo");
+
+                if (uploadPicPath.status === 200 || !uploadPicPath || uploadPicPath.status === 400) {
+                    Swal.fire({
+                        title: 'สำเร็จ!',
+                        text: 'เพิ่มข้อมูลบริษัทได้สำเร็จ!',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 1000,
+                    }).then((result: SweetAlertResult) => {
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            router.push("/Location");
+                        }
+                    });
+                } else {
+                    //ลบข้อมูล persons 
+                    await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/companies?companyId=${companyId}`)
+                    Swal.fire({
+                        title: 'ล้มเหลว!',
+                        text: "ล้มเหลวในการเพิ่มข้อมูลบริษัท เรื่องไฟล์โลโก้",
+                        icon: 'error',
+                        showConfirmButton: true,
+                        allowOutsideClick: false,
+                    })
+                }
+            } else {
+                Swal.fire({
+                    title: 'ล้มเหลว!',
+                    text: "ล้มเหลวในการเพิ่มข้อมูลบริษัท เรื่องข้อมูล",
+                    icon: 'error',
+                    showConfirmButton: true,
+                    allowOutsideClick: false,
+                })
+            }
+        } catch (error) {
+            Swal.fire({
+                title: 'ล้มเหลว!',
+                text: "การเชื่อมต่อกับ Database ล้มเหลว",
+                icon: 'error',
+                showConfirmButton: true,
+                allowOutsideClick: false,
+            })
+        }
+    }
 
     return (
         <Card sx={{ width: '100%', boxShadow: 3 }}>
@@ -97,6 +181,8 @@ const LocationForm: React.FC = () => {
                         <Grid item xs={12}>
                             <TextField
                                 label="ชื่อบริษัท (ชื่อสาขาย่อย ถ้ามี โดยชื่อสาขาย่อยต้องอยู่ในวงเล็บด้วย)"
+                                name='cpn_n'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                 variant="outlined"
                                 required
                                 size="small"
@@ -106,6 +192,8 @@ const LocationForm: React.FC = () => {
                         <Grid item xs={6}>
                             <TextField
                                 label="ตึกของบริษัท"
+                                name='cpn_build'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                 variant="outlined"
                                 required
                                 size="small"
@@ -115,6 +203,8 @@ const LocationForm: React.FC = () => {
                         <Grid item xs={6}>
                             <TextField
                                 label="ชั้นของบริษัท"
+                                name='cpn_fl'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                 variant="outlined"
                                 required
                                 size="small"
@@ -124,6 +214,8 @@ const LocationForm: React.FC = () => {
                         <Grid item xs={6}>
                             <TextField
                                 label="หมู่บ้านที่บริษัทตั้ง"
+                                name='cpn_vill'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                 variant="outlined"
                                 required
                                 size="small"
@@ -133,6 +225,8 @@ const LocationForm: React.FC = () => {
                         <Grid item xs={6}>
                             <TextField
                                 label="ห้องที่ตั้งของบริษัท"
+                                name='cpn_room'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                 variant="outlined"
                                 required
                                 size="small"
@@ -142,6 +236,8 @@ const LocationForm: React.FC = () => {
                         <Grid item xs={6}>
                             <TextField
                                 label="หมู่ที่ตั้งของบริษัท"
+                                name='cpn_moo'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                 variant="outlined"
                                 required
                                 size="small"
@@ -151,6 +247,8 @@ const LocationForm: React.FC = () => {
                         <Grid item xs={6}>
                             <TextField
                                 label="ซอยที่ตั้งของบริษัท"
+                                name='cpn_soi'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                 variant="outlined"
                                 required
                                 size="small"
@@ -160,6 +258,8 @@ const LocationForm: React.FC = () => {
                         <Grid item xs={6}>
                             <TextField
                                 label="ถนนที่ตั้งของบริษัท"
+                                name='cpn_st'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                 variant="outlined"
                                 required
                                 size="small"
@@ -169,6 +269,8 @@ const LocationForm: React.FC = () => {
                         <Grid item xs={6}>
                             <TextField
                                 label="เมืองที่ตั้งของบริษัท"
+                                name='cpn_coun'
+                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                 variant="outlined"
                                 required
                                 size="small"
@@ -197,23 +299,15 @@ const LocationForm: React.FC = () => {
                             </List>
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                label="รหัสไปรษณีย์ของบริษัท"
-                                variant="outlined"
-                                required
-                                size="small"
-                                sx={{ width: '100%', margin: 1 }}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
                             <FormControl fullWidth size="small" sx={{ margin: 1 }}>
                                 <InputLabel id="branch-type-label">ประเภทสาขา</InputLabel>
                                 <Select
                                     labelId="branch-type-label"
                                     id="branch-type"
-                                    value={branchType}
+                                    name='branch'
+                                    value={company.branch}
                                     label="ประเภทสาขา"
-                                    onChange={(event) => setBranchType(event.target.value)}
+                                    onChange={(event) => setCompany({ ...company, [event.target.name]: event.target.value })}
                                 >
                                     <MenuItem value="หลัก">หลัก</MenuItem>
                                     <MenuItem value="ย่อย">ย่อย</MenuItem>
@@ -224,7 +318,7 @@ const LocationForm: React.FC = () => {
                             <Box sx={{ display: 'flex', alignItems: 'center', margin: 1 }}>
                                 <Avatar sx={{ marginRight: 2 }}>
                                     {logo ? (
-                                        <img src={URL.createObjectURL(logo)} alt="Logo" width="40" height="40" />
+                                        <Box component="img" src={URL.createObjectURL(logo)} alt="Logo" width="40" height="40" />
                                     ) : (
                                         <PhotoCamera />
                                     )}
@@ -245,7 +339,7 @@ const LocationForm: React.FC = () => {
                         </Grid>
                     </Grid>
                 </Box>
-                <Button variant="contained" sx={{ width: '100%', marginTop: 2 }}>เพิ่ม</Button>
+                <Button variant="contained" sx={{ width: '100%', marginTop: 2 }} onClick={handleSubmit}>เพิ่ม</Button>
             </CardContent>
         </Card>
     );

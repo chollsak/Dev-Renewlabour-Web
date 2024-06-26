@@ -40,7 +40,7 @@ export default function LoginPage() {
 
     if (result?.error) {
       toast.error("รหัสผ่านหรือชื่อผู้ใช้ไม่ถูกต้อง!");
-    }else if (result?.ok){
+    } else if (result?.ok) {
       toast.success("เข้าสู่ระบบสำเร็จ!");
       router.push("/employees");
       console.log(result)
@@ -52,7 +52,7 @@ export default function LoginPage() {
       <CssBaseline />
       <Toaster position="top-right" reverseOrder={false} />
       <Box>
-        <img
+        <Box component="img"
           style={{
             backgroundImage: "url(/BackGround/bg.png)",
             opacity: "0.8",

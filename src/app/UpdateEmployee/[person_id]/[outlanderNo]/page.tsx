@@ -5,7 +5,6 @@ import Layout from '../../../../../public/components/Layout'
 import { Box, Typography } from '@mui/material'
 import UpdateInformationCard from '../../../../../public/components/UpdateinformationCard'
 import axios from 'axios'
-import PageLoader from '../../../../../public/components/Loading/Loading2'
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -37,20 +36,20 @@ export default function Home({
     return (
         <>
             {persons.length === 0 ? (
-                
+
                 function PageLoader() {
                     const [loading, setLoading] = useState(true);
-                
+
                     useEffect(() => {
                         const timer = setTimeout(() => {
                             setLoading(false);
                         }, 800); // Hide after 300 ms
-                
+
                         return () => clearTimeout(timer);
                     }, []);
-                
+
                     if (!loading) return null;
-                
+
                     return (
                         <Box sx={{
                             position: 'fixed',
@@ -72,13 +71,13 @@ export default function Home({
                                 maxHeight: '600' // Max height to stay within the viewport
                             }
                         }}>
-                            <img src="/public/Logo/logo.png" alt="Loading" />
-                            <img src="/public/Logo/pageloader.gif" alt='Loading' style={{width:'100px'}}/>
+                            <Box component="img" src="/public/Logo/logo.png" alt="Loading" />
+                            <Box component="img" src="/public/Logo/pageloader.gif" alt='Loading' style={{ width: '100px' }} />
                         </Box>
                     );
                 }
-                
-                
+
+
             ) : (
                 <Layout>
                     <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>

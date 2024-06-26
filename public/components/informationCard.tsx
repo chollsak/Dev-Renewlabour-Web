@@ -128,11 +128,11 @@ const UserForm: React.FC = () => {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/api/persons`, { person, dataOtherFiles });
             const personId = response.data.personId
             if (response.status === 200 && personId) {
-                const uploadPicPath = await uploadProfilePicture(profilePicture, person, personId);
+                const uploadPicPath = await uploadProfilePicture(profilePicture, "person", person.outlanderNo, "picpath");
                 const uploadDocumentPath = await uploadFileFormData(fileFormData, person, personId);
                 const uploadOtherPath = await uploadOtherFiles(uploadedFiles, person, personId);
 
-                if (uploadPicPath.status === 200 && uploadDocumentPath.status === 200 && (uploadOtherPath.status === 200 || !uploadOtherPath)) {
+                if ((uploadPicPath.status === 200 || !uploadPicPath || uploadPicPath.status === 400) && (uploadDocumentPath.status === 200 || uploadDocumentPath.status === 400 || !uploadDocumentPath) && (uploadOtherPath.status === 200 || uploadOtherPath.status === 400 || !uploadOtherPath)) {
                     Swal.fire({
                         title: 'สำเร็จ!',
                         text: 'เพิ่มข้อมูลแรงงานได้สำเร็จ!',
@@ -175,10 +175,7 @@ const UserForm: React.FC = () => {
                 allowOutsideClick: false,
             })
         }
-
-
     };
-
     return (
         <Card sx={{ width: '100%', boxShadow: 3 }}>
             <CardContent>

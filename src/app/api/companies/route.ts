@@ -1,279 +1,104 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sqlConnect } from "../../../../public/components/lib/db";
 import * as sql from "mssql";
-import moment from "moment";
 
-async function getCompanyId(pool: sql.ConnectionPool, person: any) {
-  const request = new sql.Request(pool);
-  
-  request.input("cpn_n", sql.VarChar, person.company);
-
-  const result = await request.query(`
-          SELECT cpn_id
-          FROM company
-          WHERE cpn_n = @cpn_n;
-        `);
-  return result.recordset[0]?.cpn_id;
-}
-
-async function createPersons(
-  pool: sql.ConnectionPool,
-  person: any,
-  companyId: number
-) {
+async function createCompany(pool: sql.ConnectionPool, company: any) {
   const request = new sql.Request(pool);
 
   const inputs = [
-    { name: "outlanderNo", type: sql.VarChar, value: person.outlanderNo },
-    { name: "prefix", type: sql.VarChar, value: person.prefix },
-    { name: "firstname", type: sql.VarChar, value: person.firstname },
-    { name: "lastname", type: sql.VarChar, value: person.lastname },
-    { name: "prefixth", type: sql.VarChar, value: person.prefixth },
-    { name: "firstnameth", type: sql.VarChar, value: person.firstnameth },
-    { name: "lastnameth", type: sql.VarChar, value: person.lastnameth },
-    { name: "nationality", type: sql.VarChar, value: person.nationality },
-    { name: "company_id", type: sql.Int, value: companyId },
-    { name: "picpath", type: sql.VarChar, value: person.pic_path },
-    { name: "nickname", type: sql.VarChar, value: person.nickname },
-    { name: "visa_id", type: sql.VarChar, value: person.visa_id },
-    { name: "visa_startdate", type: sql.VarChar, value: person.visa_startdate },
-    { name: "visa_enddate", type: sql.VarChar, value: person.visa_enddate },
-    { name: "visa_path", type: sql.VarChar, value: person.visa_path },
-    { name: "passport_id", type: sql.VarChar, value: person.passport_id },
-    {
-      name: "passport_startdate",
-      type: sql.VarChar,
-      value: person.passport_startdate,
-    },
-    {
-      name: "passport_enddate",
-      type: sql.VarChar,
-      value: person.passport_enddate,
-    },
-    { name: "passport_path", type: sql.VarChar, value: person.passport_path },
-    { name: "workpermit_id", type: sql.VarChar, value: person.workpermit_id },
-    {
-      name: "workpermit_startdate",
-      type: sql.VarChar,
-      value: person.workpermit_startdate,
-    },
-    {
-      name: "workpermit_enddate",
-      type: sql.VarChar,
-      value: person.workpermit_enddate,
-    },
-    {
-      name: "workpermit_path",
-      type: sql.VarChar,
-      value: person.workpermit_path,
-    },
-    {
-      name: "ninetydays_startdate",
-      type: sql.VarChar,
-      value: person.ninetydays_startdate,
-    },
-    {
-      name: "ninetydays_enddate",
-      type: sql.VarChar,
-      value: person.ninetydays_enddate,
-    },
-    {
-      name: "ninetydays_path",
-      type: sql.VarChar,
-      value: person.ninetydays_path,
-    },
+    { name: "cpn_n", type: sql.VarChar, value: company.cpn_n },
+    { name: "cpn_build", type: sql.VarChar, value: company.cpn_build },
+    { name: "cpn_fl", type: sql.VarChar, value: company.cpn_fl },
+    { name: "cpn_vill", type: sql.VarChar, value: company.cpn_vill },
+    { name: "cpn_room", type: sql.VarChar, value: company.cpn_room },
+    { name: "cpn_moo", type: sql.VarChar, value: company.cpn_moo },
+    { name: "cpn_soi", type: sql.VarChar, value: company.cpn_soi },
+    { name: "cpn_st", type: sql.VarChar, value: company.cpn_st },
+    { name: "cpn_coun", type: sql.VarChar, value: company.cpn_coun },
+    { name: "cpn_subdist", type: sql.VarChar, value: company.cpn_subdist },
+    { name: "cpn_dist", type: sql.VarChar, value: company.cpn_dist },
+    { name: "cpn_prov", type: sql.VarChar, value: company.cpn_prov },
+    { name: "cpn_zip", type: sql.VarChar, value: company.cpn_zip },
+    { name: "logo", type: sql.VarChar, value: company.logo },
+    { name: "branch", type: sql.VarChar, value: company.branch },
   ];
 
   inputs.forEach((input) => request.input(input.name, input.type, input.value));
 
   const insertResult = await request.query(`
-    INSERT INTO persons (
-      outlanderNo, prefix, firstname, lastname, prefixth, firstnameth, lastnameth, nationality, 
-      company_id, picpath, nickname, visa_id, visa_startdate, visa_enddate, visa_path, passport_id, 
-      passport_startdate, passport_enddate, passport_path, workpermit_id, workpermit_startdate, 
-      workpermit_enddate, workpermit_path, ninetydays_startdate, ninetydays_enddate, ninetydays_path
+    INSERT INTO company (
+      cpn_n, cpn_build, cpn_fl, cpn_vill, cpn_room, cpn_moo, cpn_soi, cpn_st, cpn_coun, cpn_subdist, cpn_dist, cpn_prov, cpn_zip, logo, branch
     )
-    OUTPUT inserted.person_id
+    OUTPUT inserted.cpn_id
     VALUES (
-      @outlanderNo, @prefix, @firstname, @lastname, @prefixth, @firstnameth, @lastnameth, @nationality, 
-      @company_id, @picpath, @nickname, @visa_id, @visa_startdate, @visa_enddate, @visa_path, @passport_id, 
-      @passport_startdate, @passport_enddate, @passport_path, @workpermit_id, @workpermit_startdate, 
-      @workpermit_enddate, @workpermit_path, @ninetydays_startdate, @ninetydays_enddate, @ninetydays_path
+      @cpn_n, @cpn_build, @cpn_fl, @cpn_vill, @cpn_room, @cpn_moo, @cpn_soi, @cpn_st, @cpn_coun, @cpn_subdist, @cpn_dist, @cpn_prov, @cpn_zip, @logo, @branch
     );
   `);
-  return insertResult.recordset[0].person_id;
+  return insertResult.recordset[0].cpn_id;
 }
 
-async function createOtherFiles(
+async function updateCompany(
   pool: sql.ConnectionPool,
-  personId: string,
-  data: any[]
-) {
-  console.log("Creating other files with data:", data); // Log data being processed
-  const promises = [];
-
-  for (const item of data) {
-    console.log("Processing item:", item); // Log each item
-    const request = new sql.Request(pool);
-    request.input("fileo_path", sql.VarChar, item);
-    request.input("person_id", sql.Int, personId);
-
-    promises.push(
-      request.query(`
-        INSERT INTO file_persons (fileo_path, person_id)
-        OUTPUT INSERTED.fileo_id
-        VALUES (@fileo_path, @person_id);
-      `)
-    );
-  }
-
-  const results = await Promise.all(promises);
-  console.log("Files inserted:", results); // Log insertion results
-  return results;
-}
-
-async function updatePersons(
-  pool: sql.ConnectionPool,
-  person: any,
-  companyId: number,
-  personId: string,
-  outlanderNo: string
+  company: any,
+  companyId: string
 ) {
   const request = new sql.Request(pool);
 
   const inputs = [
-    { name: "newoutlanderNo", type: sql.VarChar, value: person.outlanderNo },
-    { name: "prefix", type: sql.VarChar, value: person.prefix },
-    { name: "firstname", type: sql.VarChar, value: person.firstname },
-    { name: "lastname", type: sql.VarChar, value: person.lastname },
-    { name: "prefixth", type: sql.VarChar, value: person.prefixth },
-    { name: "firstnameth", type: sql.VarChar, value: person.firstnameth },
-    { name: "lastnameth", type: sql.VarChar, value: person.lastnameth },
-    { name: "nationality", type: sql.VarChar, value: person.nationality },
-    { name: "company_id", type: sql.Int, value: companyId },
-    { name: "picpath", type: sql.VarChar, value: person.pic_path },
-    { name: "nickname", type: sql.VarChar, value: person.nickname },
-    { name: "visa_id", type: sql.VarChar, value: person.visa_id },
-    { name: "visa_startdate", type: sql.VarChar, value: person.visa_startdate },
-    { name: "visa_enddate", type: sql.VarChar, value: person.visa_enddate },
-    { name: "visa_path", type: sql.VarChar, value: person.visa_path },
-    { name: "passport_id", type: sql.VarChar, value: person.passport_id },
-    {
-      name: "passport_startdate",
-      type: sql.VarChar,
-      value: person.passport_startdate,
-    },
-    {
-      name: "passport_enddate",
-      type: sql.VarChar,
-      value: person.passport_enddate,
-    },
-    { name: "passport_path", type: sql.VarChar, value: person.passport_path },
-    { name: "workpermit_id", type: sql.VarChar, value: person.workpermit_id },
-    {
-      name: "workpermit_startdate",
-      type: sql.VarChar,
-      value: person.workpermit_startdate,
-    },
-    {
-      name: "workpermit_enddate",
-      type: sql.VarChar,
-      value: person.workpermit_enddate,
-    },
-    {
-      name: "workpermit_path",
-      type: sql.VarChar,
-      value: person.workpermit_path,
-    },
-    {
-      name: "ninetydays_startdate",
-      type: sql.VarChar,
-      value: person.ninetydays_startdate,
-    },
-    {
-      name: "ninetydays_enddate",
-      type: sql.VarChar,
-      value: person.ninetydays_enddate,
-    },
-    {
-      name: "ninetydays_path",
-      type: sql.VarChar,
-      value: person.ninetydays_path,
-    },
-    {
-      name: "person_id",
-      type: sql.VarChar,
-      value: personId,
-    },
-    {
-      name: "outlanderNo",
-      type: sql.VarChar,
-      value: outlanderNo,
-    },
+    { name: "cpn_n", type: sql.VarChar, value: company.cpn_n },
+    { name: "cpn_build", type: sql.VarChar, value: company.cpn_build },
+    { name: "cpn_fl", type: sql.VarChar, value: company.cpn_fl },
+    { name: "cpn_vill", type: sql.VarChar, value: company.cpn_vill },
+    { name: "cpn_room", type: sql.VarChar, value: company.cpn_room },
+    { name: "cpn_moo", type: sql.VarChar, value: company.cpn_moo },
+    { name: "cpn_soi", type: sql.VarChar, value: company.cpn_soi },
+    { name: "cpn_st", type: sql.VarChar, value: company.cpn_st },
+    { name: "cpn_coun", type: sql.VarChar, value: company.cpn_coun },
+    { name: "cpn_subdist", type: sql.VarChar, value: company.cpn_subdist },
+    { name: "cpn_dist", type: sql.VarChar, value: company.cpn_dist },
+    { name: "cpn_prov", type: sql.VarChar, value: company.cpn_prov },
+    { name: "cpn_zip", type: sql.VarChar, value: company.cpn_zip },
+    { name: "logo", type: sql.VarChar, value: company.logo },
+    { name: "branch", type: sql.VarChar, value: company.branch },
+    { name: "cpn_id", type: sql.Int, value: companyId },
   ];
 
   inputs.forEach((input) => request.input(input.name, input.type, input.value));
 
   const insertResult = await request.query(`
-    UPDATE persons SET outlanderNo = @newoutlanderNo, prefix = @prefix, firstname = @firstname, lastname = @lastname, 
-    prefixth = @prefixth, firstnameth = @firstnameth, lastnameth = @lastnameth, nationality = @nationality, 
-      company_id = @company_id, picpath = @picpath, nickname = @nickname, 
-      visa_id = @visa_id, visa_startdate = @visa_startdate, visa_enddate = @visa_enddate, visa_path = @visa_path, 
-      passport_id = @passport_id, passport_startdate = @passport_startdate, passport_enddate = @passport_enddate, passport_path = @passport_path, 
-      workpermit_id = @workpermit_id, workpermit_startdate = @workpermit_startdate, workpermit_enddate = @workpermit_enddate, workpermit_path = @workpermit_path, 
-      ninetydays_startdate = @ninetydays_startdate, ninetydays_enddate = @ninetydays_enddate, ninetydays_path = @ninetydays_path
-      WHERE person_id = @person_id AND outlanderNo = @outlanderNo
+    UPDATE company SET 
+    cpn_n = @cpn_n, cpn_build = @cpn_build, cpn_fl = @cpn_fl, cpn_vill = @cpn_vill, cpn_room = @cpn_room, cpn_moo = @cpn_moo, cpn_soi = @cpn_soi, cpn_st = @cpn_st, 
+    cpn_coun = @cpn_coun, cpn_subdist = @cpn_subdist, cpn_dist = @cpn_dist, cpn_prov = @cpn_prov, cpn_zip = @cpn_zip, logo = @logo, branch = @branch
+      WHERE cpn_id = @cpn_id
     ;
   `);
   return insertResult;
 }
 
+async function deleteCompany(pool: sql.ConnectionPool, companyId: any) {
+  const request = new sql.Request(pool);
+  request.input("cpn_id", sql.Int, companyId);
+
+  const insertResult = await request.query(`
+      DELETE FROM company WHERE cpn_id = @cpn_id;
+    `);
+  return insertResult;
+}
+
 export async function GET(req: NextRequest) {
-  const personId = req.nextUrl.searchParams.get("person_id");
-  const outlanderNo = req.nextUrl.searchParams.get("outlanderNo");
+  const companyId = req.nextUrl.searchParams.get("companyId");
   const pool = await sqlConnect();
-  if (!personId || !outlanderNo) {
+  if (!companyId) {
     try {
       const query = `
     SELECT 
-        person_id, outlanderNo, prefix, firstname, lastname, 
-        prefixth, firstnameth, lastnameth, nationality, company_id, 
-        picpath, nickname, visa_id, visa_startdate, visa_enddate, 
-        visa_path, passport_id, passport_startdate, passport_enddate, 
-        passport_path, workpermit_id, workpermit_startdate, 
-        workpermit_enddate, workpermit_path, ninetydays_startdate, 
-        ninetydays_enddate, ninetydays_path 
-    FROM persons
+        *
+    FROM company
 `;
 
       const result = await pool.request().query(query);
 
-      const persons = result.recordset.map((person) => {
-        const {
-          visa_enddate,
-          passport_enddate,
-          workpermit_enddate,
-          ninetydays_enddate,
-        } = person;
-
-        const dates = [
-          moment(visa_enddate),
-          moment(passport_enddate),
-          moment(workpermit_enddate),
-          moment(ninetydays_enddate),
-        ];
-
-        const status = dates.reduce((minDate, currentDate) =>
-          currentDate.isBefore(minDate) ? currentDate : minDate
-        );
-
-        return {
-          ...person,
-          status: status.format("YYYY-MM-DD"),
-        };
-      });
-
-      return NextResponse.json(persons);
+      return NextResponse.json(result.recordset);
     } catch (error) {
       console.error(error);
       return NextResponse.json(
@@ -285,22 +110,14 @@ export async function GET(req: NextRequest) {
     try {
       const query = `
   SELECT 
-    person_id, outlanderNo, prefix, firstname, lastname, 
-    prefixth, firstnameth, lastnameth, nationality, cpn_n, 
-    picpath, nickname, visa_id, visa_startdate, visa_enddate, 
-    visa_path, passport_id, passport_startdate, passport_enddate, 
-    passport_path, workpermit_id, workpermit_startdate, 
-    workpermit_enddate, workpermit_path, ninetydays_startdate, 
-    ninetydays_enddate, ninetydays_path 
-  FROM persons
-  LEFT JOIN company ON persons.company_id = company.cpn_id
-  WHERE person_id = @personId AND outlanderNo = @outlanderNo
+    *
+  FROM company
+  WHERE cpn_id = @cpn_id
 `;
 
       const result = await pool
         .request()
-        .input("personId", sql.Int, personId)
-        .input("outlanderNo", sql.VarChar, outlanderNo)
+        .input("cpn_id", sql.Int, companyId)
         .query(query);
 
       return NextResponse.json(result.recordset);
@@ -316,54 +133,61 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const requestBody = await req.json();
-  const { person, dataOtherFiles } = requestBody;
+  const { company } = requestBody;
   const pool = await sqlConnect();
   try {
-    const companyId = await getCompanyId(pool, person);
-    const personId = await createPersons(pool, person, companyId);
-    if (personId) {
-      await createOtherFiles(pool, personId, dataOtherFiles);
-    }
+    const companyId = await createCompany(pool, company);
+
     return NextResponse.json({
-      message: `เพิ่มข้อมูลแรงงานต่างด้าวสำเร็จ`,
-      personId: personId,
+      message: `เพิ่มข้อมูลบริษัทสำเร็จ`,
+      companyId: companyId,
     });
   } catch (error) {
     console.error("Database query failed:", error);
     return NextResponse.json(
-      { message: "ล้มเหลวในการเพิ่มแรงงาน", error: error },
+      { message: "ล้มเหลวในการเพิ่มบริษัท", error: error },
       { status: 500 }
     );
   }
 }
 
 export async function PATCH(req: NextRequest) {
-  const personId = req.nextUrl.searchParams.get("personId");
-  const outlanderNo = req.nextUrl.searchParams.get("outlanderNo");
+  const companyId = req.nextUrl.searchParams.get("companyId");
   const requestBody = await req.json();
-  const { person, dataOtherFiles } = requestBody;
+  const { company } = requestBody;
   const pool = await sqlConnect();
 
   try {
-    const companyId = await getCompanyId(pool, person);
-    if (personId && outlanderNo) {
-      await updatePersons(pool, person, companyId, personId, outlanderNo);
-      // if (personId) {
-      //   await createOtherFiles(pool, personId, dataOtherFiles);
-      // }
+    if (companyId) {
+      await updateCompany(pool, company, companyId);
       return NextResponse.json({
-        message: `แก้ไขข้อมูลแรงงานต่างด้าวสำเร็จ`,
+        message: `แก้ไขข้อมูลบริษัทสำเร็จ`,
       });
     } else {
-      throw new Error("Invalid personId or outlanderNo");
+      throw new Error("Invalid companyId or outlanderNo");
     }
   } catch (error) {
     console.error("Database query failed:", error);
     return NextResponse.json(
-      { message: "ล้มเหลวในการแก้ไขข้อมูลแรงงาน", error: error },
+      { message: "ล้มเหลวในการแก้ไขข้อมูลบริษัท", error: error },
       { status: 500 }
     );
   }
 }
 
-export async function DELETE(req: NextRequest) {}
+export async function DELETE(req: NextRequest) {
+  const companyId = req.nextUrl.searchParams.get("companyId");
+  const pool = await sqlConnect();
+  try {
+    await deleteCompany(pool, companyId);
+    return NextResponse.json({
+      message: `ลบข้อมูลบริษัทสำเร็จ`,
+    });
+  } catch (error) {
+    console.error("Database query failed:", error);
+    return NextResponse.json(
+      { message: "ล้มเหลวในการลบข้อมูลบริษัท", error: error },
+      { status: 500 }
+    );
+  }
+}

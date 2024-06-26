@@ -5,6 +5,7 @@ import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Chip from '@mui/joy/Chip';
 import Typography from '@mui/joy/Typography';
+import { Box } from '@mui/material';
 
 
 
@@ -25,7 +26,7 @@ export default function InteractiveCard() {
     fontFamily: 'Kanit, sans-serif',
   };
 
-  
+
   return (
     <Card
       variant="outlined"
@@ -37,24 +38,24 @@ export default function InteractiveCard() {
       }}
     >
       <AspectRatio ratio="1" sx={{ width: 50 }}>
-        <img
+        <Box component="img"
           src={MockUpData[0].image}
           loading="lazy"
           alt=""
         />
       </AspectRatio>
       <CardContent>
-        <Typography level="title-lg" id="card-description" sx={{...FontStyle}}>
+        <Typography level="title-lg" id="card-description" sx={{ ...FontStyle }}>
           {MockUpData[0].title}
         </Typography>
-        <Typography level="body-sm" aria-describedby="card-description" mb={1} sx={{ color: 'text.tertiary' ,...FontStyle}}>
-            {MockUpData[0].location}
+        <Typography level="body-sm" aria-describedby="card-description" mb={1} sx={{ color: 'text.tertiary', ...FontStyle }}>
+          {MockUpData[0].location}
         </Typography>
         <Chip
           variant="outlined"
           color="primary"
           size="sm"
-          sx={{ pointerEvents: 'none' ,...FontStyle}}
+          sx={{ pointerEvents: 'none', ...FontStyle }}
         >
           {MockUpData[0].description}
         </Chip>

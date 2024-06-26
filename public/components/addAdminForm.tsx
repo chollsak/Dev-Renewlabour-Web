@@ -174,7 +174,7 @@ const AddAdmin: React.FC = () => {
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <Avatar sx={{ marginRight: 2 }}>
                                     {userData.m_picpath ? (
-                                        <img src={URL.createObjectURL(userData.m_picpath)} alt="Avatar" width="40" height="40" />
+                                        <Box component="img" src={URL.createObjectURL(userData.m_picpath)} alt="Avatar" width="40" height="40" />
                                     ) : (
                                         <PhotoCamera />
                                     )}

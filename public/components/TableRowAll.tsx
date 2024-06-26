@@ -3,14 +3,11 @@ import { TableCell, IconButton, Menu, MenuItem } from '@mui/material';
 import Chip from '@mui/joy/Chip';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import moment from 'moment';
-import Loading2 from './Loading/Loading2';
 import PageLoader from './Loading/Loading2';
 
 interface TableRowProps {
     row: any;
 }
-
-const statuses = ['ทั้งหมด', 'ต่ออายุด่วน', 'ใกล้หมดอายุ', 'หมดอายุ', 'ปกติ'];
 
 const getStatus = (row: any) => {
     const values = [
@@ -129,7 +126,7 @@ const TableRowAll: React.FC<TableRowProps> = ({ row }) => {
     const handleDelete = (row: any) => {
         // Handle delete action here
         console.log('Delete clicked:', row);
-        
+
         return (
             <div>
                 <PageLoader />

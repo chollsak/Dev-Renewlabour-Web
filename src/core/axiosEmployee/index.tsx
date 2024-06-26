@@ -1,14 +1,13 @@
 import axios from "axios";
 
-export const uploadProfilePicture = async (profilePicture: any, person: any, personId: any) => {
+export const uploadProfilePicture = async (profilePicture: any, category: any, number: any, type: any) => {
     if (profilePicture && profilePicture !== null) {
         const formData = new FormData();
         formData.append('filePaths', profilePicture);
-        formData.append('outlanderNo', person.outlanderNo);
-        formData.append('personId', personId);
+        formData.append('number', number);
 
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_FILE_API}/upload/persons/picpath`, formData, {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_FILE_API}/upload/${category}/${type}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

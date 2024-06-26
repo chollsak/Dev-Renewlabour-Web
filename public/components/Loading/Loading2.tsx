@@ -37,8 +37,8 @@ export default function PageLoader() {
                 maxHeight: '600' // Max height to stay within the viewport
             }
         }}>
-            <img src="Logo/logo.png" alt="Loading" />
-            <img src="Logo/pageloader.gif" alt='Loading' style={{width:'100px'}}/>
+            <Box component="img" src="Logo/logo.png" alt="Loading" />
+            <Box component="img" src="Logo/pageloader.gif" alt='Loading' style={{ width: '100px' }} />
         </Box>
     );
 }
