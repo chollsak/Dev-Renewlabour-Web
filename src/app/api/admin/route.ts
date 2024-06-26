@@ -32,7 +32,7 @@ async function createMembers(
     { name: "password", type: sql.VarChar, value: "12345" },
     { name: "email", type: sql.VarChar, value: member.email },
     { name: "tel", type: sql.VarChar, value: member.tel },
-    { name: "company_id", type: sql.VarChar, value: companyId },
+    { name: "company_id", type: sql.Int, value: companyId },
     { name: "m_picpath", type: sql.VarChar, value: member.m_picpath },
     { name: "lineID", type: sql.VarChar, value: member.lineID },
   ];
@@ -69,7 +69,7 @@ async function updateMembers(
     { name: "username", type: sql.VarChar, value: member.username },
     { name: "email", type: sql.VarChar, value: member.email },
     { name: "tel", type: sql.VarChar, value: member.tel },
-    { name: "company_id", type: sql.VarChar, value: companyId },
+    { name: "company_id", type: sql.Int, value: companyId },
     { name: "m_picpath", type: sql.VarChar, value: member.m_picpath },
     { name: "lineID", type: sql.VarChar, value: member.lineID },
     { name: "mem_id", type: sql.VarChar, value: memberId },
@@ -86,11 +86,20 @@ async function updateMembers(
   return insertResult;
 }
 
+async function deleteMembers(pool: sql.ConnectionPool, memberId: any) {
+  const request = new sql.Request(pool);
+  request.input("mem_id", sql.Int, memberId);
+
+  const insertResult = await request.query(`
+      DELETE FROM members WHERE mem_id = @mem_id;
+    `);
+  return insertResult;
+}
+
 export async function GET(req: NextRequest) {
-  const memberId = req.nextUrl.searchParams.get("mem_id");
-  const outlanderNo = req.nextUrl.searchParams.get("outlanderNo");
+  const memberId = req.nextUrl.searchParams.get("memberId");
   const pool = await sqlConnect();
-  if (!memberId || !outlanderNo) {
+  if (!memberId) {
     try {
       const query = `
     SELECT 
@@ -179,4 +188,19 @@ export async function PATCH(req: NextRequest) {
   }
 }
 
-export async function DELETE(req: NextRequest) {}
+export async function DELETE(req: NextRequest) {
+  const memberId = req.nextUrl.searchParams.get("memberId");
+  const pool = await sqlConnect();
+  try {
+    await deleteMembers(pool, memberId);
+    return NextResponse.json({
+      message: `ลบข้อมูลบริษัทสำเร็จ`,
+    });
+  } catch (error) {
+    console.error("Database query failed:", error);
+    return NextResponse.json(
+      { message: "ล้มเหลวในการลบข้อมูลบริษัท", error: error },
+      { status: 500 }
+    );
+  }
+}
