@@ -13,10 +13,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Sidebar />
+      <Sidebar session={session} />
       <Box component="main" sx={{ flexGrow: 1, p: 1, marginLeft: '300px', overflowY: 'auto' }}>
         <div style={{ textAlign: 'right', width: '100%', marginBottom: '15px' }}>
-          <Header />
+          <Header session={session} />
         </div>
         {children}
       </Box>

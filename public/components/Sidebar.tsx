@@ -8,7 +8,11 @@ import Link from 'next/link';
 import { useState } from 'react';
 import InteractiveCard from './CompanyCard';
 
-const Sidebar: React.FC = () => {
+interface LayoutSession {
+  session: any
+}
+
+const Sidebar: React.FC<LayoutSession> = ({ session }) => {
   const [activeLink, setActiveLink] = useState('');
 
   // Function to handle link click

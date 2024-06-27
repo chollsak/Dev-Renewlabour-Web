@@ -10,7 +10,6 @@ import Divider from '@mui/material/Divider';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Box, Chip, Typography } from '@mui/material';
-import PageLoader from './Loading/Loading2';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -19,7 +18,11 @@ interface UserData {
     job: string;
 }
 
-function UserMenu() {
+interface LayoutSession {
+    session: any;
+}
+
+const UserMenu: React.FC<LayoutSession> = ({ session }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
@@ -31,27 +34,31 @@ function UserMenu() {
         setAnchorEl(null);
     };
 
-    const MockUpData: UserData = {
+    const mockUpData: UserData = {
         name: 'นายชลศักดิ์ สุขสวัสดิ์',
         job: 'Admin'
     };
 
-    const FontStyle: React.CSSProperties = {
+    const fontStyle: React.CSSProperties = {
         fontFamily: 'Kanit, sans-serif',
     };
 
-    const router = useRouter()
+    const router = useRouter();
 
-    const signOuttoLogin = () => {
+    const signOutToLogin = () => {
         signOut();
         router.refresh();
     };
 
     return (
         <div>
-            <PageLoader />
             <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-                <Chip style={FontStyle} avatar={<Avatar></Avatar>} label={MockUpData.name} sx={{ fontWeight: '600' }} />
+                <Chip
+                    style={fontStyle}
+                    avatar={<Avatar src={session?.user?.image || ''} />}
+                    label={session?.user?.name || mockUpData.name}
+                    sx={{ fontWeight: '600' }}
+                />
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
@@ -88,25 +95,25 @@ function UserMenu() {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <Box sx={{ marginLeft: '10px', display: 'flex', flexDirection: 'row' }}>
-                    <Typography fontSize={'medium'} sx={[{ fontWeight: 'bold' }, FontStyle]}>
-                        {MockUpData.name}
+                    <Typography fontSize="medium" sx={[{ fontWeight: 'bold' }, fontStyle]}>
+                        {session?.user?.name || mockUpData.name}
                     </Typography>
                     <Chip
                         variant="outlined"
                         color="primary"
                         size="small"
-                        sx={[{ pointerEvents: 'none', marginLeft: '10px', marginRight: '10px' }, FontStyle]}
-                        label={MockUpData.job}
+                        sx={[{ pointerEvents: 'none', marginLeft: '10px', marginRight: '10px' }, fontStyle]}
+                        label={session?.user?.job || mockUpData.job}
                     />
                 </Box>
-                <MenuItem sx={FontStyle}>
+                <MenuItem sx={fontStyle}>
                     <ListItemIcon>
                         <SettingsIcon fontSize="small" />
                     </ListItemIcon>
                     ตั้งค่า
                 </MenuItem>
                 <Divider />
-                <MenuItem sx={FontStyle} onClick={signOuttoLogin}>
+                <MenuItem sx={fontStyle} onClick={signOutToLogin}>
                     <ListItemIcon>
                         <LogoutIcon fontSize="small" />
                     </ListItemIcon>
