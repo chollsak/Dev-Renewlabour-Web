@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../../../../../public/components/Layout';
 import axios from 'axios';
-import { Avatar, Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Paper, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Paper, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import PersonsAvatar from '../../../../../public/components/PersonsAvatar';
 import moment from 'moment';
@@ -258,15 +258,14 @@ export default function Home({
                                                 <DialogTitle>{selectedData?.type.toUpperCase()}</DialogTitle>
                                                 <DialogContent>
                                                     <Typography>ID: {selectedData?.id}</Typography>
-                                                    <Typography>Start Date: {selectedData?.startDate}</Typography>
-                                                    <Typography>End Date: {selectedData?.endDate}</Typography>
-                                                    <Typography>Path: {selectedData?.path}</Typography>
+                                                    <Typography>Start Date: {moment(selectedData?.startDate).format('LL')}</Typography>
+                                                    <Typography>End Date: {moment(selectedData?.endDate).format('LL')}</Typography>
                                                     <Button variant="contained" color="primary"
                                                         href={`${process.env.NEXT_PUBLIC_FILE_API}/download/persons/${persons[0].outlanderNo}/${selectedData?.type.toLowerCase()}/${selectedData?.path}`}
                                                         download
                                                         target="_blank"
                                                         rel="noopener noreferrer">
-                                                        {selectedData?.path}
+                                                        {"Download " + selectedData?.type.toUpperCase()}
                                                     </Button>
                                                 </DialogContent>
                                                 <DialogActions>
