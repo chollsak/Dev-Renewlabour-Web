@@ -28,7 +28,7 @@ const handler = NextAuth({
             .input("username", sql.VarChar, credentials?.username)
             .input("password", sql.VarChar, credentials?.password)
             .query(
-              `SELECT * FROM members
+              `SELECT * FROM members LEFT JOIN company ON members.company_id = company.cpn_id
               WHERE 
                   username = @username
                   AND BINARY_CHECKSUM(password) = BINARY_CHECKSUM(@password)`

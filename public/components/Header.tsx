@@ -13,11 +13,6 @@ import { Box, Chip, Typography } from '@mui/material';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-interface UserData {
-    name: string;
-    job: string;
-}
-
 interface LayoutSession {
     session: any;
 }
@@ -32,11 +27,6 @@ const UserMenu: React.FC<LayoutSession> = ({ session }) => {
 
     const handleClose = () => {
         setAnchorEl(null);
-    };
-
-    const mockUpData: UserData = {
-        name: 'นายชลศักดิ์ สุขสวัสดิ์',
-        job: 'Admin'
     };
 
     const fontStyle: React.CSSProperties = {
@@ -55,8 +45,8 @@ const UserMenu: React.FC<LayoutSession> = ({ session }) => {
             <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
                 <Chip
                     style={fontStyle}
-                    avatar={<Avatar src={session?.user?.image || ''} />}
-                    label={session?.user?.name || mockUpData.name}
+                    avatar={<Avatar src={`${process.env.NEXT_PUBLIC_FILE_API}/file/members/${session?.user_account[0]?.mem_id}/picpath/${session?.user_account[0]?.m_picpath}` || ''} />}
+                    label={`${session?.user_account[0]?.member_name} ${session?.user_account[0]?.member_lastname || " "}` || ""}
                     sx={{ fontWeight: '600' }}
                 />
             </IconButton>
@@ -96,14 +86,14 @@ const UserMenu: React.FC<LayoutSession> = ({ session }) => {
             >
                 <Box sx={{ marginLeft: '10px', display: 'flex', flexDirection: 'row' }}>
                     <Typography fontSize="medium" sx={[{ fontWeight: 'bold' }, fontStyle]}>
-                        {session?.user?.name || mockUpData.name}
+                        {session?.user_account[0]?.member_name || " "} {session?.user_account[0]?.member_lastname || " "}
                     </Typography>
                     <Chip
                         variant="outlined"
                         color="primary"
                         size="small"
                         sx={[{ pointerEvents: 'none', marginLeft: '10px', marginRight: '10px' }, fontStyle]}
-                        label={session?.user?.job || mockUpData.job}
+                        label={session?.name || " "}
                     />
                 </Box>
                 <MenuItem sx={fontStyle}>
