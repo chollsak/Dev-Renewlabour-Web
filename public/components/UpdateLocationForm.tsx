@@ -331,7 +331,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     {logo ? (
                                         <Box component="img" src={URL.createObjectURL(logo)} alt="Logo" width="40" height="40" />
                                     ) : (
-                                        <PhotoCamera />
+                                        <Box component="img" src={`${process.env.NEXT_PUBLIC_FILE_API}/file/companys/${params.cpn_id}/logo/${company.logo}`} alt="Logo" width="40" height="40" />
                                     )}
                                 </Avatar>
                                 <input

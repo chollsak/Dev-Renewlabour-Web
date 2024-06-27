@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Head from 'next/head';
 import { Inter } from "next/font/google";
 import './globals.css';
+import { CustomProviders } from "@/components/nextauth/provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,12 +18,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet" />
-        <link rel="icon" type="image/x-icon" href="../Logo/logosmall.png"></link>
-      </head>
-      <body className={inter.className}>{children}</body>
-    </html>
+    <CustomProviders>
+      <html lang="en">
+        <head>
+          <link href="https://fonts.googleapis.com/css?family=Kanit&display=optional" rel="stylesheet" />
+          <link rel="icon" type="image/x-icon" href="../Logo/logosmall.png"></link>
+        </head>
+        <body className={inter.className}>{children}</body>
+      </html>
+    </CustomProviders>
   )
 }

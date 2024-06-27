@@ -232,7 +232,7 @@ const UpdateAdmin: React.FC<UserFormProps> = ({ members, params }) => {
                                 {profilePicture ? (
                                     <Box component="img" src={URL.createObjectURL(profilePicture)} alt="Avatar" width="40" height="40" />
                                 ) : (
-                                    <PhotoCamera />
+                                    <Box component="img" src={`${process.env.NEXT_PUBLIC_FILE_API}/file/members/${params.mem_id}/picpath/${member.m_picpath}`} alt="Avatar" width="40" height="40" />
                                 )}
                             </Avatar>
                             <input
