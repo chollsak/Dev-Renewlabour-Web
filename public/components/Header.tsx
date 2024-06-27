@@ -12,6 +12,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { Box, Chip, Typography } from '@mui/material';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface LayoutSession {
     session: any;
@@ -96,12 +97,14 @@ const UserMenu: React.FC<LayoutSession> = ({ session }) => {
                         label={session?.name || " "}
                     />
                 </Box>
+                <Link href="/SettingPage" passHref>
                 <MenuItem sx={fontStyle}>
                     <ListItemIcon>
                         <SettingsIcon fontSize="small" />
                     </ListItemIcon>
                     ตั้งค่า
                 </MenuItem>
+                </Link>
                 <Divider />
                 <MenuItem sx={fontStyle} onClick={signOutToLogin}>
                     <ListItemIcon>

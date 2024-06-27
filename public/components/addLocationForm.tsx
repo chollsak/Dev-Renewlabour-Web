@@ -316,9 +316,9 @@ const LocationForm: React.FC = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <Box sx={{ display: 'flex', alignItems: 'center', margin: 1 }}>
-                                <Avatar sx={{ marginRight: 2 }}>
+                                <Avatar sx={{ marginRight: 2,width:'200px',height:'200px' }}>
                                     {logo ? (
-                                        <Box component="img" src={URL.createObjectURL(logo)} alt="Logo" width="40" height="40" />
+                                        <Box component="img" src={URL.createObjectURL(logo)} alt="Logo" width="200" height="200" />
                                     ) : (
                                         <PhotoCamera />
                                     )}
@@ -331,7 +331,7 @@ const LocationForm: React.FC = () => {
                                     onChange={handleLogoChange}
                                 />
                                 <label htmlFor="icon-button-file">
-                                    <IconButton color="primary" aria-label="upload picture" component="span">
+                                    <IconButton color="primary" aria-label="upload picture" component="span" >
                                         <PhotoCamera />
                                     </IconButton>
                                 </label>

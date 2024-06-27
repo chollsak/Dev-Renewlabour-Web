@@ -216,9 +216,9 @@ const AddAdmin: React.FC = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Avatar sx={{ marginRight: 2 }}>
+                            <Avatar sx={{ marginRight: 2, width:'200px', height:'200px'}}>
                                 {member.m_picpath ? (
-                                    <Box component="img" src={URL.createObjectURL(profilePicture)} alt="Avatar" width="40" height="40" />
+                                    <Box component="img" src={URL.createObjectURL(profilePicture)} alt="Avatar" width="200" height="200" />
                                 ) : (
                                     <PhotoCamera />
                                 )}

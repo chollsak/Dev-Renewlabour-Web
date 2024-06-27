@@ -1,9 +1,11 @@
+'use client';
 import React from 'react';
 import { Box } from '@mui/system';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import Footer from './Footer';
 import { useSession } from 'next-auth/react';
+
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
