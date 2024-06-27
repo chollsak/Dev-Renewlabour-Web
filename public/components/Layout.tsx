@@ -11,8 +11,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const { data: session } = useSession()
 
-  console.log(session)
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Sidebar session={session} />
