@@ -37,7 +37,7 @@ const Sidebar: React.FC<LayoutSession> = ({ session }) => {
     }}>
       <Box textAlign="center" p={2} sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <Box component="img" onClick={() => handleLinkClick('/Dashboard')} src="./Logo/logo.png" alt="Company Logo" style={{ maxWidth: '200px' }} />
-        <InteractiveCard />
+        <InteractiveCard session={session} />
       </Box>
       <List>
         <Link href="/employees" passHref style={{ textDecoration: 'none', color: 'black' }}>

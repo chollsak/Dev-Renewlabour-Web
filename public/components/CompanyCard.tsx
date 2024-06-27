@@ -7,9 +7,6 @@ import Chip from '@mui/joy/Chip';
 import Typography from '@mui/joy/Typography';
 import { Box } from '@mui/material';
 
-
-
-
 const MockUpData = [
   {
     id: 1,
@@ -20,12 +17,11 @@ const MockUpData = [
   },
 ];
 
-export default function InteractiveCard() {
+export default function InteractiveCard({ session }: { session: any }) {
 
   const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
   };
-
 
   return (
     <Card
@@ -39,26 +35,18 @@ export default function InteractiveCard() {
     >
       <AspectRatio ratio="1" sx={{ width: 50 }}>
         <Box component="img"
-          src={MockUpData[0].image}
+          src={`${process.env.NEXT_PUBLIC_FILE_API}/file/companys/${session?.user_account[0]?.cpn_id}/logo/${session?.user_account[0]?.logo}`}
           loading="lazy"
           alt=""
         />
       </AspectRatio>
       <CardContent>
         <Typography level="title-lg" id="card-description" sx={{ ...FontStyle }}>
-          {MockUpData[0].title}
+          {session?.user_account[0]?.cpn_n}
         </Typography>
         <Typography level="body-sm" aria-describedby="card-description" mb={1} sx={{ color: 'text.tertiary', ...FontStyle }}>
-          {MockUpData[0].location}
+          {session?.user_account[0]?.cpn_subdist} {session?.user_account[0]?.cpn_dist} {session?.user_account[0]?.cpn_prov} {session?.user_account[0]?.cpn_zip}
         </Typography>
-        <Chip
-          variant="outlined"
-          color="primary"
-          size="sm"
-          sx={{ pointerEvents: 'none', ...FontStyle }}
-        >
-          {MockUpData[0].description}
-        </Chip>
       </CardContent>
     </Card>
   );
