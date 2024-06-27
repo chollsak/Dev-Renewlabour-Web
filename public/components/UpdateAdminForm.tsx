@@ -111,8 +111,6 @@ const UpdateAdmin: React.FC<UserFormProps> = ({ members, params }) => {
                         }
                     });
                 } else {
-                    //ลบข้อมูล persons 
-                    await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/admin?memberId=${params.mem_id}`)
 
                     Swal.fire({
                         title: 'ล้มเหลว!',

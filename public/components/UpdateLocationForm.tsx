@@ -145,8 +145,6 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                         }
                     });
                 } else {
-                    //ลบข้อมูล persons 
-                    await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/companies?companyId=${params.cpn_id}`)
                     Swal.fire({
                         title: 'ล้มเหลว!',
                         text: "ล้มเหลวในการแก้ไขข้อมูลบริษัท เรื่องไฟล์โลโก้",

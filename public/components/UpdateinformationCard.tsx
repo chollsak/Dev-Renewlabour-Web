@@ -138,7 +138,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
             const response = await axios.patch(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${params.person_id}&outlanderNo=${decodeURIComponent(params.outlanderNo)}`, { person, dataOtherFiles });
 
             if (response.status === 200 && profilePicture) {
-                const uploadPicPath = await uploadProfilePicture(profilePicture, "person", person.outlanderNo, "picpath");
+                const uploadPicPath = await uploadProfilePicture(profilePicture, "persons", person.outlanderNo, "picpath");
                 const uploadDocumentPath = await uploadFileFormData(fileFormData, person, personId);
                 const uploadOtherPath = await uploadOtherFiles(uploadedFiles, person, personId);
 
@@ -156,9 +156,6 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                         }
                     });
                 } else {
-                    //ลบข้อมูล persons 
-                    await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${personId}&outlanderNo=${person.outlanderNo}`)
-
                     Swal.fire({
                         title: 'ล้มเหลว!',
                         text: "ล้มเหลวในการเพิ่มข้อมูลแรงงาน เรื่องไฟล์",
