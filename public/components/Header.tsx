@@ -11,6 +11,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Box, Chip, Typography } from '@mui/material';
 import PageLoader from './Loading/Loading2';
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 interface UserData {
     name: string;
@@ -36,7 +38,14 @@ function UserMenu() {
 
     const FontStyle: React.CSSProperties = {
         fontFamily: 'Kanit, sans-serif',
-      };
+    };
+
+    const router = useRouter()
+
+    const signOuttoLogin = () => {
+        signOut();
+        router.refresh();
+    };
 
     return (
         <div>
@@ -97,7 +106,7 @@ function UserMenu() {
                     ตั้งค่า
                 </MenuItem>
                 <Divider />
-                <MenuItem sx={FontStyle}>
+                <MenuItem sx={FontStyle} onClick={signOuttoLogin}>
                     <ListItemIcon>
                         <LogoutIcon fontSize="small" />
                     </ListItemIcon>

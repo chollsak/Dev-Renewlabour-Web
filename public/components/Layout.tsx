@@ -3,10 +3,13 @@ import { Box } from '@mui/system';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import Footer from './Footer';
+import { useSession } from 'next-auth/react';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
+  const { data: session } = useSession()
 
+  console.log("session: ", session)
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>

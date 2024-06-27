@@ -34,30 +34,7 @@ const handler = NextAuth({
                   AND BINARY_CHECKSUM(password) = BINARY_CHECKSUM(@password)`
             );
           if (users.recordset.length === 0) {
-            const pool = await sqlConnect();
-            const users = await pool
-              .request()
-              .input("username", sql.VarChar, credentials?.username)
-              .input("password", sql.VarChar, credentials?.password)
-              .query(
-                `SELECT * FROM members
-                WHERE 
-                    username = @username
-                    AND BINARY_CHECKSUM(password) = BINARY_CHECKSUM(@password)`
-              );
-            // const users: any = await executeQuery(query, []);
-            if (users.recordset.length === 0) {
-              return null;
-            } else {
-              user = {
-                user_account: users.recordset,
-                name: "customer",
-              };
-              if (!user) {
-                return null; // User not found
-              }
-              return user;
-            }
+            return null;
           } else {
             user = {
               user_account: users.recordset,
