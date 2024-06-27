@@ -152,7 +152,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                         timer: 1000,
                     }).then((result: SweetAlertResult) => {
                         if (result.dismiss === Swal.DismissReason.timer) {
-                            router.push("/employees");
+                            router.push(`/ViewEmployee/${params.person_id}/${decodeURIComponent(params.outlanderNo)}`);
                         }
                     });
                 } else {

@@ -4,6 +4,7 @@ import Layout from '../../../../public/components/Layout'
 import { Typography, IconButton, Card, CardContent, Avatar, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -30,6 +31,12 @@ export default function Home({
         fetchData();
     }, [params.cpn_id]);
 
+    const router = useRouter();
+
+    const handleEditClick = () => {
+        router.push(`/UpdateLocation/${params.cpn_id}`);
+    };
+
     return (
         <>
             {company.length === 0 ? (
@@ -40,7 +47,7 @@ export default function Home({
                 <Layout>
                     <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle }} marginLeft={2}>รายละเอียดที่ทำงาน</Typography>
-                        <IconButton color="primary" >
+                        <IconButton color="primary" onClick={handleEditClick}>
                             <EditIcon />
                         </IconButton>
                     </div>
@@ -48,7 +55,7 @@ export default function Home({
                         <Card className='flex-wrap'>
                             <CardContent className='flex gap-5 flex-wrap'>
                                 <div className='w-1/5 h-fit flex flex-col gap-2 text-center justify-center items-center border-r-2 p-1'>
-                                    <Avatar sx={{ width: 150, height: 150 }} className='border-4 border-[#2074d4]' alt="Person Picture" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5fBnt3sp6tWRNQ4oAHYAdz6PfVMcKJFudtw&s" />
+                                    <Avatar sx={{ width: 150, height: 150 }} className='border-4 border-[#2074d4]' alt="Person Picture" src={`${process.env.NEXT_PUBLIC_FILE_API}/file/companys/${params.cpn_id}/logo/${company[0].logo}`} />
                                     <Box>
                                         <Typography variant='h6' sx={{ fontWeight: '600' }}>{company[0].cpn_n}</Typography>
                                     </Box>

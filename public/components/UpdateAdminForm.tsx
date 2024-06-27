@@ -107,7 +107,7 @@ const UpdateAdmin: React.FC<UserFormProps> = ({ members, params }) => {
                         timer: 1000,
                     }).then((result: SweetAlertResult) => {
                         if (result.dismiss === Swal.DismissReason.timer) {
-                            router.push("/Admin");
+                            router.push(`/ViewAdmin/${params.mem_id}`);
                         }
                     });
                 } else {

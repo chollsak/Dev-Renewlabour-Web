@@ -184,7 +184,7 @@ export default function Home({
                         <Card className='flex-wrap'>
                             <CardContent className='flex gap-5 flex-wrap'>
                                 <div className='w-1/5 h-fit flex flex-col gap-2 text-center justify-center items-center border-r-2 p-1'>
-                                    <Avatar sx={{ width: 150, height: 150 }} className='border-4 border-[#2074d4]' alt="Person Picture" src="https://resource.nationtv.tv/uploads/images/contents/w1024/2023/08/SNbgVb6IR2MmIm76Nupj.webp?x-image-process=style/lg-webp" />
+                                    <PersonsAvatar outlanderNo={persons[0].outlanderNo} picpath={persons[0].picpath} />
                                     <Box>
                                         <Typography variant='h6' sx={{ fontWeight: '600' }}>{persons[0].firstname + " " + persons[0].lastname}</Typography>
                                         <Typography sx={{ color: 'gray' }}>{persons[0].firstnameth + " " + persons[0].lastnameth}</Typography>

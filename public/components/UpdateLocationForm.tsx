@@ -141,7 +141,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                         timer: 1000,
                     }).then((result: SweetAlertResult) => {
                         if (result.dismiss === Swal.DismissReason.timer) {
-                            router.push("/Location");
+                            router.push(`/ViewLocation/${params.cpn_id}`);
                         }
                     });
                 } else {
