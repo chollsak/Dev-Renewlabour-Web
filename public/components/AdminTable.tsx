@@ -66,9 +66,9 @@ export default function AdminTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
                         return (
-                            <TableRowMemberAll row={row} key={row.mem_id} />
+                            <TableRowMemberAll row={row} key={row.mem_id} index={index} />
                         )
                     })}
                 </TableBody>

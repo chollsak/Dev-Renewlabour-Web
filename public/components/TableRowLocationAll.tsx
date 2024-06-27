@@ -7,7 +7,7 @@ const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
 };
 
-export default function TableRowLocationAll({ row }: { row: any }) {
+export default function TableRowLocationAll({ row, index }: { row: any, index: any }) {
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -48,7 +48,7 @@ export default function TableRowLocationAll({ row }: { row: any }) {
     return (
         <TableRow key={row.id}>
             <TableCell component="th" scope="row" sx={{ ...FontStyle }}>
-                {row.cpn_id}
+                {index + 1}
             </TableCell>
             <TableCell sx={{ ...FontStyle }}>{row.cpn_n}</TableCell>
             <TableCell sx={{ ...FontStyle }}>{row.cpn_build}</TableCell>

@@ -90,9 +90,9 @@ const DataTable: React.FC = () => {
                 <TableBody>
                     {sortedData
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((row) => {
+                        .map((row, index) => {
                             return (
-                                <TableRowLocationAll row={row} key={row.company_id} />
+                                <TableRowLocationAll row={row} key={row.company_id} index={index} />
                             )
                         })}
                 </TableBody>

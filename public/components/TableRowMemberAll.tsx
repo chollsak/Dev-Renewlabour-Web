@@ -7,7 +7,7 @@ const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
 };
 
-export default function TableRowMemberAll({ row }: { row: any }) {
+export default function TableRowMemberAll({ row, index }: { row: any, index: any }) {
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -48,7 +48,7 @@ export default function TableRowMemberAll({ row }: { row: any }) {
     return (
         <TableRow key={row.id}>
             <TableCell component="th" scope="row" sx={{ ...FontStyle }}>
-                {row.mem_id}
+                {index + 1}
             </TableCell>
             <TableCell sx={{ ...FontStyle }}>{row.member_name} {row.member_lastname}</TableCell>
             <TableCell sx={{ ...FontStyle }}>{row.email}</TableCell>
