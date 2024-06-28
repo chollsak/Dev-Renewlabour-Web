@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import {
     Box,
     TextField,
@@ -90,7 +90,8 @@ const UpdateAdmin: React.FC<UserFormProps> = ({ members, params }) => {
         }
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         try {
             // Send the data to the API using Axios
             const response = await axios.patch(`${process.env.NEXT_PUBLIC_API}/api/admin?memberId=${params.mem_id}`, { member });
@@ -142,118 +143,120 @@ const UpdateAdmin: React.FC<UserFormProps> = ({ members, params }) => {
 
     return (
         <Box sx={{ maxWidth: '60%' }}>
-            <Box sx={{ m: 1, marginLeft: '30px' }}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            name="member_name"
-                            label="ชื่อจริง"
-                            type="text"
-                            onChange={handleChange}
-                            fullWidth
-                            value={member.member_name}
-                            required
-                            size="small"
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            name="member_lastname"
-                            label="นามสกุล"
-                            type="text"
-                            onChange={handleChange}
-                            fullWidth
-                            value={member.member_lastname}
-                            required
-                            size="small"
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            name="username"
-                            label="Username"
-                            type="text"
-                            onChange={handleChange}
-                            fullWidth
-                            value={member.username}
-                            required
-                            size="small"
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            name="email"
-                            label="อีเมล"
-                            type="email"
-                            onChange={handleChange}
-                            fullWidth
-                            value={member.email}
-                            required
-                            size="small"
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            name="tel"
-                            label="เบอร์โทรศัพท์"
-                            type="tel"
-                            onChange={handleChange}
-                            fullWidth
-                            value={member.tel}
-                            required
-                            size="small"
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={data.map((option) => option.cpn_n)}
-                            onChange={handleCompany}
-                            value={member.company}
-                            renderInput={(params) => <TextField {...params} name="company" fullWidth size="small" label="Company" />}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            name="lineID"
-                            label="Line ID"
-                            type="text"
-                            onChange={handleChange}
-                            fullWidth
-                            value={member.lineID}
-                            required
-                            size="small"
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Avatar sx={{ marginRight: 2 }}>
-                                {profilePicture ? (
-                                    <Box component="img" src={URL.createObjectURL(profilePicture)} alt="Avatar" width="40" height="40" />
-                                ) : (
-                                    <Box component="img" src={`${process.env.NEXT_PUBLIC_FILE_API}/file/members/${params.mem_id}/picpath/${member.m_picpath}`} alt="Avatar" width="40" height="40" />
-                                )}
-                            </Avatar>
-                            <input
-                                accept="image/*"
-                                id="icon-button-file"
-                                type="file"
-                                style={{ display: 'none' }}
-                                onChange={handleFileChange}
+            <form onSubmit={handleSubmit}>
+                <Box sx={{ m: 1, marginLeft: '30px' }}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                name="member_name"
+                                label="ชื่อจริง"
+                                type="text"
+                                onChange={handleChange}
+                                fullWidth
+                                value={member.member_name}
+                                required
+                                size="small"
                             />
-                            <label htmlFor="icon-button-file">
-                                <IconButton color="primary" aria-label="upload picture" component="span">
-                                    <PhotoCamera />
-                                </IconButton>
-                            </label>
-                        </Box>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                name="member_lastname"
+                                label="นามสกุล"
+                                type="text"
+                                onChange={handleChange}
+                                fullWidth
+                                value={member.member_lastname}
+                                required
+                                size="small"
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                name="username"
+                                label="Username"
+                                type="text"
+                                onChange={handleChange}
+                                fullWidth
+                                value={member.username}
+                                required
+                                size="small"
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                name="email"
+                                label="อีเมล"
+                                type="email"
+                                onChange={handleChange}
+                                fullWidth
+                                value={member.email}
+                                required
+                                size="small"
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                name="tel"
+                                label="เบอร์โทรศัพท์"
+                                type="tel"
+                                onChange={handleChange}
+                                fullWidth
+                                value={member.tel}
+                                required
+                                size="small"
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Autocomplete
+                                disablePortal
+                                id="combo-box-demo"
+                                options={data.map((option) => option.cpn_n)}
+                                onChange={handleCompany}
+                                value={member.company}
+                                renderInput={(params) => <TextField {...params} name="company" fullWidth size="small" label="Company" />}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                name="lineID"
+                                label="Line ID"
+                                type="text"
+                                onChange={handleChange}
+                                fullWidth
+                                value={member.lineID}
+                                required
+                                size="small"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Avatar sx={{ marginRight: 2 }}>
+                                    {profilePicture ? (
+                                        <Box component="img" src={URL.createObjectURL(profilePicture)} alt="Avatar" width="40" height="40" />
+                                    ) : (
+                                        <Box component="img" src={`${process.env.NEXT_PUBLIC_FILE_API}/file/members/${params.mem_id}/picpath/${member.m_picpath}`} alt="Avatar" width="40" height="40" />
+                                    )}
+                                </Avatar>
+                                <input
+                                    accept="image/*"
+                                    id="icon-button-file"
+                                    type="file"
+                                    style={{ display: 'none' }}
+                                    onChange={handleFileChange}
+                                />
+                                <label htmlFor="icon-button-file">
+                                    <IconButton color="primary" aria-label="upload picture" component="span">
+                                        <PhotoCamera />
+                                    </IconButton>
+                                </label>
+                            </Box>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Box>
-            <Button variant="contained" color="primary" size="small" onClick={handleSubmit} sx={{ marginLeft: '30px', marginTop: '30px', ...FontStyle }}>
-                เพิ่ม
-            </Button>
+                </Box>
+                <Button variant="contained" color="primary" size="small" type='submit' sx={{ marginLeft: '30px', marginTop: '30px', ...FontStyle }}>
+                    เพิ่ม
+                </Button>
+            </form>
         </Box>
     );
 };

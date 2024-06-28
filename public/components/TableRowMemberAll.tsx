@@ -2,6 +2,8 @@ import { Chip, IconButton, Menu, MenuItem, TableCell, TableRow } from '@mui/mate
 import { MoreVert as MoreVertIcon } from '@mui/icons-material';
 import React, { useState } from 'react'
 import PageLoader from './Loading/Loading2';
+import axios from 'axios';
+import Swal, { SweetAlertResult } from 'sweetalert2';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -34,10 +36,33 @@ export default function TableRowMemberAll({ row, index }: { row: any, index: any
         window.location.href = `UpdateAdmin/${row.mem_id}`;
     };
 
-    const handleDelete = (row: any) => {
+    const handleDelete = async (row: any) => {
         // Handle delete action here
         console.log('Delete clicked:', row);
-
+        const deleteData = await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/admin?memberId=${row.mem_id}`)
+        const deleteFolder = await axios.delete(`${process.env.NEXT_PUBLIC_FILE_API}/api/members/${row.mem_id}`)
+        if (deleteData.status === 200 && (deleteFolder.status === 200 || deleteFolder.status === 404)) {
+            Swal.fire({
+                title: 'สำเร็จ!',
+                text: 'เพิ่มข้อมูลแรงงานได้สำเร็จ!',
+                icon: 'success',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                timer: 1000,
+            }).then((result: SweetAlertResult) => {
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    window.location.href = "/employees";
+                }
+            });
+        } else {
+            Swal.fire({
+                title: 'ล้มเหลว!',
+                text: "ไม่สามารถลบข้อมูลแรงงานได้",
+                icon: 'error',
+                showConfirmButton: true,
+                allowOutsideClick: false,
+            })
+        }
         return (
             <div>
                 <PageLoader />

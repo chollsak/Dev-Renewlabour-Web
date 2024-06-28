@@ -4,6 +4,8 @@ import Chip from '@mui/joy/Chip';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import moment from 'moment';
 import PageLoader from './Loading/Loading2';
+import axios from 'axios';
+import Swal, { SweetAlertResult } from 'sweetalert2';
 
 interface TableRowProps {
     row: any;
@@ -123,10 +125,33 @@ const TableRowAll: React.FC<TableRowProps> = ({ row }) => {
         window.location.href = `UpdateEmployee/${row.person_id}/${encodeURIComponent(row.outlanderNo)}`;
     };
 
-    const handleDelete = (row: any) => {
+    const handleDelete = async (row: any) => {
         // Handle delete action here
         console.log('Delete clicked:', row);
-
+        const deleteData = await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${row.person_id}&outlanderNo=${row.outlanderNo}`)
+        const deleteFolder = await axios.delete(`${process.env.NEXT_PUBLIC_FILE_API}/api/persons/${row.outlanderNo}`)
+        if (deleteData.status === 200 && (deleteFolder.status === 200 || deleteFolder.status === 404)) {
+            Swal.fire({
+                title: 'สำเร็จ!',
+                text: 'เพิ่มข้อมูลแรงงานได้สำเร็จ!',
+                icon: 'success',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                timer: 1000,
+            }).then((result: SweetAlertResult) => {
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    window.location.href = "/employees";
+                }
+            });
+        } else {
+            Swal.fire({
+                title: 'ล้มเหลว!',
+                text: "ไม่สามารถลบข้อมูลแรงงานได้",
+                icon: 'error',
+                showConfirmButton: true,
+                allowOutsideClick: false,
+            })
+        }
         return (
             <div>
                 <PageLoader />

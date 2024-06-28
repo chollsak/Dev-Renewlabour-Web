@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import {
     Box,
     TextField,
@@ -124,7 +124,8 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
         }
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         try {
             // Send the data to the API using Axios
             const response = await axios.patch(`${process.env.NEXT_PUBLIC_API}/api/companies?companyId=${params.cpn_id}`, { company });
@@ -176,181 +177,183 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
     return (
         <Card sx={{ width: '100%', boxShadow: 3 }}>
             <CardContent>
-                <Box sx={{ display: 'flex', justifyContent: 'left', marginBottom: 2, flexDirection: 'column' }}>
-                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle, marginBottom: '15px' }}>ข้อมูลบริษัท</Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                                label="ชื่อบริษัท (ชื่อสาขาย่อย ถ้ามี โดยชื่อสาขาย่อยต้องอยู่ในวงเล็บด้วย)"
-                                variant="outlined"
-                                required
-                                size="small"
-                                name='cpn_n'
-                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                value={company.cpn_n}
-                                sx={{ width: '100%', margin: 1 }}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="ตึกของบริษัท"
-                                variant="outlined"
-                                required
-                                size="small"
-                                name='cpn_build'
-                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                value={company.cpn_build}
-                                sx={{ width: '100%', margin: 1 }}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="ชั้นของบริษัท"
-                                variant="outlined"
-                                required
-                                size="small"
-                                name='cpn_fl'
-                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                value={company.cpn_fl}
-                                sx={{ width: '100%', margin: 1 }}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="หมู่บ้านที่บริษัทตั้ง"
-                                variant="outlined"
-                                required
-                                size="small"
-                                name='cpn_vill'
-                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                value={company.cpn_vill}
-                                sx={{ width: '100%', margin: 1 }}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="ห้องที่ตั้งของบริษัท"
-                                variant="outlined"
-                                required
-                                size="small"
-                                name='cpn_room'
-                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                value={company.cpn_room}
-                                sx={{ width: '100%', margin: 1 }}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="หมู่ที่ตั้งของบริษัท"
-                                variant="outlined"
-                                required
-                                size="small"
-                                name='cpn_moo'
-                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                value={company.cpn_moo}
-                                sx={{ width: '100%', margin: 1 }}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="ซอยที่ตั้งของบริษัท"
-                                variant="outlined"
-                                required
-                                size="small"
-                                name='cpn_soi'
-                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                value={company.cpn_soi}
-                                sx={{ width: '100%', margin: 1 }}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="ถนนที่ตั้งของบริษัท"
-                                variant="outlined"
-                                required
-                                size="small"
-                                name='cpn_st'
-                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                value={company.cpn_st}
-                                sx={{ width: '100%', margin: 1 }}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                label="เมืองที่ตั้งของบริษัท"
-                                variant="outlined"
-                                required
-                                size="small"
-                                name='cpn_coun'
-                                onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                value={company.cpn_coun}
-                                sx={{ width: '100%', margin: 1 }}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                label="ค้นหาที่อยู่ (จังหวัด อำเภอ ตำบล)"
-                                variant="outlined"
-                                value={searchTextWork}
-                                required
-                                size='small'
-                                sx={{ width: '100%', margin: 1 }}
-
-                                onChange={handleSearchChangeWork}
-                            />
-                            <List>
-                                {filteredAddressesWork.map((address, index) => (
-                                    <ListItem key={index} button onClick={() => handleListItemClickWork(address)}>
-                                        <ListItemText
-                                            primary={`${address.district}, ${address.amphoe}, ${address.province}, ${address.zipcode}`}
-                                            secondary={`${address.districtEng}, ${address.amphoeEng}, ${address.provinceEng}`}
-                                        />
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <FormControl fullWidth size="small" sx={{ margin: 1 }}>
-                                <InputLabel id="branch-type-label">ประเภทสาขา</InputLabel>
-                                <Select
-                                    labelId="branch-type-label"
-                                    id="branch-type"
-                                    name='branch'
-                                    value={company.branch}
-                                    label="ประเภทสาขา"
-                                    onChange={(event) => setCompany({ ...company, [event.target.name]: event.target.value })}
-                                >
-                                    <MenuItem value="หลัก">หลัก</MenuItem>
-                                    <MenuItem value="ย่อย">ย่อย</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', margin: 1 }}>
-                                <Avatar sx={{ marginRight: 2 }}>
-                                    {logo ? (
-                                        <Box component="img" src={URL.createObjectURL(logo)} alt="Logo" width="40" height="40" />
-                                    ) : (
-                                        <Box component="img" src={`${process.env.NEXT_PUBLIC_FILE_API}/file/companys/${params.cpn_id}/logo/${company.logo}`} alt="Logo" width="40" height="40" />
-                                    )}
-                                </Avatar>
-                                <input
-                                    accept="image/*"
-                                    id="icon-button-file"
-                                    type="file"
-                                    style={{ display: 'none' }}
-                                    onChange={handleLogoChange}
+                <form onSubmit={handleSubmit}>
+                    <Box sx={{ display: 'flex', justifyContent: 'left', marginBottom: 2, flexDirection: 'column' }}>
+                        <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle, marginBottom: '15px' }}>ข้อมูลบริษัท</Typography>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="ชื่อบริษัท (ชื่อสาขาย่อย ถ้ามี โดยชื่อสาขาย่อยต้องอยู่ในวงเล็บด้วย)"
+                                    variant="outlined"
+                                    required
+                                    size="small"
+                                    name='cpn_n'
+                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                    value={company.cpn_n}
+                                    sx={{ width: '100%', margin: 1 }}
                                 />
-                                <label htmlFor="icon-button-file">
-                                    <IconButton color="primary" aria-label="upload picture" component="span">
-                                        <PhotoCamera />
-                                    </IconButton>
-                                </label>
-                            </Box>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField
+                                    label="ตึกของบริษัท"
+                                    variant="outlined"
+                                    required
+                                    size="small"
+                                    name='cpn_build'
+                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                    value={company.cpn_build}
+                                    sx={{ width: '100%', margin: 1 }}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField
+                                    label="ชั้นของบริษัท"
+                                    variant="outlined"
+                                    required
+                                    size="small"
+                                    name='cpn_fl'
+                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                    value={company.cpn_fl}
+                                    sx={{ width: '100%', margin: 1 }}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField
+                                    label="หมู่บ้านที่บริษัทตั้ง"
+                                    variant="outlined"
+                                    required
+                                    size="small"
+                                    name='cpn_vill'
+                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                    value={company.cpn_vill}
+                                    sx={{ width: '100%', margin: 1 }}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField
+                                    label="ห้องที่ตั้งของบริษัท"
+                                    variant="outlined"
+                                    required
+                                    size="small"
+                                    name='cpn_room'
+                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                    value={company.cpn_room}
+                                    sx={{ width: '100%', margin: 1 }}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField
+                                    label="หมู่ที่ตั้งของบริษัท"
+                                    variant="outlined"
+                                    required
+                                    size="small"
+                                    name='cpn_moo'
+                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                    value={company.cpn_moo}
+                                    sx={{ width: '100%', margin: 1 }}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField
+                                    label="ซอยที่ตั้งของบริษัท"
+                                    variant="outlined"
+                                    required
+                                    size="small"
+                                    name='cpn_soi'
+                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                    value={company.cpn_soi}
+                                    sx={{ width: '100%', margin: 1 }}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField
+                                    label="ถนนที่ตั้งของบริษัท"
+                                    variant="outlined"
+                                    required
+                                    size="small"
+                                    name='cpn_st'
+                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                    value={company.cpn_st}
+                                    sx={{ width: '100%', margin: 1 }}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField
+                                    label="เมืองที่ตั้งของบริษัท"
+                                    variant="outlined"
+                                    required
+                                    size="small"
+                                    name='cpn_coun'
+                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                    value={company.cpn_coun}
+                                    sx={{ width: '100%', margin: 1 }}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="ค้นหาที่อยู่ (จังหวัด อำเภอ ตำบล)"
+                                    variant="outlined"
+                                    value={searchTextWork}
+                                    required
+                                    size='small'
+                                    sx={{ width: '100%', margin: 1 }}
+
+                                    onChange={handleSearchChangeWork}
+                                />
+                                <List>
+                                    {filteredAddressesWork.map((address, index) => (
+                                        <ListItem key={index} button onClick={() => handleListItemClickWork(address)}>
+                                            <ListItemText
+                                                primary={`${address.district}, ${address.amphoe}, ${address.province}, ${address.zipcode}`}
+                                                secondary={`${address.districtEng}, ${address.amphoeEng}, ${address.provinceEng}`}
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <FormControl fullWidth size="small" sx={{ margin: 1 }}>
+                                    <InputLabel id="branch-type-label">ประเภทสาขา</InputLabel>
+                                    <Select
+                                        labelId="branch-type-label"
+                                        id="branch-type"
+                                        name='branch'
+                                        value={company.branch}
+                                        label="ประเภทสาขา"
+                                        onChange={(event) => setCompany({ ...company, [event.target.name]: event.target.value })}
+                                    >
+                                        <MenuItem value="หลัก">หลัก</MenuItem>
+                                        <MenuItem value="ย่อย">ย่อย</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', margin: 1 }}>
+                                    <Avatar sx={{ marginRight: 2 }}>
+                                        {logo ? (
+                                            <Box component="img" src={URL.createObjectURL(logo)} alt="Logo" width="40" height="40" />
+                                        ) : (
+                                            <Box component="img" src={`${process.env.NEXT_PUBLIC_FILE_API}/file/companys/${params.cpn_id}/logo/${company.logo}`} alt="Logo" width="40" height="40" />
+                                        )}
+                                    </Avatar>
+                                    <input
+                                        accept="image/*"
+                                        id="icon-button-file"
+                                        type="file"
+                                        style={{ display: 'none' }}
+                                        onChange={handleLogoChange}
+                                    />
+                                    <label htmlFor="icon-button-file">
+                                        <IconButton color="primary" aria-label="upload picture" component="span">
+                                            <PhotoCamera />
+                                        </IconButton>
+                                    </label>
+                                </Box>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Box>
-                <Button variant="contained" sx={{ width: '100%', marginTop: 2 }} onClick={handleSubmit}>เพิ่ม</Button>
+                    </Box>
+                    <Button variant="contained" sx={{ width: '100%', marginTop: 2 }} type='submit'>เพิ่ม</Button>
+                </form>
             </CardContent>
         </Card>
     );

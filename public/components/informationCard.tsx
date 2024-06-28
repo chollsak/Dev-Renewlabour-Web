@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import {
     Box,
     TextField,
@@ -122,7 +122,8 @@ const UserForm: React.FC = () => {
         setDataOtherFiles(fileNames);
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         try {
             // Send the data to the API using Axios
             const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/api/persons`, { person, dataOtherFiles });
@@ -179,176 +180,172 @@ const UserForm: React.FC = () => {
     return (
         <Card sx={{ width: '100%', boxShadow: 3 }}>
             <CardContent>
-                <Box sx={{ display: 'flex', justifyContent: 'left', marginBottom: 2, flexDirection: 'column' }}>
-                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>รูปภาพแรงงาน</Typography>
-                    <Grid container spacing={2} mb={2}>
-                        <Grid item xs={12}>
-                            <input type="file" accept="image/*" onChange={handleFileChange} />
-                            {profilePicture && (
-                                <Typography variant="body1" sx={{ ...FontStyle, marginTop: 1 }}>
-                                    Uploaded file: {profilePicture.name}
-                                </Typography>
-                            )}
+                <form onSubmit={handleSubmit}>
+                    <Box sx={{ display: 'flex', justifyContent: 'left', marginBottom: 2, flexDirection: 'column' }}>
+                        <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>รูปภาพแรงงาน</Typography>
+                        <Grid container spacing={2} mb={2}>
+                            <Grid item xs={12}>
+                                <input type="file" accept="image/*" onChange={handleFileChange} />
+                                {profilePicture && (
+                                    <Typography variant="body1" sx={{ ...FontStyle, marginTop: 1 }}>
+                                        Uploaded file: {profilePicture.name}
+                                    </Typography>
+                                )}
+                            </Grid>
                         </Grid>
-                    </Grid>
 
-                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>ข้อมูลส่วนบุคคล</Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs={4}>
-                            <FormControl fullWidth>
-                                <InputLabel>คำนำหน้าชื่อ ภาษาอังกฤษ</InputLabel>
-                                <Select
-                                    name="prefix"
-                                    value={person.prefix}
-                                    label="คำนำหน้าชื่อ ภาษาอังกฤษ"
-                                    onChange={handleChange}
-                                    sx={{ width: '100%', margin: 1, height: "40px" }}
-                                >
-                                    <MenuItem value="Mr.">Mr.</MenuItem>
-                                    <MenuItem value="Mrs.">Mrs.</MenuItem>
-                                    <MenuItem value="Ms.">Ms.</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextField
-                                label="ชื่อจริง ภาษาอังกฤษ"
-                                name='firstname'
-                                variant="outlined"
-
-                                size="small"
-                                sx={{ width: '100%', margin: 1 }}
-                                value={person.firstname}
-                                onChange={(e) => setPerson({ ...person, firstname: e.target.value })}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextField
-                                label="นามสกุล ภาษาอังกฤษ"
-                                name='lastname'
-                                variant="outlined"
-
-                                size="small"
-                                sx={{ width: '100%', margin: 1 }}
-                                value={person.lastname}
-                                onChange={(e) => setPerson({ ...person, lastname: e.target.value })}
-                            />
-                        </Grid>
-                        <Grid container spacing={2} marginLeft={0.05}>
+                        <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>ข้อมูลส่วนบุคคล</Typography>
+                        <Grid container spacing={2}>
                             <Grid item xs={4}>
                                 <FormControl fullWidth>
-                                    <InputLabel>คำนำหน้าชื่อ ภาษาไทย</InputLabel>
+                                    <InputLabel>คำนำหน้าชื่อ ภาษาอังกฤษ</InputLabel>
                                     <Select
-                                        name="prefixth"
-                                        value={person.prefixth}
-                                        label="คำนำหน้าชื่อ ภาษาไทย"
+                                        name="prefix"
+                                        value={person.prefix}
+                                        label="คำนำหน้าชื่อ ภาษาอังกฤษ"
                                         onChange={handleChange}
                                         sx={{ width: '100%', margin: 1, height: "40px" }}
                                     >
-                                        <MenuItem value="นาย">นาย</MenuItem>
-                                        <MenuItem value="นาง">นาง</MenuItem>
-                                        <MenuItem value="นางสาว">นางสาว</MenuItem>
+                                        <MenuItem value="Mr.">Mr.</MenuItem>
+                                        <MenuItem value="Mrs.">Mrs.</MenuItem>
+                                        <MenuItem value="Ms.">Ms.</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Grid>
                             <Grid item xs={4}>
                                 <TextField
-                                    label="ชื่อจริง ภาษาไทย"
-                                    name='firstnameth'
+                                    label="ชื่อจริง ภาษาอังกฤษ"
+                                    name='firstname'
                                     variant="outlined"
-
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
-                                    value={person.firstnameth}
-                                    onChange={(e) => setPerson({ ...person, firstnameth: e.target.value })}
+                                    value={person.firstname}
+                                    onChange={(e) => setPerson({ ...person, firstname: e.target.value })}
                                 />
                             </Grid>
                             <Grid item xs={4}>
                                 <TextField
-                                    label="นามสกุล ภาษาไทย"
-                                    name='lastnameth'
+                                    label="นามสกุล ภาษาอังกฤษ"
+                                    name='lastname'
                                     variant="outlined"
-
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
-                                    value={person.lastnameth}
-                                    onChange={(e) => setPerson({ ...person, lastnameth: e.target.value })}
+                                    value={person.lastname}
+                                    onChange={(e) => setPerson({ ...person, lastname: e.target.value })}
+                                />
+                            </Grid>
+                            <Grid container spacing={2} marginLeft={0.05}>
+                                <Grid item xs={4}>
+                                    <FormControl fullWidth>
+                                        <InputLabel>คำนำหน้าชื่อ ภาษาไทย</InputLabel>
+                                        <Select
+                                            name="prefixth"
+                                            value={person.prefixth}
+                                            label="คำนำหน้าชื่อ ภาษาไทย"
+                                            onChange={handleChange}
+                                            sx={{ width: '100%', margin: 1, height: "40px" }}
+                                        >
+                                            <MenuItem value="นาย">นาย</MenuItem>
+                                            <MenuItem value="นาง">นาง</MenuItem>
+                                            <MenuItem value="นางสาว">นางสาว</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <TextField
+                                        label="ชื่อจริง ภาษาไทย"
+                                        name='firstnameth'
+                                        variant="outlined"
+                                        size="small"
+                                        sx={{ width: '100%', margin: 1 }}
+                                        value={person.firstnameth}
+                                        onChange={(e) => setPerson({ ...person, firstnameth: e.target.value })}
+                                    />
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <TextField
+                                        label="นามสกุล ภาษาไทย"
+                                        name='lastnameth'
+                                        variant="outlined"
+                                        size="small"
+                                        sx={{ width: '100%', margin: 1 }}
+                                        value={person.lastnameth}
+                                        onChange={(e) => setPerson({ ...person, lastnameth: e.target.value })}
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={2} marginLeft={0.05}>
+                                <Grid item xs={2}>
+                                    <TextField
+                                        label="ชื่อเล่น"
+                                        name='nickname'
+                                        variant="outlined"
+                                        size="small"
+                                        sx={{ width: '100%', margin: 1 }}
+                                        value={person.nickname}
+                                        onChange={(e) => setPerson({ ...person, nickname: e.target.value })}
+                                    />
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <TextField
+                                        label="สัญชาติ"
+                                        name='nationality'
+                                        variant="outlined"
+                                        size="small"
+                                        sx={{ width: '100%', margin: 1 }}
+                                        value={person.nationality}
+                                        onChange={(e) => setPerson({ ...person, nationality: e.target.value })}
+                                    />
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <TextField
+                                        required
+                                        label="หมายเลขรหัสต่างด้าว"
+                                        name='outlanderNo'
+                                        variant="outlined"
+                                        size="small"
+                                        sx={{ width: '100%', margin: 1 }}
+                                        value={person.outlanderNo}
+                                        onChange={(e) => setPerson({ ...person, outlanderNo: e.target.value })}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
+                        <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>บริษัทที่แรงงานทำงาน</Typography>
+                        <Grid container spacing={2} mb={2}>
+                            <Grid item xs={12} md={4}>
+                                <Autocomplete
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={data.map((option) => option.cpn_n)}
+                                    sx={{ width: 300, height: "40px" }}
+                                    onChange={handleCompany}
+                                    renderInput={(params) => <TextField {...params} name="company" label="Company" />}
                                 />
                             </Grid>
                         </Grid>
-                        <Grid container spacing={2} marginLeft={0.05}>
-                            <Grid item xs={2}>
-                                <TextField
-                                    label="ชื่อเล่น"
-                                    name='nickname'
-                                    variant="outlined"
 
-                                    size="small"
-                                    sx={{ width: '100%', margin: 1 }}
-                                    value={person.nickname}
-                                    onChange={(e) => setPerson({ ...person, nickname: e.target.value })}
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <TextField
-                                    label="สัญชาติ"
-                                    name='nationality'
-                                    variant="outlined"
-
-                                    size="small"
-                                    sx={{ width: '100%', margin: 1 }}
-                                    value={person.nationality}
-                                    onChange={(e) => setPerson({ ...person, nationality: e.target.value })}
-                                />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <TextField
-                                    label="หมายเลขรหัสต่างด้าว"
-                                    name='outlanderNo'
-                                    variant="outlined"
-
-                                    size="small"
-                                    sx={{ width: '100%', margin: 1 }}
-                                    value={person.outlanderNo}
-                                    onChange={(e) => setPerson({ ...person, outlanderNo: e.target.value })}
-                                />
-                            </Grid>
+                        <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>ไฟล์เอกสารของแรงงาน</Typography>
+                        <Grid container spacing={2}>
+                            <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Visa')}>Visa</Button></Grid>
+                            <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Passport')}>Passport</Button></Grid>
+                            <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Workpermit')}>Work permit</Button></Grid>
+                            <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('ninetydays')}>ninetydays</Button></Grid>
+                            <DialogComponent title="visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('visa', data)} />
+                            <DialogComponent title="passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('passport', data)} />
+                            <DialogComponent title="workpermit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('workpermit', data)} />
+                            <DialogComponent title="ninetydays" open={openDialog === 'Ninetydays'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('ninetydays', data)} />
                         </Grid>
-                    </Grid>
 
-                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>บริษัทที่แรงงานทำงาน</Typography>
-                    <Grid container spacing={2} mb={2}>
-                        <Grid item xs={12} md={4}>
-                            <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                options={data.map((option) => option.cpn_n)}
-                                sx={{ width: 300, height: "40px" }}
-                                onChange={handleCompany}
-                                renderInput={(params) => <TextField {...params} name="company" label="Company" />}
-                            />
+                        <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>อัปโหลดไฟล์เพิ่มเติม</Typography>
+                        <Grid container spacing={2}>
+                            <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Files')}>Upload Files</Button></Grid>
+                            <FilesOther open={openDialog === 'Files'} handleClose={handleCloseDialog} onSave={handleFilesDialogSave} />
                         </Grid>
-                    </Grid>
-
-                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>ไฟล์เอกสารของแรงงาน</Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Visa')}>Visa</Button></Grid>
-                        <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Passport')}>Passport</Button></Grid>
-                        <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Workpermit')}>Work permit</Button></Grid>
-                        <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('ninetydays')}>ninetydays</Button></Grid>
-                        <DialogComponent title="visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('visa', data)} />
-                        <DialogComponent title="passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('passport', data)} />
-                        <DialogComponent title="workpermit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('workpermit', data)} />
-                        <DialogComponent title="ninetydays" open={openDialog === 'Ninetydays'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('ninetydays', data)} />
-                    </Grid>
-
-                    <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>อัปโหลดไฟล์เพิ่มเติม</Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Files')}>Upload Files</Button></Grid>
-                        <FilesOther open={openDialog === 'Files'} handleClose={handleCloseDialog} onSave={handleFilesDialogSave} />
-                    </Grid>
-                </Box>
-                <Button variant="contained" sx={{ width: '100%', marginTop: 2 }} onClick={handleSubmit}>Submit</Button>
+                    </Box>
+                    <Button variant="contained" sx={{ width: '100%', marginTop: 2 }} type="submit">Submit</Button>
+                </form>
             </CardContent>
         </Card>
     );
