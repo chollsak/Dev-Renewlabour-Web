@@ -193,7 +193,7 @@ const LocationForm: React.FC = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="ตึกของบริษัท"
+                                    label="ตึก"
                                     name='cpn_build'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                     variant="outlined"
@@ -204,7 +204,7 @@ const LocationForm: React.FC = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="ชั้นของบริษัท"
+                                    label="ชั้น"
                                     name='cpn_fl'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                     variant="outlined"
@@ -215,7 +215,7 @@ const LocationForm: React.FC = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="หมู่บ้านที่บริษัทตั้ง"
+                                    label="หมู่บ้าน"
                                     name='cpn_vill'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                     variant="outlined"
@@ -226,7 +226,7 @@ const LocationForm: React.FC = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="ห้องที่ตั้งของบริษัท"
+                                    label="ห้อง"
                                     name='cpn_room'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                     variant="outlined"
@@ -237,7 +237,7 @@ const LocationForm: React.FC = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="หมู่ที่ตั้งของบริษัท"
+                                    label="หมู่"
                                     name='cpn_moo'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                     variant="outlined"
@@ -248,7 +248,7 @@ const LocationForm: React.FC = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="ซอยที่ตั้งของบริษัท"
+                                    label="ซอย"
                                     name='cpn_soi'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                     variant="outlined"
@@ -259,7 +259,7 @@ const LocationForm: React.FC = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="ถนนที่ตั้งของบริษัท"
+                                    label="ถนน"
                                     name='cpn_st'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                     variant="outlined"
@@ -270,7 +270,7 @@ const LocationForm: React.FC = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="เมืองที่ตั้งของบริษัท"
+                                    label="เมือง"
                                     name='cpn_coun'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                     variant="outlined"
