@@ -23,14 +23,13 @@ export const uploadProfilePicture = async (profilePicture: any, category: any, n
     }
 };
 
-export const uploadFileFormData = async (fileFormData: any, person: any, personId: any) => {
+export const uploadFileFormData = async (fileFormData: any, number: any) => {
     for (let key in fileFormData) {
         const fileData = fileFormData[key];
         if (fileData.file) {
             const formData = new FormData();
             formData.append('filePaths', fileData.file);
-            formData.append('outlanderNo', person.outlanderNo);
-            formData.append('personId', personId);
+            formData.append('number', number);
 
             try {
                 const response = await axios.post(`${process.env.NEXT_PUBLIC_FILE_API}/upload/persons/${fileData.title}`, formData, {

@@ -129,8 +129,8 @@ const UserForm: React.FC = () => {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/api/persons`, { person, dataOtherFiles });
             const personId = response.data.personId
             if (response.status === 200 && personId) {
-                const uploadPicPath = await uploadProfilePicture(profilePicture, "person", person.outlanderNo, "picpath");
-                const uploadDocumentPath = await uploadFileFormData(fileFormData, person, personId);
+                const uploadPicPath = await uploadProfilePicture(profilePicture, "persons", person.outlanderNo, "picpath");
+                const uploadDocumentPath = await uploadFileFormData(fileFormData, person.outlanderNo);
                 const uploadOtherPath = await uploadOtherFiles(uploadedFiles, person, personId);
 
                 if ((uploadPicPath.status === 200 || !uploadPicPath || uploadPicPath.status === 400) && (uploadDocumentPath.status === 200 || uploadDocumentPath.status === 400 || !uploadDocumentPath) && (uploadOtherPath.status === 200 || uploadOtherPath.status === 400 || !uploadOtherPath)) {
