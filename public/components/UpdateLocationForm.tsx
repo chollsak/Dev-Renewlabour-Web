@@ -195,7 +195,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="ตึกของบริษัท"
+                                    label="ตึก"
                                     variant="outlined"
                                     required
                                     size="small"
@@ -207,7 +207,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="ชั้นของบริษัท"
+                                    label="ชั้น"
                                     variant="outlined"
                                     required
                                     size="small"
@@ -219,7 +219,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="หมู่บ้านที่บริษัทตั้ง"
+                                    label="หมู่บ้าน"
                                     variant="outlined"
                                     required
                                     size="small"
@@ -231,7 +231,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="ห้องที่ตั้งของบริษัท"
+                                    label="ห้อง"
                                     variant="outlined"
                                     required
                                     size="small"
@@ -243,7 +243,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="หมู่ที่ตั้งของบริษัท"
+                                    label="หมู่"
                                     variant="outlined"
                                     required
                                     size="small"
@@ -255,7 +255,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="ซอยที่ตั้งของบริษัท"
+                                    label="ซอย"
                                     variant="outlined"
                                     required
                                     size="small"
@@ -267,7 +267,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="ถนนที่ตั้งของบริษัท"
+                                    label="ถนน"
                                     variant="outlined"
                                     required
                                     size="small"
@@ -279,7 +279,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="เมืองที่ตั้งของบริษัท"
+                                    label="เมือง"
                                     variant="outlined"
                                     required
                                     size="small"
