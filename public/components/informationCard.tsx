@@ -22,6 +22,8 @@ import axios from 'axios'
 import { uploadFileFormData, uploadOtherFiles, uploadProfilePicture } from '@/core/axiosEmployee';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { useRouter } from 'next/navigation'
+import ButtonJoy from '@mui/joy/Button';
+import moment from 'moment';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -89,6 +91,21 @@ const UserForm: React.FC = () => {
             setPerson({ ...person, pic_path: event.target.files[0].name })
         }
     };
+
+    const buttonColor = (value: string) => {
+        const remainingDays = moment(value, 'YYYY-MM-DD').diff(moment(), 'days');
+        if (remainingDays <= 0) {
+            return 'neutral';
+        } else if (remainingDays > 0 && remainingDays < 7) {
+            return 'danger';
+        } else if (remainingDays >= 7 && remainingDays < 15) {
+            return 'warning';
+        } else if (remainingDays > 15) {
+            return 'success';
+        } else {
+            return 'primary'
+        }
+    }
 
     const handleCompany = (event: any, newValue: any) => {
         setPerson({ ...person, company: newValue });
@@ -328,10 +345,10 @@ const UserForm: React.FC = () => {
 
                         <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>ไฟล์เอกสารของแรงงาน</Typography>
                         <Grid container spacing={2}>
-                            <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Visa')}>Visa</Button></Grid>
-                            <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Passport')}>Passport</Button></Grid>
-                            <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Workpermit')}>Work permit</Button></Grid>
-                            <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('ninetydays')}>ninetydays</Button></Grid>
+                            <Grid item xs={3}><ButtonJoy color={buttonColor(person.visa_enddate)} onClick={() => handleOpenDialog('Visa')}>Visa</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy color={buttonColor(person.passport_enddate)} onClick={() => handleOpenDialog('Passport')}>Passport</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy color={buttonColor(person.workpermit_enddate)} onClick={() => handleOpenDialog('Workpermit')}>Work permit</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy color={buttonColor(person.ninetydays_enddate)} onClick={() => handleOpenDialog('ninetydays')}>ninetydays</ButtonJoy></Grid>
                             <DialogComponent title="visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('visa', data)} />
                             <DialogComponent title="passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('passport', data)} />
                             <DialogComponent title="workpermit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('workpermit', data)} />
