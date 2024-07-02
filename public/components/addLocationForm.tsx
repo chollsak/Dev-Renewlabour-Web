@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent, useMemo } from 'react';
 import {
     Box,
     TextField,
@@ -9,41 +9,45 @@ import {
     Typography,
     Card,
     CardContent,
-    List,
-    ListItem,
-    ListItemText,
     Avatar,
     IconButton,
     Select,
     MenuItem,
     FormControl,
     InputLabel,
-    SelectChangeEvent
 } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import axios from 'axios';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { uploadProfilePicture } from '@/core/axiosEmployee';
+import { CreateInput } from "thai-address-autocomplete-react";
 
-interface Address {
-    district: string;
-    amphoe: string;
-    province: string;
-    zipcode: string;
-    districtEng: string;
-    amphoeEng: string;
-    provinceEng: string;
-}
+const InputThaiAddress = CreateInput();
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
 };
 
 const LocationForm: React.FC = () => {
-    const [addresses, setAddresses] = useState<Address[]>([]);
-    const [searchTextWork, setSearchTextWork] = useState('');
-    const [filteredAddressesWork, setFilteredAddressesWork] = useState<Address[]>([]);
+    const [address, setAddress] = useState({
+        district: '', // ตำบล tambol
+        amphoe: '', // อำเภอ amphoe
+        province: '', // จังหวัด changwat
+        zipcode: '', // รหัสไปรษณีย์ postal code
+    });
+
+    const handleChange = (scope: any) => (value: any) => {
+        setAddress((oldAddr) => ({
+            ...oldAddr,
+            [scope]: value,
+        }));
+    };
+
+    const handleSelect = (address: any) => {
+        setAddress(address);
+    };
+
     const [logo, setLogo] = useState<File | null>(null);
 
     const [company, setCompany] = useState({
@@ -64,54 +68,20 @@ const LocationForm: React.FC = () => {
         branch: 'หลัก'
     });
 
+    useEffect(() => {
+        if (address.district && address.amphoe && address.province && address.zipcode) {
+            setCompany((prevCompany) => ({
+                ...prevCompany,
+                cpn_subdist: address.district,
+                cpn_dist: address.amphoe,
+                cpn_prov: address.province,
+                cpn_zip: address.zipcode,
+            }));
+        }
+    }, [address]);
+
     const router = useRouter(); // Use the useRouter hook
 
-    useEffect(() => {
-        const fetchAddresses = async () => {
-            const response = await fetch("../data/thailand.json");
-            const data: Address[] = await response.json();
-            setAddresses(data);
-        };
-
-        fetchAddresses();
-    }, []);
-
-    const handleSearchChangeWork = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
-        setSearchTextWork(value);
-        filterAddresses(value, setFilteredAddressesWork);
-    };
-
-    const filterAddresses = (value: string, setFunction: React.Dispatch<React.SetStateAction<Address[]>>) => {
-        if (!value) {
-            setFunction([]);
-            return;
-        }
-
-        const regex = new RegExp(`^${value}`, 'gi');
-        const matches = addresses.filter(address =>
-            address.district.match(regex) ||
-            address.districtEng.match(regex) ||
-            address.amphoe.match(regex) ||
-            address.amphoeEng.match(regex) ||
-            address.province.match(regex) ||
-            address.provinceEng.match(regex)
-        );
-
-        setFunction(matches);
-    };
-
-    const handleListItemClickWork = (address: Address) => {
-        setSearchTextWork(`${address.district}, ${address.amphoe}, ${address.province}, ${address.zipcode}`);
-        setCompany({
-            ...company,
-            cpn_subdist: address.district,
-            cpn_dist: address.amphoe,
-            cpn_prov: address.province,
-            cpn_zip: address.zipcode.toString()
-        });
-        setFilteredAddressesWork([]);
-    };
 
     const handleLogoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
@@ -279,26 +249,36 @@ const LocationForm: React.FC = () => {
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="ค้นหาที่อยู่ (จังหวัด อำเภอ ตำบล)"
-                                    variant="outlined"
-                                    value={searchTextWork}
-                                    required
-                                    size='small'
-                                    sx={{ width: '100%', margin: 1 }}
-                                    onChange={handleSearchChangeWork}
+                            <Grid item xs={6}>
+                                <label>ตำบล</label>
+                                <InputThaiAddress.District
+                                    value={address['district']}
+                                    onChange={handleChange('district')}
+                                    onSelect={handleSelect} />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <label>อำเภอ</label>
+                                <InputThaiAddress.Amphoe
+                                    value={address['amphoe']}
+                                    onChange={handleChange('amphoe')}
+                                    onSelect={handleSelect}
                                 />
-                                <List>
-                                    {filteredAddressesWork.map((address, index) => (
-                                        <ListItem key={index} button onClick={() => handleListItemClickWork(address)}>
-                                            <ListItemText
-                                                primary={`${address.district}, ${address.amphoe}, ${address.province}, ${address.zipcode}`}
-                                                secondary={`${address.districtEng}, ${address.amphoeEng}, ${address.provinceEng}`}
-                                            />
-                                        </ListItem>
-                                    ))}
-                                </List>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <label>จังหวัด</label>
+                                <InputThaiAddress.Province
+                                    value={address['province']}
+                                    onChange={handleChange('province')}
+                                    onSelect={handleSelect}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <label>รหัสไปรษณีย์</label>
+                                <InputThaiAddress.Zipcode
+                                    value={address['zipcode']}
+                                    onChange={handleChange('zipcode')}
+                                    onSelect={handleSelect}
+                                />
                             </Grid>
                             <Grid item xs={6}>
                                 <FormControl fullWidth size="small" sx={{ margin: 1 }}>
