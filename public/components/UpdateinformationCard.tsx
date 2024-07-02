@@ -107,8 +107,10 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
             return 'danger';
         } else if (remainingDays >= 7 && remainingDays < 15) {
             return 'warning';
-        } else {
+        } else if (remainingDays > 15) {
             return 'success';
+        } else {
+            return 'primary'
         }
     }
 
@@ -351,10 +353,10 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
 
                         <Typography variant="h6" fontWeight={600} className='m-2 p-2' sx={{ ...FontStyle }}>ไฟล์เอกสารของแรงงาน</Typography>
                         <Grid container spacing={2}>
-                            <Grid item xs={3}><ButtonJoy color={buttonColor(person.visa_enddate)} onClick={() => handleOpenDialog('Visa')}>Visa</ButtonJoy></Grid>
-                            <Grid item xs={3}><ButtonJoy color={buttonColor(person.passport_enddate)} onClick={() => handleOpenDialog('Passport')}>Passport</ButtonJoy></Grid>
-                            <Grid item xs={3}><ButtonJoy color={buttonColor(person.workpermit_enddate)} onClick={() => handleOpenDialog('Workpermit')}>Work permit</ButtonJoy></Grid>
-                            <Grid item xs={3}><ButtonJoy color={buttonColor(person.ninetydays_enddate)} onClick={() => handleOpenDialog('ninetydays')}>ninetydays</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(person.visa_enddate)} onClick={() => handleOpenDialog('Visa')}>Visa</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(person.passport_enddate)} onClick={() => handleOpenDialog('Passport')}>Passport</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(person.workpermit_enddate)} onClick={() => handleOpenDialog('Workpermit')}>Work permit</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(person.ninetydays_enddate)} onClick={() => handleOpenDialog('ninetydays')}>ninetydays</ButtonJoy></Grid>
                             <DialogComponent title="Visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Visa', data)} person={person} />
                             <DialogComponent title="Passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Passport', data)} person={person} />
                             <DialogComponent title="Workpermit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Workpermit', data)} person={person} />
@@ -363,7 +365,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
 
                         <Typography variant="h6" fontWeight={600} className='m-2 p-2' sx={{ ...FontStyle }}>อัปโหลดไฟล์เพิ่มเติม</Typography>
                         <Grid container spacing={2}>
-                            <Grid item xs={3}><Button variant="contained" onClick={() => handleOpenDialog('Files')}>Upload Files</Button></Grid>
+                            <Grid item xs={3}><Button variant="contained" size='large' onClick={() => handleOpenDialog('Files')}>Upload Files</Button></Grid>
                             <FilesOther open={openDialog === 'Files'} handleClose={handleCloseDialog} onSave={handleFilesDialogSave} />
                         </Grid>
                     </Box>
