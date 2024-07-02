@@ -36,7 +36,7 @@ const Sidebar: React.FC<LayoutSession> = ({ session }) => {
       backgroundColor: '#f5f5f5',
     }}>
       <Box textAlign="center" p={2} sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <Box component="img" onClick={() => handleLinkClick('/Dashboard')} src="./Logo/logo.png" alt="Company Logo" style={{ maxWidth: '200px' }} />
+        <Box component="img" onClick={() => handleLinkClick('/Dashboard')} src="/Logo/logo.png" alt="Company Logo" style={{ maxWidth: '200px' }} />
         <InteractiveCard session={session} />
       </Box>
       <List>
