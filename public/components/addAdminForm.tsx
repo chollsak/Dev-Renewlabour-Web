@@ -141,6 +141,29 @@ const AddAdmin: React.FC = () => {
             <form onSubmit={handleSubmit}>
                 <Box sx={{ m: 1, marginLeft: '30px' }}>
                     <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Avatar sx={{ marginRight: 2, width: '200px', height: '200px' }}>
+                                    {member.m_picpath ? (
+                                        <Box component="img" src={URL.createObjectURL(profilePicture)} alt="Avatar" width="200" height="200" />
+                                    ) : (
+                                        <PhotoCamera />
+                                    )}
+                                </Avatar>
+                                <input
+                                    accept="image/*"
+                                    id="icon-button-file"
+                                    type="file"
+                                    style={{ display: 'none' }}
+                                    onChange={handleFileChange}
+                                />
+                                <label htmlFor="icon-button-file">
+                                    <IconButton color="primary" aria-label="upload picture" component="span">
+                                        <PhotoCamera />
+                                    </IconButton>
+                                </label>
+                            </Box>
+                        </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 name="member_name"
@@ -216,32 +239,10 @@ const AddAdmin: React.FC = () => {
                                 size="small"
                             />
                         </Grid>
-                        <Grid item xs={12}>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <Avatar sx={{ marginRight: 2, width: '200px', height: '200px' }}>
-                                    {member.m_picpath ? (
-                                        <Box component="img" src={URL.createObjectURL(profilePicture)} alt="Avatar" width="200" height="200" />
-                                    ) : (
-                                        <PhotoCamera />
-                                    )}
-                                </Avatar>
-                                <input
-                                    accept="image/*"
-                                    id="icon-button-file"
-                                    type="file"
-                                    style={{ display: 'none' }}
-                                    onChange={handleFileChange}
-                                />
-                                <label htmlFor="icon-button-file">
-                                    <IconButton color="primary" aria-label="upload picture" component="span">
-                                        <PhotoCamera />
-                                    </IconButton>
-                                </label>
-                            </Box>
-                        </Grid>
+ 
                     </Grid>
                 </Box>
-                <Button variant="contained" color="primary" size="small" type='submit' sx={{ marginLeft: '30px', marginTop: '30px', ...FontStyle }}>
+                <Button variant="contained" fullWidth color="primary" size="small" type='submit' sx={{ marginLeft: '30px', marginTop: '30px', ...FontStyle }}>
                     เพิ่ม
                 </Button>
             </form>

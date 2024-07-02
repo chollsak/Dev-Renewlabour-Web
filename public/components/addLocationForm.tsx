@@ -149,6 +149,30 @@ const LocationForm: React.FC = () => {
                 <form onSubmit={handleSubmit}>
                     <Box sx={{ display: 'flex', justifyContent: 'left', marginBottom: 2, flexDirection: 'column' }}>
                         <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle, marginBottom: '15px' }}>ข้อมูลบริษัท</Typography>
+                        <Grid item xs={12}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', margin: 1 }}>
+                                    <Avatar sx={{ marginRight: 2, width: '200px', height: '200px' }}>
+                                        {logo ? (
+                                            <Box component="img" src={URL.createObjectURL(logo)} alt="Logo" width="200" height="200" />
+                                        ) : (
+                                            <PhotoCamera />
+                                        )}
+                                    </Avatar>
+                                    <input
+                                        accept="image/*"
+                                        id="icon-button-file"
+                                        type="file"
+                                        style={{ display: 'none' }}
+                                        onChange={handleLogoChange}
+                                    />
+                                    <label htmlFor="icon-button-file">
+                                        <IconButton color="primary" aria-label="upload picture" component="span" >
+                                            <PhotoCamera />
+                                        </IconButton>
+                                    </label>
+                                </Box>
+                            </Grid>
+                        
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
@@ -296,29 +320,7 @@ const LocationForm: React.FC = () => {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Box sx={{ display: 'flex', alignItems: 'center', margin: 1 }}>
-                                    <Avatar sx={{ marginRight: 2, width: '200px', height: '200px' }}>
-                                        {logo ? (
-                                            <Box component="img" src={URL.createObjectURL(logo)} alt="Logo" width="200" height="200" />
-                                        ) : (
-                                            <PhotoCamera />
-                                        )}
-                                    </Avatar>
-                                    <input
-                                        accept="image/*"
-                                        id="icon-button-file"
-                                        type="file"
-                                        style={{ display: 'none' }}
-                                        onChange={handleLogoChange}
-                                    />
-                                    <label htmlFor="icon-button-file">
-                                        <IconButton color="primary" aria-label="upload picture" component="span" >
-                                            <PhotoCamera />
-                                        </IconButton>
-                                    </label>
-                                </Box>
-                            </Grid>
+
                         </Grid>
                     </Box>
                     <Button variant="contained" sx={{ width: '100%', marginTop: 2 }} type='submit'>เพิ่ม</Button>
