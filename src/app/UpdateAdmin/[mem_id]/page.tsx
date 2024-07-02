@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Layout from '../../../../public/components/Layout'
 import UpdateAdmin from '../../../../public/components/UpdateAdminForm'
 import axios from 'axios';
+import PageLoader from '../../../../public/components/Loading/Loading2';
 
 export default function Home({
     params,
@@ -30,9 +31,7 @@ export default function Home({
     return (
         <>
             {members.length === 0 ? (
-                <div>
-                    Downloading Data...
-                </div>
+                <PageLoader />
             ) : (
                 <Layout>
                     <UpdateAdmin members={members} params={params} />

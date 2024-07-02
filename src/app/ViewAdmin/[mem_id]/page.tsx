@@ -5,6 +5,7 @@ import { Typography, IconButton, Card, CardContent, Avatar, Box, Chip, Dialog, D
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import PageLoader from '../../../../public/components/Loading/Loading2';
 
 
 const FontStyle: React.CSSProperties = {
@@ -41,9 +42,7 @@ export default function Home({
     return (
         <>
             {member.length === 0 ? (
-                <div>
-                    Downloading Data...
-                </div>
+                <PageLoader />
             ) : (
                 <Layout>
                     <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>

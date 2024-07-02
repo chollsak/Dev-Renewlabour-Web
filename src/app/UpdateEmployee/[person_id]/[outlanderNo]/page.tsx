@@ -5,6 +5,7 @@ import Layout from '../../../../../public/components/Layout'
 import { Box, Typography } from '@mui/material'
 import UpdateInformationCard from '../../../../../public/components/UpdateinformationCard'
 import axios from 'axios'
+import PageLoader from '../../../../../public/components/Loading/Loading2'
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -36,9 +37,7 @@ export default function Home({
     return (
         <>
             {persons.length === 0 ? (
-                <div>
-                    Downloading Data...
-                </div>
+                <PageLoader />
             ) : (
                 <Layout>
                     <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>

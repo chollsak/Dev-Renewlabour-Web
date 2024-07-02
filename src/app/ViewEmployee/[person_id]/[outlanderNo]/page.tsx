@@ -9,6 +9,7 @@ import moment from 'moment';
 import Chip from '@mui/joy/Chip';
 import ButtonJoy from '@mui/joy/Button';
 import { useRouter } from 'next/navigation';
+import PageLoader from '../../../../../public/components/Loading/Loading2';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -167,9 +168,7 @@ export default function Home({
     return (
         <>
             {persons.length === 0 ? (
-                <div>
-                    Downloading Data...
-                </div>
+                <PageLoader />
             ) : (
                 <Layout>
 

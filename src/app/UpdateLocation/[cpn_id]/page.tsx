@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Layout from '../../../../public/components/Layout'
 import UpdateLocationForm from '../../../../public/components/UpdateLocationForm';
 import axios from 'axios';
+import PageLoader from '../../../../public/components/Loading/Loading2';
 
 
 const Home = ({
@@ -25,9 +26,7 @@ const Home = ({
   return (
     <>
       {companys.length === 0 ? (
-        <div>
-          Downloading Data...
-        </div>
+        <PageLoader />
       ) : (
         <Layout>
           <UpdateLocationForm companys={companys} params={params} />
