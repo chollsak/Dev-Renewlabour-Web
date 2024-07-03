@@ -26,6 +26,7 @@ import { useRouter } from 'next/navigation';
 import ButtonJoy from '@mui/joy/Button';
 import moment from 'moment';
 import { PhotoCamera } from '@mui/icons-material';
+import PersonsAvatar from './PersonsAvatar';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -232,15 +233,9 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                                             },
                                         }}>
                                             {profilePicture ? (
-                                                <Box component="img" src={URL.createObjectURL(profilePicture)} alt="No Picture" width="200" height="200" />
+                                                <Avatar src={URL.createObjectURL(profilePicture)} sx={{ width: 200, height: 200 }} className='border-4 border-[#2074d4]' alt="No Picture" />
                                             ) : (
-                                                <Box
-                                                    component="img"
-                                                    src={`${process.env.NEXT_PUBLIC_FILE_API}/file/persons/${params.outlanderNo}/picpath/${person.pic_path}`}
-                                                    alt="No Picture"
-                                                    width="200"
-                                                    height="200"
-                                                />
+                                                <PersonsAvatar outlanderNo={params.outlanderNo} picpath={person.pic_path} />
                                             )}
                                         </Avatar>
                                     </Box>

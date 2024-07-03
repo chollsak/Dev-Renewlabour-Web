@@ -36,7 +36,7 @@ const PersonsAvatar: React.FC<AvatarProps> = ({ outlanderNo, picpath }) => {
     }
 
     if (error || !imageSrc) {
-        return <Avatar sx={{ width: 150, height: 150 }} className='border-4 border-[#2074d4]' alt="No Picture">{outlanderNo.charAt(0)}</Avatar>;
+        return <Avatar sx={{ width: 150, height: 150 }} className='border-4 border-[#2074d4]' alt="No Picture" />;
     }
 
     return <Avatar src={imageSrc} sx={{ width: 150, height: 150 }} className='border-4 border-[#2074d4]' alt="No Picture" />;
