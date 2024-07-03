@@ -204,35 +204,35 @@ const UserForm: React.FC = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'left', marginBottom: 2, flexDirection: 'column' }}>
                         <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>รูปภาพแรงงาน</Typography>
                         <Grid container spacing={2} mb={2}>
-                            
-                                <Grid item xs={12}>
+                            <Grid item xs={12}>
                                 <input
-                                        accept="image/*"
-                                        id="icon-button-file"
-                                        type="file"
-                                        style={{ display: 'none' }}
-                                        onChange={handleFileChange}
-                                    />
-                                    <label htmlFor="icon-button-file">
-                                        <IconButton color="primary" aria-label="upload picture" component="span" >
-                                            <PhotoCamera />
-                                        </IconButton>
-                                    </label>
-                                </Grid>
+                                    accept="image/*"
+                                    id="icon-button-file"
+                                    type="file"
+                                    style={{ display: 'none' }}
+                                    onChange={handleFileChange}
+                                />
+                                <label htmlFor="icon-button-file">
+                                    <Box sx={{ display: 'flex', alignItems: 'center', margin: 1 }}>
+                                        <Avatar sx={{
+                                            marginRight: 2,
+                                            width: '200px',
+                                            height: '200px',
+                                            cursor: 'pointer',
+                                            '&:hover': {
+                                                cursor: 'pointer',
+                                            },
+                                        }}>
+                                            {profilePicture ? (
+                                                <Box component="img" src={URL.createObjectURL(profilePicture)} alt="Profile Picture" width="200" height="200" />
+                                            ) : (
+                                                <PhotoCamera />
+                                            )}
+                                        </Avatar>
+                                    </Box>
+                                </label>
                             </Grid>
-                            <Box sx={{ display: 'flex', alignItems: 'center', margin: 1 }}>
-                            <Avatar sx={{ marginRight: 2, width: '200px', height: '200px' }}>
-                                {profilePicture ? (
-                                    <Box component="img" src={URL.createObjectURL(profilePicture)} alt="Profile Picture" width="200" height="200" />
-                                ) : (
-                                    <PhotoCamera />
-                                )}
-                            </Avatar>
-                        </Box>
-                        
-
-
-
+                        </Grid>
                         <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>ข้อมูลส่วนบุคคล</Typography>
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
