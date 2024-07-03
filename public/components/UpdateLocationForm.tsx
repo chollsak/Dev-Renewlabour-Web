@@ -186,7 +186,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                                 },
                                             }}>
                                             {logo ? (
-                                                <Box component="img" src={URL.createObjectURL(logo)} alt="Logo" width="200" height="200" />
+                                                <Avatar src={URL.createObjectURL(logo)} sx={{ width: 200, height: 200 }} alt="No Picture" />
                                             ) : (
                                                 <LogosAvatar cpn_id={params.cpn_id} logo={company.logo} />
                                             )}

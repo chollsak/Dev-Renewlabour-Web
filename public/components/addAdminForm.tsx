@@ -141,15 +141,8 @@ const AddAdmin: React.FC = () => {
             <form onSubmit={handleSubmit}>
                 <Box sx={{ m: 1, marginLeft: '30px' }}>
                     <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                        <Grid item xs={12}>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <Avatar sx={{ marginRight: 2, width: '200px', height: '200px' }}>
-                                    {member.m_picpath ? (
-                                        <Box component="img" src={URL.createObjectURL(profilePicture)} alt="Avatar" width="200" height="200" />
-                                    ) : (
-                                        <PhotoCamera />
-                                    )}
-                                </Avatar>
                                 <input
                                     accept="image/*"
                                     id="icon-button-file"
@@ -158,9 +151,22 @@ const AddAdmin: React.FC = () => {
                                     onChange={handleFileChange}
                                 />
                                 <label htmlFor="icon-button-file">
-                                    <IconButton color="primary" aria-label="upload picture" component="span">
-                                        <PhotoCamera />
-                                    </IconButton>
+                                    <Avatar className='border-4 border-[#2074d4]'
+                                        sx={{
+                                            marginRight: 2,
+                                            width: '200px',
+                                            height: '200px',
+                                            cursor: 'pointer',
+                                            '&:hover': {
+                                                cursor: 'pointer',
+                                            },
+                                        }}>
+                                        {member.m_picpath ? (
+                                            <Avatar src={URL.createObjectURL(profilePicture)} sx={{ width: 200, height: 200 }} alt="No Picture" />
+                                        ) : (
+                                            <PhotoCamera />
+                                        )}
+                                    </Avatar>
                                 </label>
                             </Box>
                         </Grid>
@@ -239,7 +245,7 @@ const AddAdmin: React.FC = () => {
                                 size="small"
                             />
                         </Grid>
- 
+
                     </Grid>
                 </Box>
                 <Button variant="contained" fullWidth color="primary" size="small" type='submit' sx={{ marginLeft: '30px', marginTop: '30px', ...FontStyle }}>

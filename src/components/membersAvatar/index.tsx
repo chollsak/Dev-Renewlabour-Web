@@ -7,7 +7,7 @@ interface AvatarProps {
     m_picpath: string
 }
 
-const PersonsAvatar: React.FC<AvatarProps> = ({ mem_id, m_picpath }) => {
+const MembersAvatar: React.FC<AvatarProps> = ({ mem_id, m_picpath }) => {
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
@@ -42,4 +42,4 @@ const PersonsAvatar: React.FC<AvatarProps> = ({ mem_id, m_picpath }) => {
     return <Avatar src={imageSrc} sx={{ width: 200, height: 200 }} className='border-4 border-[#2074d4]' alt="No Picture" />;
 };
 
-export default PersonsAvatar;
+export default MembersAvatar;

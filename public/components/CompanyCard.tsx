@@ -11,14 +11,8 @@ export default function InteractiveCard({ session }: { session: any }) {
     fontFamily: 'Kanit, sans-serif',
   };
 
-  // Log the session object for debugging
-  console.log('Session data:', session);
-
   // Construct the image URL
   const imageUrl = `${process.env.NEXT_PUBLIC_FILE_API}/file/companys/${session?.user_account[0]?.cpn_id}/logo/${session?.user_account[0]?.logo}`;
-
-  // Log the constructed image URL for debugging
-  console.log('Image URL:', imageUrl);
 
   return (
     <Card
@@ -27,7 +21,7 @@ export default function InteractiveCard({ session }: { session: any }) {
       sx={{
         marginLeft: 2,
         width: 230,
-        boxShadow: 'md', 
+        boxShadow: 'md',
         borderColor: 'neutral.outlinedHoverBorder',
       }}
     >

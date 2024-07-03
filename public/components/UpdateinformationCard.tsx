@@ -233,7 +233,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                                             },
                                         }}>
                                             {profilePicture ? (
-                                                <Avatar src={URL.createObjectURL(profilePicture)} sx={{ width: 200, height: 200 }} className='border-4 border-[#2074d4]' alt="No Picture" />
+                                                <Avatar src={URL.createObjectURL(profilePicture)} sx={{ width: 200, height: 200 }} alt="No Picture" />
                                             ) : (
                                                 <PersonsAvatar outlanderNo={params.outlanderNo} picpath={person.pic_path} />
                                             )}

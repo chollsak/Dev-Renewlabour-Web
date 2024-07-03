@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { uploadProfilePicture } from '@/core/axiosEmployee';
 import Swal, { SweetAlertResult } from 'sweetalert2';
+import MembersAvatar from '@/components/membersAvatar';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -146,6 +147,35 @@ const UpdateAdmin: React.FC<UserFormProps> = ({ members, params }) => {
             <form onSubmit={handleSubmit}>
                 <Box sx={{ m: 1, marginLeft: '30px' }}>
                     <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    accept="image/*"
+                                    id="icon-button-file"
+                                    type="file"
+                                    style={{ display: 'none' }}
+                                    onChange={handleFileChange}
+                                />
+                                <label htmlFor="icon-button-file">
+                                    <Avatar className='border-4 border-[#2074d4]'
+                                        sx={{
+                                            marginRight: 2,
+                                            width: '200px',
+                                            height: '200px',
+                                            cursor: 'pointer',
+                                            '&:hover': {
+                                                cursor: 'pointer',
+                                            },
+                                        }}>
+                                        {profilePicture ? (
+                                            <Avatar src={URL.createObjectURL(profilePicture)} sx={{ width: 200, height: 200 }} alt="No Picture" />
+                                        ) : (
+                                            <MembersAvatar mem_id={params.mem_id} m_picpath={member.m_picpath} />
+                                        )}
+                                    </Avatar>
+                                </label>
+                            </Box>
+                        </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 name="member_name"
@@ -227,29 +257,6 @@ const UpdateAdmin: React.FC<UserFormProps> = ({ members, params }) => {
                                 required
                                 size="small"
                             />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <Avatar sx={{ marginRight: 2 }}>
-                                    {profilePicture ? (
-                                        <Box component="img" src={URL.createObjectURL(profilePicture)} alt="Avatar" width="40" height="40" />
-                                    ) : (
-                                        <Box component="img" src={`${process.env.NEXT_PUBLIC_FILE_API}/file/members/${params.mem_id}/picpath/${member.m_picpath}`} alt="Avatar" width="40" height="40" />
-                                    )}
-                                </Avatar>
-                                <input
-                                    accept="image/*"
-                                    id="icon-button-file"
-                                    type="file"
-                                    style={{ display: 'none' }}
-                                    onChange={handleFileChange}
-                                />
-                                <label htmlFor="icon-button-file">
-                                    <IconButton color="primary" aria-label="upload picture" component="span">
-                                        <PhotoCamera />
-                                    </IconButton>
-                                </label>
-                            </Box>
                         </Grid>
                     </Grid>
                 </Box>
