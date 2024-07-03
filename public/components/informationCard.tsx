@@ -358,7 +358,7 @@ const UserForm: React.FC = () => {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={data.map((option) => option.cpn_n)}
-                                    sx={{ width: 300, height: "40px" }}
+                                    sx={{ width: 300, height: "40px", margin: 1 }}
                                     onChange={handleCompany}
                                     renderInput={(params) => <TextField {...params} name="company" label="Company" />}
                                 />
@@ -367,10 +367,10 @@ const UserForm: React.FC = () => {
 
                         <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>ไฟล์เอกสารของแรงงาน</Typography>
                         <Grid container spacing={2}>
-                            <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(person.visa_enddate)} onClick={() => handleOpenDialog('Visa')}>Visa</ButtonJoy></Grid>
-                            <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(person.passport_enddate)} onClick={() => handleOpenDialog('Passport')}>Passport</ButtonJoy></Grid>
-                            <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(person.workpermit_enddate)} onClick={() => handleOpenDialog('Workpermit')}>Work permit</ButtonJoy></Grid>
-                            <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(person.ninetydays_enddate)} onClick={() => handleOpenDialog('ninetydays')}>ninetydays</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy sx={{ margin: 1 }} fullWidth size='lg' color={buttonColor(person.visa_enddate)} onClick={() => handleOpenDialog('Visa')}>Visa</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy sx={{ margin: 1 }} fullWidth size='lg' color={buttonColor(person.passport_enddate)} onClick={() => handleOpenDialog('Passport')}>Passport</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy sx={{ margin: 1 }} fullWidth size='lg' color={buttonColor(person.workpermit_enddate)} onClick={() => handleOpenDialog('Workpermit')}>Work permit</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy sx={{ margin: 1 }} fullWidth size='lg' color={buttonColor(person.ninetydays_enddate)} onClick={() => handleOpenDialog('ninetydays')}>ninetydays</ButtonJoy></Grid>
                             <DialogComponent title="visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('visa', data)} />
                             <DialogComponent title="passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('passport', data)} />
                             <DialogComponent title="workpermit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('workpermit', data)} />
@@ -379,11 +379,13 @@ const UserForm: React.FC = () => {
 
                         <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>อัปโหลดไฟล์เพิ่มเติม</Typography>
                         <Grid container spacing={2}>
-                            <Grid item xs={3}><Button variant="contained" size='large' onClick={() => handleOpenDialog('Files')}>Upload Files</Button></Grid>
+                            <Grid item xs={3}><Button variant="contained" sx={{ margin: 1 }} size='large' onClick={() => handleOpenDialog('Files')}>Upload Files</Button></Grid>
                             <FilesOther open={openDialog === 'Files'} handleClose={handleCloseDialog} onSave={handleFilesDialogSave} />
                         </Grid>
                     </Box>
-                    <Button variant="contained" sx={{ width: '100%', marginTop: 2 }} type="submit">Submit</Button>
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Button variant="contained" color='success' sx={{ width: '50%', marginTop: 2 }} type="submit">Submit</Button>
+                    </Box>
                 </form>
             </CardContent>
         </Card>
