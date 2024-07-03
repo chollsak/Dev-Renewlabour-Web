@@ -53,6 +53,38 @@ const handler = NextAuth({
       },
     }),
   ],
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        domain: "http://localhost/",
+        port: "3000", // เพิ่มพอร์ตที่นี่
+      },
+    },
+    callbackUrl: {
+      name: `next-auth.callback-url`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        domain: "http://localhost/",
+        port: "3000", // เพิ่มพอร์ตที่นี่
+      },
+    },
+    csrfToken: {
+      name: `next-auth.csrf-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        domain: "http://localhost/",
+        port: "3000", // เพิ่มพอร์ตที่นี่
+      },
+    },
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
