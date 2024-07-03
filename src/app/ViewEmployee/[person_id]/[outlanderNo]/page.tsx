@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../../../../../public/components/Layout';
 import axios from 'axios';
-import { Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Paper, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import PersonsAvatar from '../../../../../public/components/PersonsAvatar';
+import PersonsAvatar from '@/components/personsAvatar';
 import moment from 'moment';
 import Chip from '@mui/joy/Chip';
 import ButtonJoy from '@mui/joy/Button';

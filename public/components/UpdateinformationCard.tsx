@@ -25,8 +25,7 @@ import Swal, { SweetAlertResult } from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import ButtonJoy from '@mui/joy/Button';
 import moment from 'moment';
-import { PhotoCamera } from '@mui/icons-material';
-import PersonsAvatar from './PersonsAvatar';
+import PersonsAvatar from '@/components/personsAvatar';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',

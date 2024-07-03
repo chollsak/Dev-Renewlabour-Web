@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import PageLoader from '../../../../public/components/Loading/Loading2';
+import LogosAvatar from '@/components/logosAvatar';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -54,7 +55,7 @@ export default function Home({
                         <Card className='flex-wrap'>
                             <CardContent className='flex gap-5 flex-wrap'>
                                 <div className='w-1/5 h-fit flex flex-col gap-2 text-center justify-center items-center border-r-2 p-1'>
-                                    <Avatar sx={{ width: 150, height: 150 }} className='border-4 border-[#2074d4]' alt="Person Picture" src={`${process.env.NEXT_PUBLIC_FILE_API}/file/companys/${params.cpn_id}/logo/${company[0].logo}`} />
+                                    <LogosAvatar cpn_id={params.cpn_id} logo={company[0].logo} />
                                     <Box>
                                         <Typography variant='h6' sx={{ fontWeight: '600' }}>{company[0].cpn_n}</Typography>
                                     </Box>

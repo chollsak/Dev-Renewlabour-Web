@@ -1,11 +1,12 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import Layout from '../../../../public/components/Layout'
-import { Typography, IconButton, Card, CardContent, Avatar, Box, Chip, Dialog, DialogTitle, DialogContent, Button, DialogActions } from '@mui/material';
+import { Typography, IconButton, Card, CardContent, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import PageLoader from '../../../../public/components/Loading/Loading2';
+import MembersAvatar from '@/components/membersAvatar';
 
 
 const FontStyle: React.CSSProperties = {
@@ -55,7 +56,7 @@ export default function Home({
                         <Card className='flex-wrap'>
                             <CardContent className='flex gap-5 flex-wrap'>
                                 <div className='w-1/5 h-fit flex flex-col gap-2 text-center justify-center items-center border-r-2 p-1'>
-                                    <Avatar sx={{ width: 150, height: 150 }} className='border-4 border-[#2074d4]' alt="Person Picture" src={`${process.env.NEXT_PUBLIC_FILE_API}/file/members/${params.mem_id}/picpath/${member[0].m_picpath}`} />
+                                    <MembersAvatar mem_id={params.mem_id} m_picpath={member[0].m_picpath} />
                                     <Box>
                                         <Typography variant='h6' sx={{ fontWeight: '600' }}>{member[0].member_name} {member[0].member_lastname}</Typography>
                                     </Box>
