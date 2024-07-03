@@ -214,17 +214,19 @@ const UserForm: React.FC = () => {
                                 />
                                 <label htmlFor="icon-button-file">
                                     <Box sx={{ display: 'flex', alignItems: 'center', margin: 1 }}>
-                                        <Avatar sx={{
-                                            marginRight: 2,
-                                            width: '200px',
-                                            height: '200px',
-                                            cursor: 'pointer',
-                                            '&:hover': {
+                                        <Avatar
+                                            className='border-4 border-[#2074d4]'
+                                            sx={{
+                                                marginRight: 2,
+                                                width: '200px',
+                                                height: '200px',
                                                 cursor: 'pointer',
-                                            },
-                                        }}>
+                                                '&:hover': {
+                                                    cursor: 'pointer',
+                                                },
+                                            }}>
                                             {profilePicture ? (
-                                                <Avatar src={URL.createObjectURL(profilePicture)} sx={{ width: 200, height: 200 }} className='border-4 border-[#2074d4]' alt="No Picture" />
+                                                <Avatar src={URL.createObjectURL(profilePicture)} sx={{ width: 200, height: 200 }} alt="No Picture" />
                                             ) : (
                                                 <PhotoCamera />
                                             )}

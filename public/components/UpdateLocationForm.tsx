@@ -25,6 +25,7 @@ import axios from 'axios';
 import { uploadProfilePicture } from '@/core/axiosEmployee';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { CreateInput } from "thai-address-autocomplete-react";
+import LogosAvatar from '@/components/logosAvatar';
 
 const InputThaiAddress = CreateInput();
 
@@ -163,6 +164,36 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                     <Box sx={{ display: 'flex', justifyContent: 'left', marginBottom: 2, flexDirection: 'column' }}>
                         <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle, marginBottom: '15px' }}>ข้อมูลบริษัท</Typography>
                         <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', margin: 1 }}>
+                                    <input
+                                        accept="image/*"
+                                        id="icon-button-file"
+                                        type="file"
+                                        style={{ display: 'none' }}
+                                        onChange={handleLogoChange}
+                                    />
+                                    <label htmlFor="icon-button-file">
+                                        <Avatar
+                                            className='border-4 border-[#2074d4]'
+                                            sx={{
+                                                marginRight: 2,
+                                                width: '200px',
+                                                height: '200px',
+                                                cursor: 'pointer',
+                                                '&:hover': {
+                                                    cursor: 'pointer',
+                                                },
+                                            }}>
+                                            {logo ? (
+                                                <Box component="img" src={URL.createObjectURL(logo)} alt="Logo" width="200" height="200" />
+                                            ) : (
+                                                <LogosAvatar cpn_id={params.cpn_id} logo={company.logo} />
+                                            )}
+                                        </Avatar>
+                                    </label>
+                                </Box>
+                            </Grid>
                             <Grid item xs={12}>
                                 <TextField
                                     label="ชื่อบริษัท (ชื่อสาขาย่อย ถ้ามี โดยชื่อสาขาย่อยต้องอยู่ในวงเล็บด้วย)"
@@ -317,29 +348,6 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                         <MenuItem value="ย่อย">ย่อย</MenuItem>
                                     </Select>
                                 </FormControl>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Box sx={{ display: 'flex', alignItems: 'center', margin: 1 }}>
-                                    <Avatar sx={{ marginRight: 2 }}>
-                                        {logo ? (
-                                            <Box component="img" src={URL.createObjectURL(logo)} alt="Logo" width="40" height="40" />
-                                        ) : (
-                                            <Box component="img" src={`${process.env.NEXT_PUBLIC_FILE_API}/file/companys/${params.cpn_id}/logo/${company.logo}`} alt="Logo" width="40" height="40" />
-                                        )}
-                                    </Avatar>
-                                    <input
-                                        accept="image/*"
-                                        id="icon-button-file"
-                                        type="file"
-                                        style={{ display: 'none' }}
-                                        onChange={handleLogoChange}
-                                    />
-                                    <label htmlFor="icon-button-file">
-                                        <IconButton color="primary" aria-label="upload picture" component="span">
-                                            <PhotoCamera />
-                                        </IconButton>
-                                    </label>
-                                </Box>
                             </Grid>
                         </Grid>
                     </Box>
