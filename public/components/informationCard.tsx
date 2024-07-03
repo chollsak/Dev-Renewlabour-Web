@@ -224,7 +224,7 @@ const UserForm: React.FC = () => {
                                             },
                                         }}>
                                             {profilePicture ? (
-                                                <Box component="img" src={URL.createObjectURL(profilePicture)} alt="Profile Picture" width="200" height="200" />
+                                                <Box component="img" src={URL.createObjectURL(profilePicture)} alt="No Picture" width="200" height="200" />
                                             ) : (
                                                 <PhotoCamera />
                                             )}

@@ -15,6 +15,7 @@ import {
     InputLabel,
     Select,
     MenuItem,
+    Avatar,
 } from '@mui/material';
 import DialogComponent from './UpdateDialog';
 import FilesOther from './FileOther';
@@ -24,6 +25,7 @@ import Swal, { SweetAlertResult } from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import ButtonJoy from '@mui/joy/Button';
 import moment from 'moment';
+import { PhotoCamera } from '@mui/icons-material';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -201,6 +203,8 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
         }
     };
 
+    console.log(`${process.env.NEXT_PUBLIC_FILE_API}/file/persons/${params.outlanderNo}/picpath/${person.pic_path}`)
+
     return (
         <Card sx={{ width: '100%', boxShadow: 3 }}>
             <CardContent>
@@ -209,12 +213,38 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                         <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>รูปภาพแรงงาน</Typography>
                         <Grid container spacing={2} mb={2}>
                             <Grid item xs={12}>
-                                <input type="file" accept="image/*" onChange={handleFileChange} />
-                                {person.pic_path && (
-                                    <Typography variant="body1" sx={{ ...FontStyle, marginTop: 1 }}>
-                                        Uploaded file: {person.pic_path}
-                                    </Typography>
-                                )}
+                                <input
+                                    accept="image/*"
+                                    id="icon-button-file"
+                                    type="file"
+                                    style={{ display: 'none' }}
+                                    onChange={handleFileChange}
+                                />
+                                <label htmlFor="icon-button-file">
+                                    <Box sx={{ display: 'flex', alignItems: 'center', margin: 1 }}>
+                                        <Avatar sx={{
+                                            marginRight: 2,
+                                            width: '200px',
+                                            height: '200px',
+                                            cursor: 'pointer',
+                                            '&:hover': {
+                                                cursor: 'pointer',
+                                            },
+                                        }}>
+                                            {profilePicture ? (
+                                                <Box component="img" src={URL.createObjectURL(profilePicture)} alt="No Picture" width="200" height="200" />
+                                            ) : (
+                                                <Box
+                                                    component="img"
+                                                    src={`${process.env.NEXT_PUBLIC_FILE_API}/file/persons/${params.outlanderNo}/picpath/${person.pic_path}`}
+                                                    alt="No Picture"
+                                                    width="200"
+                                                    height="200"
+                                                />
+                                            )}
+                                        </Avatar>
+                                    </Box>
+                                </label>
                             </Grid>
                         </Grid>
 
