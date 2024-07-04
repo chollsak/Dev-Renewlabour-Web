@@ -10,7 +10,7 @@ import Divider from '@mui/material/Divider';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Box, Chip, Typography } from '@mui/material';
-import { signOut } from 'next-auth/react';
+import { getCsrfToken } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -36,9 +36,35 @@ const UserMenu: React.FC<LayoutSession> = ({ session }) => {
 
     const router = useRouter();
 
-    const signOutToLogin = () => {
-        signOut();
-        router.refresh();
+    const signOutToLogin = async () => {
+        const csrfToken = await getCsrfToken();
+
+        if (!csrfToken) {
+            console.error('Failed to fetch CSRF token');
+            return;
+        }
+
+        // Making a POST request manually
+        const params = new URLSearchParams({
+            csrfToken: csrfToken || '',
+            callbackUrl: '/', // or any page you want to redirect to after sign out
+        });
+
+        fetch('/api/auth/signout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: params.toString(),
+        })
+        .then(response => {
+            if (response.ok) {
+                router.push('/');
+            } else {
+                console.error('Sign out failed', response.statusText);
+            }
+        })
+        .catch(error => console.error('Error signing out:', error));
     };
 
     return (
@@ -98,12 +124,12 @@ const UserMenu: React.FC<LayoutSession> = ({ session }) => {
                     />
                 </Box>
                 <Link href="/SettingPage" passHref>
-                <MenuItem sx={fontStyle}>
-                    <ListItemIcon>
-                        <SettingsIcon fontSize="small" />
-                    </ListItemIcon>
-                    ตั้งค่า
-                </MenuItem>
+                    <MenuItem sx={fontStyle}>
+                        <ListItemIcon>
+                            <SettingsIcon fontSize="small" />
+                        </ListItemIcon>
+                        ตั้งค่า
+                    </MenuItem>
                 </Link>
                 <Divider />
                 <MenuItem sx={fontStyle} onClick={signOutToLogin}>
