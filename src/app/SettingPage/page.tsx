@@ -2,8 +2,10 @@
 
 import React, { useState } from 'react';
 import Layout from '../../../public/components/Layout';
-import { TextField, Typography, Card, CardContent, Avatar, Box, Button } from '@mui/material';
+import { TextField, Typography, Card, CardContent, Avatar, Box, Button, InputAdornment, IconButton } from '@mui/material';
 import { useRouter } from 'next/navigation'; // Corrected import
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+
 
 const FontStyle: React.CSSProperties = {
   fontFamily: 'Kanit, sans-serif',
@@ -27,6 +29,12 @@ export default function Page() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => {
+      setShowPassword(!showPassword);
+  };
 
   const handleChangeOldPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setOldPassword(event.target.value);
@@ -128,26 +136,62 @@ export default function Page() {
                 <TextField
                   label="รหัสผ่านเดิม"
                   variant="outlined"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={oldPassword}
                   onChange={handleChangeOldPassword}
                   sx={{ marginBottom: '10px' }}
+                  InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <IconButton
+                                onClick={handleClickShowPassword}
+                                edge="end"
+                            >
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                        </InputAdornment>
+                    ),
+                }}
                 />
                 <TextField
                   label="รหัสผ่านใหม่"
                   variant="outlined"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={newPassword}
                   onChange={handleChangeNewPassword}
                   sx={{ marginBottom: '10px' }}
+                  InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <IconButton
+                                onClick={handleClickShowPassword}
+                                edge="end"
+                            >
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                        </InputAdornment>
+                    ),
+                }}
                 />
                 <TextField
                   label="ยืนยันรหัสผ่าน"
                   variant="outlined"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={confirmPassword}
                   onChange={handleChangeConfirmPassword}
                   sx={{ marginBottom: '10px' }}
+                  InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <IconButton
+                                onClick={handleClickShowPassword}
+                                edge="end"
+                            >
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                        </InputAdornment>
+                    ),
+                }}
                 />
               </div>
               {passwordError && (

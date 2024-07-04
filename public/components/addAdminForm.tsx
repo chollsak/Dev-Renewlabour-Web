@@ -9,9 +9,11 @@ import {
     Avatar,
     IconButton,
     Autocomplete,
+    InputAdornment
 } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import axios from 'axios';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { uploadProfilePicture } from '@/core/axiosEmployee';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { useRouter } from 'next/navigation';
@@ -136,8 +138,14 @@ const AddAdmin: React.FC = () => {
         }
     };
 
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
-        <Box sx={{ maxWidth: '60%' }}>
+        <Box >
             <form onSubmit={handleSubmit}>
                 <Box sx={{ m: 1, marginLeft: '30px' }}>
                     <Grid container spacing={2}>
@@ -231,7 +239,7 @@ const AddAdmin: React.FC = () => {
                                 id="combo-box-demo"
                                 options={data.map((option) => option.cpn_n)}
                                 onChange={handleCompany}
-                                renderInput={(params) => <TextField {...params} name="company" fullWidth size="small" label="Company" />}
+                                renderInput={(params) => <TextField {...params} name="company" fullWidth size="small" label="บริษัท" />}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -245,13 +253,42 @@ const AddAdmin: React.FC = () => {
                                 size="small"
                             />
                         </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                name="FirstPassword"
+                                label="รหัสเข้าสู่ระบบครั้งเเรก"
+                                type={showPassword ? "text" : "password"}
+                                onChange={handleChange}
+                                fullWidth
+                                required
+                                size="small"
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                onClick={handleClickShowPassword}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={12}>
+                           <Button fullWidth variant="contained" color="primary" size="small" type='submit' sx={{ marginTop: '30px', ...FontStyle }}>
+                                เพิ่ม
+                            </Button>
+                        </Grid>
 
                     </Grid>
+
+                    
                 </Box>
-                <Button variant="contained" fullWidth color="primary" size="small" type='submit' sx={{ marginLeft: '30px', marginTop: '30px', ...FontStyle }}>
-                    เพิ่ม
-                </Button>
             </form>
+
+
         </Box>
     );
 };

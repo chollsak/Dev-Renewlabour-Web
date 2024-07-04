@@ -9,6 +9,7 @@ import {
     Avatar,
     IconButton,
     Autocomplete,
+    Card,
 } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { useRouter } from 'next/navigation';
@@ -143,128 +144,134 @@ const UpdateAdmin: React.FC<UserFormProps> = ({ members, params }) => {
     };
 
     return (
-        <Box sx={{ maxWidth: '60%' }}>
-            <form onSubmit={handleSubmit}>
-                <Box sx={{ m: 1, marginLeft: '30px' }}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <input
-                                    accept="image/*"
-                                    id="icon-button-file"
-                                    type="file"
-                                    style={{ display: 'none' }}
-                                    onChange={handleFileChange}
-                                />
-                                <label htmlFor="icon-button-file">
-                                    <Avatar className='border-4 border-[#2074d4]'
-                                        sx={{
-                                            marginRight: 2,
-                                            width: '200px',
-                                            height: '200px',
-                                            cursor: 'pointer',
-                                            '&:hover': {
+        <Card>
+            <Box className="p-5">
+                <form onSubmit={handleSubmit}>
+                    <Box sx={{ m: 1, marginLeft: '30px' }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <input
+                                        accept="image/*"
+                                        id="icon-button-file"
+                                        type="file"
+                                        style={{ display: 'none' }}
+                                        onChange={handleFileChange}
+                                    />
+                                    <label htmlFor="icon-button-file">
+                                        <Avatar className='border-4 border-[#2074d4]'
+                                            sx={{
+                                                marginRight: 2,
+                                                width: '200px',
+                                                height: '200px',
                                                 cursor: 'pointer',
-                                            },
-                                        }}>
-                                        {profilePicture ? (
-                                            <Avatar src={URL.createObjectURL(profilePicture)} sx={{ width: 200, height: 200 }} alt="No Picture" />
-                                        ) : (
-                                            <MembersAvatar mem_id={params.mem_id} m_picpath={member.m_picpath} />
-                                        )}
-                                    </Avatar>
-                                </label>
-                            </Box>
+                                                '&:hover': {
+                                                    cursor: 'pointer',
+                                                },
+                                            }}>
+                                            {profilePicture ? (
+                                                <Avatar src={URL.createObjectURL(profilePicture)} sx={{ width: 200, height: 200 }} alt="No Picture" />
+                                            ) : (
+                                                <MembersAvatar mem_id={params.mem_id} m_picpath={member.m_picpath} />
+                                            )}
+                                        </Avatar>
+                                    </label>
+                                </Box>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="member_name"
+                                    label="ชื่อจริง"
+                                    type="text"
+                                    onChange={handleChange}
+                                    fullWidth
+                                    value={member.member_name}
+                                    required
+                                    size="small"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="member_lastname"
+                                    label="นามสกุล"
+                                    type="text"
+                                    onChange={handleChange}
+                                    fullWidth
+                                    value={member.member_lastname}
+                                    required
+                                    size="small"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="username"
+                                    label="Username"
+                                    type="text"
+                                    onChange={handleChange}
+                                    fullWidth
+                                    value={member.username}
+                                    required
+                                    size="small"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="email"
+                                    label="อีเมล"
+                                    type="email"
+                                    onChange={handleChange}
+                                    fullWidth
+                                    value={member.email}
+                                    required
+                                    size="small"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="tel"
+                                    label="เบอร์โทรศัพท์"
+                                    type="tel"
+                                    onChange={handleChange}
+                                    fullWidth
+                                    value={member.tel}
+                                    required
+                                    size="small"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Autocomplete
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={data.map((option) => option.cpn_n)}
+                                    onChange={handleCompany}
+                                    value={member.company}
+                                    renderInput={(params) => <TextField {...params} name="company" fullWidth size="small" label="Company" />}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="lineID"
+                                    label="Line ID"
+                                    type="text"
+                                    onChange={handleChange}
+                                    fullWidth
+                                    value={member.lineID}
+                                    required
+                                    size="small"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={12}>
+                                <Button variant="contained" fullWidth color="primary" size="small" type='submit' sx={{ marginTop: '30px', ...FontStyle }}>
+                                    เพิ่ม
+                                </Button>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                name="member_name"
-                                label="ชื่อจริง"
-                                type="text"
-                                onChange={handleChange}
-                                fullWidth
-                                value={member.member_name}
-                                required
-                                size="small"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                name="member_lastname"
-                                label="นามสกุล"
-                                type="text"
-                                onChange={handleChange}
-                                fullWidth
-                                value={member.member_lastname}
-                                required
-                                size="small"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                name="username"
-                                label="Username"
-                                type="text"
-                                onChange={handleChange}
-                                fullWidth
-                                value={member.username}
-                                required
-                                size="small"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                name="email"
-                                label="อีเมล"
-                                type="email"
-                                onChange={handleChange}
-                                fullWidth
-                                value={member.email}
-                                required
-                                size="small"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                name="tel"
-                                label="เบอร์โทรศัพท์"
-                                type="tel"
-                                onChange={handleChange}
-                                fullWidth
-                                value={member.tel}
-                                required
-                                size="small"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                options={data.map((option) => option.cpn_n)}
-                                onChange={handleCompany}
-                                value={member.company}
-                                renderInput={(params) => <TextField {...params} name="company" fullWidth size="small" label="Company" />}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                name="lineID"
-                                label="Line ID"
-                                type="text"
-                                onChange={handleChange}
-                                fullWidth
-                                value={member.lineID}
-                                required
-                                size="small"
-                            />
-                        </Grid>
-                    </Grid>
-                </Box>
-                <Button variant="contained" color="primary" size="small" type='submit' sx={{ marginLeft: '30px', marginTop: '30px', ...FontStyle }}>
-                    เพิ่ม
-                </Button>
-            </form>
-        </Box>
+                    </Box>
+
+                </form>
+            </Box>
+        </Card>
+
     );
 };
 

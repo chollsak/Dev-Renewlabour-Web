@@ -1,6 +1,6 @@
 import React from 'react'
 import Layout from '../../../public/components/Layout'
-import { Typography } from '@mui/material'
+import { Card, Typography } from '@mui/material'
 import AddAdmin from '../../../public/components/addAdminForm';
 
 const FontStyle: React.CSSProperties = {
@@ -15,9 +15,13 @@ export default function page() {
         <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle }} marginLeft={2}>เพิ่มผู้ดูเเล</Typography>
 
       </div>
-      <div style={{ marginTop: '50px' }}>
+
+      <Card>
+        <div className='p-5 '>
         <AddAdmin />
       </div>
+      </Card>
+
     </Layout>
 
   )
