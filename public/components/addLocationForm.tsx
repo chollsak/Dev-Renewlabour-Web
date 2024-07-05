@@ -285,7 +285,8 @@ const LocationForm: React.FC = () => {
                                 <InputThaiAddress.District
                                     value={address['district']}
                                     onChange={handleChange('district')}
-                                    onSelect={handleSelect} />
+                                    onSelect={handleSelect}
+                                    style={{ width: '100%', margin: '8px' }} />
                             </Grid>
                             <Grid item xs={6}>
                                 <label>อำเภอ</label>
@@ -293,6 +294,7 @@ const LocationForm: React.FC = () => {
                                     value={address['amphoe']}
                                     onChange={handleChange('amphoe')}
                                     onSelect={handleSelect}
+                                    style={{ width: '100%', margin: '8px' }}
                                 />
                             </Grid>
                             <Grid item xs={6}>
@@ -301,6 +303,7 @@ const LocationForm: React.FC = () => {
                                     value={address['province']}
                                     onChange={handleChange('province')}
                                     onSelect={handleSelect}
+                                    style={{ width: '100%', margin: '8px' }}
                                 />
                             </Grid>
                             <Grid item xs={6}>
@@ -309,6 +312,7 @@ const LocationForm: React.FC = () => {
                                     value={address['zipcode']}
                                     onChange={handleChange('zipcode')}
                                     onSelect={handleSelect}
+                                    style={{ width: '100%', margin: '8px' }}
                                 />
                             </Grid>
                             <Grid item xs={6}>
