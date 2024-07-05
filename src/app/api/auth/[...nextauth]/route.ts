@@ -33,6 +33,7 @@ const handler = NextAuth({
                   username = @username
                   AND BINARY_CHECKSUM(password) = BINARY_CHECKSUM(@password)`
             );
+
           if (users.recordset.length === 0) {
             return null;
           } else {
@@ -45,7 +46,6 @@ const handler = NextAuth({
             }
             return user;
           }
-          return null;
         } catch (error) {
           console.error("Authentication error: ", error);
           return new NextResponse("Database Error", { status: 500 });
@@ -53,38 +53,38 @@ const handler = NextAuth({
       },
     }),
   ],
-  cookies: {
-    sessionToken: {
-      name: `next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        domain: "http://localhost/",
-        port: "3000", // เพิ่มพอร์ตที่นี่
-      },
-    },
-    callbackUrl: {
-      name: `next-auth.callback-url`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        domain: "http://localhost/",
-        port: "3000", // เพิ่มพอร์ตที่นี่
-      },
-    },
-    csrfToken: {
-      name: `next-auth.csrf-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        domain: "http://localhost/",
-        port: "3000", // เพิ่มพอร์ตที่นี่
-      },
-    },
-  },
+  // cookies: {
+  //   sessionToken: {
+  //     name: `next-auth.session-token`,
+  //     options: {
+  //       httpOnly: true,
+  //       sameSite: "lax",
+  //       path: "/",
+  //       domain: "http://localhost/",
+  //       port: "3000", // เพิ่มพอร์ตที่นี่
+  //     },
+  //   },
+  //   callbackUrl: {
+  //     name: `next-auth.callback-url`,
+  //     options: {
+  //       httpOnly: true,
+  //       sameSite: "lax",
+  //       path: "/",
+  //       domain: "http://localhost/",
+  //       port: "3000", // เพิ่มพอร์ตที่นี่
+  //     },
+  //   },
+  //   csrfToken: {
+  //     name: `next-auth.csrf-token`,
+  //     options: {
+  //       httpOnly: true,
+  //       sameSite: "lax",
+  //       path: "/",
+  //       domain: "http://localhost",
+  //       port: "3000", // เพิ่มพอร์ตที่นี่
+  //     },
+  //   },
+  // },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {

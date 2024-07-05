@@ -1,12 +1,34 @@
-
-import App from "../../public/components/App";
+'use client'
+import React, { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import {
+  Container,
+} from "@mui/material";
 import './font.css';
 
-export default function Home() {
+export default function Page() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
-  return (
-    <div > 
-      <App />
-    </div>
-  );
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/employees");
+    } else if (status === "loading") {
+      router.push("/employees");
+    } else {
+      router.push("/auth/signin")
+    }
+  }, [session, router, status]);
+
+  if (!session?.user) {
+    return (
+      <React.Fragment>
+        <Container>
+
+        </Container>
+      </React.Fragment>
+    );
+  }
+  // ไม่ต้องใช้ return ที่นี่ เพราะ useEffect จะจัดการเปลี่ยนเส้นทางหากมีเซสชัน
 }

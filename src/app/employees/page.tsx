@@ -2,12 +2,9 @@
 
 import React from 'react'
 import Layout from '../../../public/components/Layout'
-import UserMenu from '../../../public/components/Header'
 import { Button, Typography } from '@mui/material'
 import MyTable from '../../../public/components/EmployeeTable'
 import AddIcon from '@mui/icons-material/Add';
-import Footer from '../../../public/components/Footer'
-import toast, { Toaster } from "react-hot-toast";
 
 export default function employeePage() {
   const FontStyle: React.CSSProperties = {

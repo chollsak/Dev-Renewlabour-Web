@@ -42,8 +42,7 @@ export default function LoginPage() {
       toast.error("รหัสผ่านหรือชื่อผู้ใช้ไม่ถูกต้อง!");
     } else if (result?.ok) {
       toast.success("เข้าสู่ระบบสำเร็จ!");
-      router.push("/employees");
-      console.log(result)
+      window.location.href = "/";
     }
   };
 

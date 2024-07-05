@@ -1,15 +1,27 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box } from '@mui/system';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import Footer from './Footer';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
+
+  const router = useRouter();
+
+  console.log("Session : ", session)
+  console.log("Status : ", status)
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      return router.push('/');
+    }
+  }, [router, status]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>

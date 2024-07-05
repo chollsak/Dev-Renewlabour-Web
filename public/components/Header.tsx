@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -10,7 +10,7 @@ import Divider from '@mui/material/Divider';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Box, Chip, Typography } from '@mui/material';
-import { getCsrfToken } from 'next-auth/react';
+import { getCsrfToken, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -57,14 +57,14 @@ const UserMenu: React.FC<LayoutSession> = ({ session }) => {
             },
             body: params.toString(),
         })
-        .then(response => {
-            if (response.ok) {
-                router.push('/');
-            } else {
-                console.error('Sign out failed', response.statusText);
-            }
-        })
-        .catch(error => console.error('Error signing out:', error));
+            .then(response => {
+                if (response.ok) {
+                    router.push('/');
+                } else {
+                    console.error('Sign out failed', response.statusText);
+                }
+            })
+            .catch(error => console.error('Error signing out:', error));
     };
 
     return (
