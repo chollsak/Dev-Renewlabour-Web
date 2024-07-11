@@ -37,9 +37,9 @@ const getStatus = (row: any) => {
     if (remainingDays !== null) {
         if (remainingDays <= 0) {
             return 'หมดอายุ';
-        } else if (remainingDays > 0 && remainingDays < 7) {
+        } else if (remainingDays > 0 && remainingDays <= 15) {
             return 'ต่ออายุด่วน';
-        } else if (remainingDays >= 7 && remainingDays < 15) {
+        } else if (remainingDays > 15 && remainingDays < 30) {
             return 'ใกล้หมดอายุ';
         } else {
             return 'ปกติ';
