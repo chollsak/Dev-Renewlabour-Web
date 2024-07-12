@@ -17,7 +17,7 @@ export default function AdminTable() {
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/api/admin')
+        axios.get(`${process.env.NEXT_PUBLIC_API}/api/admin`)
             .then(response => {
                 console.log('Fetched Data:', response.data);  // Log the fetched data
                 setData(response.data);

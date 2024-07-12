@@ -66,7 +66,7 @@ const MyTable: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/persons');
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/persons`);
                 setData(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);

@@ -16,7 +16,7 @@ const DataTable: React.FC = () => {
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
     useEffect(() => {
-        axios.get('http://localhost:3000/api/companies')
+        axios.get(`${process.env.NEXT_PUBLIC_API}/api/companies`)
             .then(response => {
                 console.log('Fetched Data:', response.data);  // Log the fetched data
                 setData(response.data);
