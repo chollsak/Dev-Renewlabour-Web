@@ -6,6 +6,7 @@ import { Button, Typography } from '@mui/material'
 import MyTable from '../../../public/components/EmployeeTable'
 import AddIcon from '@mui/icons-material/Add';
 
+
 export default function employeePage() {
   const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -17,7 +18,7 @@ export default function employeePage() {
 
   return (
     <Layout>
-
+    
       <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle }} marginLeft={2}>รายชื่อเเรงงาน</Typography>
         <Button
@@ -26,6 +27,8 @@ export default function employeePage() {
       </div>
 
       <MyTable />
+
+      
 
     </Layout>
   )

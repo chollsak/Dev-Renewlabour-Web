@@ -6,6 +6,7 @@ import Header from './Header';
 import Footer from './Footer';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import DraggableButton from './DraggableButton';
 
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -32,6 +33,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
         {children}
       </Box>
+      <DraggableButton/>
       <Footer />
     </Box>
   );
