@@ -372,7 +372,7 @@ const UserForm: React.FC = () => {
                             <Grid item xs={3}><ButtonJoy sx={{ margin: 1 }} fullWidth size='lg' color={buttonColor(person.visa_enddate)} onClick={() => handleOpenDialog('Visa')}>Visa</ButtonJoy></Grid>
                             <Grid item xs={3}><ButtonJoy sx={{ margin: 1 }} fullWidth size='lg' color={buttonColor(person.passport_enddate)} onClick={() => handleOpenDialog('Passport')}>Passport</ButtonJoy></Grid>
                             <Grid item xs={3}><ButtonJoy sx={{ margin: 1 }} fullWidth size='lg' color={buttonColor(person.workpermit_enddate)} onClick={() => handleOpenDialog('Workpermit')}>Work permit</ButtonJoy></Grid>
-                            <Grid item xs={3}><ButtonJoy sx={{ margin: 1 }} fullWidth size='lg' color={buttonColor(person.ninetydays_enddate)} onClick={() => handleOpenDialog('ninetydays')}>ninetydays</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy sx={{ margin: 1 }} fullWidth size='lg' color={buttonColor(person.ninetydays_enddate)} onClick={() => handleOpenDialog('Ninetydays')}>ninetydays</ButtonJoy></Grid>
                             <DialogComponent title="visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('visa', data)} />
                             <DialogComponent title="passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('passport', data)} />
                             <DialogComponent title="workpermit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('workpermit', data)} />
