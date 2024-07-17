@@ -386,7 +386,7 @@ const UserForm: React.FC = () => {
                         </Grid>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button variant="contained" color='success' sx={{ width: '50%', marginTop: 2 }} type="submit">Submit</Button>
+                        <Button variant="contained" color='success' sx={{ width: '20%', marginTop: 2 }} type="submit">Submit</Button>
                     </Box>
                 </form>
             </CardContent>

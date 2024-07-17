@@ -276,19 +276,12 @@ const AddAdmin: React.FC = () => {
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={12}>
-                           <Button fullWidth variant="contained" color="primary" size="small" type='submit' sx={{ marginTop: '30px', ...FontStyle }}>
-                                เพิ่ม
-                            </Button>
-                        </Grid>
-
                     </Grid>
-
-                    
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button variant="contained" color='success' sx={{ width: '20%', marginTop: 2 }} type="submit">Submit</Button>
                 </Box>
             </form>
-
-
         </Box>
     );
 };

@@ -112,7 +112,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
         try {
             // Send the data to the API using Axios
             const response = await axios.patch(`${process.env.NEXT_PUBLIC_API}/api/companies?companyId=${params.cpn_id}`, { company });
-            if (response.status === 200 && logo) {
+            if (response.status === 200) {
                 const uploadPicPath = await uploadProfilePicture(logo, "companys", params.cpn_id, "logo");
 
                 if (uploadPicPath.status === 200 || !uploadPicPath || uploadPicPath.status === 400) {
@@ -194,7 +194,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     </label>
                                 </Box>
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={4}>
                                 <TextField
                                     label="ชื่อบริษัท (ชื่อสาขาย่อย ถ้ามี โดยชื่อสาขาย่อยต้องอยู่ในวงเล็บด้วย)"
                                     variant="outlined"
@@ -206,35 +206,12 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    label="ตึก"
-                                    variant="outlined"
-                                    required
-                                    size="small"
-                                    name='cpn_build'
-                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                    value={company.cpn_build}
-                                    sx={{ width: '100%', margin: 1 }}
-                                />
+                            <Grid item md={8}>
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
                                 <TextField
-                                    label="ชั้น"
+                                    label="บ้านเลขที่"
                                     variant="outlined"
-                                    required
-                                    size="small"
-                                    name='cpn_fl'
-                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                    value={company.cpn_fl}
-                                    sx={{ width: '100%', margin: 1 }}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    label="หมู่บ้าน"
-                                    variant="outlined"
-                                    required
                                     size="small"
                                     name='cpn_vill'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
@@ -242,23 +219,32 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
                                 <TextField
-                                    label="ห้อง"
+                                    label="อาคาร"
                                     variant="outlined"
-                                    required
                                     size="small"
-                                    name='cpn_room'
+                                    name='cpn_build'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                    value={company.cpn_room}
+                                    value={company.cpn_build}
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
+                                <TextField
+                                    label="ชั้น"
+                                    variant="outlined"
+                                    size="small"
+                                    name='cpn_fl'
+                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                    value={company.cpn_fl}
+                                    sx={{ width: '100%', margin: 1 }}
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
                                 <TextField
                                     label="หมู่"
                                     variant="outlined"
-                                    required
                                     size="small"
                                     name='cpn_moo'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
@@ -266,11 +252,10 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
                                 <TextField
                                     label="ซอย"
                                     variant="outlined"
-                                    required
                                     size="small"
                                     name='cpn_soi'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
@@ -278,11 +263,10 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
                                 <TextField
                                     label="ถนน"
                                     variant="outlined"
-                                    required
                                     size="small"
                                     name='cpn_st'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
@@ -290,19 +274,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    label="เมือง"
-                                    variant="outlined"
-                                    required
-                                    size="small"
-                                    name='cpn_coun'
-                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                    value={company.cpn_coun}
-                                    sx={{ width: '100%', margin: 1 }}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={3}>
                                 <label>ตำบล</label>
                                 <InputThaiAddress.District
                                     value={address['district']}
@@ -310,7 +282,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     onSelect={handleSelect}
                                     style={{ width: '100%', margin: '8px' }} />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={3}>
                                 <label>อำเภอ</label>
                                 <InputThaiAddress.Amphoe
                                     value={address['amphoe']}
@@ -319,7 +291,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     style={{ width: '100%', margin: '8px' }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={3}>
                                 <label>จังหวัด</label>
                                 <InputThaiAddress.Province
                                     value={address['province']}
@@ -328,7 +300,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     style={{ width: '100%', margin: '8px' }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={3}>
                                 <label>รหัสไปรษณีย์</label>
                                 <InputThaiAddress.Zipcode
                                     value={address['zipcode']}
@@ -355,7 +327,9 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                             </Grid>
                         </Grid>
                     </Box>
-                    <Button variant="contained" sx={{ width: '100%', marginTop: 2 }} type='submit'>เพิ่ม</Button>
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Button variant="contained" color='success' sx={{ width: '20%', marginTop: 2 }} type="submit">Submit</Button>
+                    </Box>
                 </form>
             </CardContent>
         </Card>

@@ -393,7 +393,9 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                             <FilesOther open={openDialog === 'Files'} handleClose={handleCloseDialog} onSave={handleFilesDialogSave} />
                         </Grid>
                     </Box>
-                    <Button variant="contained" sx={{ width: '100%', marginTop: 2 }} type='submit'>Submit</Button>
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Button variant="contained" color='success' sx={{ width: '20%', marginTop: 2 }} type="submit">Submit</Button>
+                    </Box>
                 </form>
             </CardContent>
         </Card>

@@ -181,7 +181,7 @@ const LocationForm: React.FC = () => {
                         </Grid>
 
                         <Grid container spacing={2}>
-                            <Grid item xs={12}>
+                            <Grid item xs={4}>
                                 <TextField
                                     label="ชื่อบริษัท (ชื่อสาขาย่อย ถ้ามี โดยชื่อสาขาย่อยต้องอยู่ในวงเล็บด้วย)"
                                     name='cpn_n'
@@ -192,95 +192,69 @@ const LocationForm: React.FC = () => {
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item md={8}>
+                            </Grid>
+                            <Grid item xs={4}>
                                 <TextField
-                                    label="ตึก"
-                                    name='cpn_build'
+                                    label="บ้านเลขที่"
+                                    name='cpn_vill'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                     variant="outlined"
-                                    required
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
+                                <TextField
+                                    label="อาคาร"
+                                    name='cpn_build'
+                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
+                                    variant="outlined"
+                                    size="small"
+                                    sx={{ width: '100%', margin: 1 }}
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
                                 <TextField
                                     label="ชั้น"
                                     name='cpn_fl'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                     variant="outlined"
-                                    required
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    label="หมู่บ้าน"
-                                    name='cpn_vill'
-                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                    variant="outlined"
-                                    required
-                                    size="small"
-                                    sx={{ width: '100%', margin: 1 }}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    label="ห้อง"
-                                    name='cpn_room'
-                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                    variant="outlined"
-                                    required
-                                    size="small"
-                                    sx={{ width: '100%', margin: 1 }}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
                                 <TextField
                                     label="หมู่"
                                     name='cpn_moo'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                     variant="outlined"
-                                    required
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
                                 <TextField
                                     label="ซอย"
                                     name='cpn_soi'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                     variant="outlined"
-                                    required
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
                                 <TextField
                                     label="ถนน"
                                     name='cpn_st'
                                     onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
                                     variant="outlined"
-                                    required
                                     size="small"
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    label="เมือง"
-                                    name='cpn_coun'
-                                    onChange={(e) => setCompany({ ...company, [e.target.name]: e.target.value })}
-                                    variant="outlined"
-                                    required
-                                    size="small"
-                                    sx={{ width: '100%', margin: 1 }}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={3}>
                                 <label>ตำบล</label>
                                 <InputThaiAddress.District
                                     value={address['district']}
@@ -288,7 +262,7 @@ const LocationForm: React.FC = () => {
                                     onSelect={handleSelect}
                                     style={{ width: '100%', margin: '8px' }} />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={3}>
                                 <label>อำเภอ</label>
                                 <InputThaiAddress.Amphoe
                                     value={address['amphoe']}
@@ -297,7 +271,7 @@ const LocationForm: React.FC = () => {
                                     style={{ width: '100%', margin: '8px' }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={3}>
                                 <label>จังหวัด</label>
                                 <InputThaiAddress.Province
                                     value={address['province']}
@@ -306,7 +280,7 @@ const LocationForm: React.FC = () => {
                                     style={{ width: '100%', margin: '8px' }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={3}>
                                 <label>รหัสไปรษณีย์</label>
                                 <InputThaiAddress.Zipcode
                                     value={address['zipcode']}
@@ -315,7 +289,7 @@ const LocationForm: React.FC = () => {
                                     style={{ width: '100%', margin: '8px' }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={3}>
                                 <FormControl fullWidth size="small" sx={{ margin: 1 }}>
                                     <InputLabel id="branch-type-label">ประเภทสาขา</InputLabel>
                                     <Select
@@ -331,10 +305,11 @@ const LocationForm: React.FC = () => {
                                     </Select>
                                 </FormControl>
                             </Grid>
-
                         </Grid>
                     </Box>
-                    <Button variant="contained" sx={{ width: '100%', marginTop: 2 }} type='submit'>เพิ่ม</Button>
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Button variant="contained" color='success' sx={{ width: '20%', marginTop: 2 }} type="submit">Submit</Button>
+                    </Box>
                 </form>
             </CardContent>
         </Card>

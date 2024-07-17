@@ -52,8 +52,8 @@ const DialogComponent: React.FC<DialogComponentProps> = ({ title, open, handleCl
                 )}
                 <input type="file" onChange={handleFileChange} className="mb-4" />
                 <InputTextMasked
-                    label="Start Date"
-                    placeholder={`ปีค.ศ-เดือน-วัน (กรอกแบบตัวเลข เช่น ${moment().format('YYYY-MM-DD')})`}
+                    label={`Start Date (กรอกแบบตัวเลข เช่น ${moment().format('YYYY-MM-DD')})`}
+                    placeholder={`ปีค.ศ-เดือน-วัน`}
                     value={startDate}
                     onChange={(e: any) => setStartDate(e.target.value)}
                     fullWidth
@@ -61,8 +61,8 @@ const DialogComponent: React.FC<DialogComponentProps> = ({ title, open, handleCl
                     margin="normal"
                 />
                 <InputTextMasked
-                    label="End Date"
-                    placeholder={`ปีค.ศ-เดือน-วัน (กรอกแบบตัวเลข เช่น ${moment().format('YYYY-MM-DD')})`}
+                    label={`End Date (กรอกแบบตัวเลข เช่น ${moment().format('YYYY-MM-DD')})`}
+                    placeholder={`ปีค.ศ-เดือน-วัน`}
                     value={endDate}
                     onChange={(e: any) => setEndDate(e.target.value)}
                     fullWidth
