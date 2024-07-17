@@ -1,31 +1,29 @@
-// components/DraggableButton.tsx
 import React, { useRef, useEffect, useState, MouseEvent } from 'react';
 import { Button, Modal, Box, Typography } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles({
-    root: {
-        position: 'fixed',
-        bottom: '20px',
-        right: '5px',
-        cursor: 'grab',
-    },
-    dragging: {
+const DraggableButtonRoot = styled(Button)(({ theme }) => ({
+    position: 'fixed',
+    bottom: '20px',
+    right: '5px',
+    cursor: 'grab',
+    '&.dragging': {
         cursor: 'grabbing',
     },
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    image: {
-        maxWidth: '100%',
-        maxHeight: '100%',
-    },
+}));
+
+const ModalContent = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+}));
+
+const ModalImage = styled('img')({
+    maxWidth: '100%',
+    maxHeight: '100%',
 });
 
 const DraggableButton: React.FC = () => {
-    const classes = useStyles();
     const buttonRef = useRef<HTMLButtonElement | null>(null);
     const pos = useRef({ x: 0, y: 0 });
     const dragging = useRef(false);
@@ -50,13 +48,13 @@ const DraggableButton: React.FC = () => {
 
         const onMouseUp = () => {
             dragging.current = false;
-            button.classList.remove(classes.dragging);
+            button.classList.remove('dragging');
         };
 
         const onMouseDown = (e: MouseEvent) => {
             dragging.current = true;
             pos.current = { x: e.clientX, y: e.clientY };
-            button.classList.add(classes.dragging);
+            button.classList.add('dragging');
         };
 
         button.addEventListener('mousedown', onMouseDown as unknown as EventListener);
@@ -68,25 +66,24 @@ const DraggableButton: React.FC = () => {
             document.removeEventListener('mousemove', onMouseMove as unknown as EventListener);
             document.removeEventListener('mouseup', onMouseUp as unknown as EventListener);
         };
-    }, [classes.dragging]);
+    }, []);
 
     return (
         <>
-            <Button
-
+            <DraggableButtonRoot
                 ref={buttonRef}
-                className={`${classes.root} text-white font-bold py-2 px-4 rounded`}
+                className="text-white font-bold py-2 px-4 rounded"
                 onClick={handleOpen}
             >
                 <img src="/logo/linelogo.png" width={'50px'} height='50px' alt="" />
-            </Button>
+            </DraggableButtonRoot>
             <Modal
                 open={open}
                 onClose={handleClose}
-                className={classes.modal}
+                className="modal"
             >
-                <Box className="flex" style={{ display: 'flex', alignItems: 'center' }}>
-                    <img src="/logo/linenotilogo.jpg" alt="Modal Content" className={classes.image} style={{ height: '300px' }} />
+                <ModalContent style={{ display: 'flex', alignItems: 'center' }}>
+                    <ModalImage src="/logo/linenotilogo.jpg" alt="Modal Content" style={{ height: '300px' }} />
                     <div style={{ backgroundColor: '#48c404', height: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <Typography
                             className='text-center'
@@ -100,13 +97,9 @@ const DraggableButton: React.FC = () => {
                         >
                             เเสกน OR Code เพื่อรับการเเจ้งเตือนของเรา
                         </Typography>
-                        <img src="/logo/logo.png" alt="Modal Content" className={classes.image} style={{ height: '60px', backgroundColor: 'black', padding: '10px', marginTop: '5px', borderRadius: '20px' }} />
+                        <ModalImage src="/logo/logo.png" alt="Modal Content" style={{ height: '60px', backgroundColor: 'black', padding: '10px', marginTop: '5px', borderRadius: '20px' }} />
                     </div>
-                </Box>
-
-
-
-
+                </ModalContent>
             </Modal>
         </>
     );
