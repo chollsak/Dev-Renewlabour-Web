@@ -77,31 +77,47 @@ export default function Home({
                                         </div>
                                     </div>
                                     <div className='flex flex-col'>
-                                        <div className='text-gray-500' >ข้อมูลที่อยู่</div>
-                                        <div className='flex space-x-10 '>
-                                            <div className='flex gap-2'>
-                                                <Typography className='text-gray-600'>เลขที่ที่อยู่: </Typography>
-                                                <Typography fontWeight={600}>{company[0].cpn_zip} {company[0].cpn_subdist} {company[0].cpn_dist} {company[0].cpn_prov}</Typography>
-                                            </div>
+                                        <div className='text-gray-500'>ข้อมูลที่อยู่</div>
+                                        <div className='flex flex-wrap'>
 
-                                            <div className='flex gap-2'>
-                                                <Typography className='text-gray-600'>ตึก: </Typography>
+                                            <div className='flex gap-2 mr-2'>
+                                                <Typography className='text-gray-600'>อาคาร: </Typography>
                                                 <Typography fontWeight={600}>{company[0].cpn_build}</Typography>
                                             </div>
 
-                                            <div className='flex gap-2'>
+                                            <div className='flex gap-2 mr-2'>
                                                 <Typography className='text-gray-600'>ชั้น: </Typography>
                                                 <Typography fontWeight={600}>{company[0].cpn_fl}</Typography>
                                             </div>
 
-                                            <div className='flex gap-2'>
+                                            <div className='flex gap-2 mr-2'>
                                                 <Typography className='text-gray-600'>หมู่: </Typography>
                                                 <Typography fontWeight={600}>{company[0].cpn_moo}</Typography>
                                             </div>
 
-                                            <div className='flex gap-2'>
+                                            <div className='flex gap-2 mr-2'>
                                                 <Typography className='text-gray-600'>ซอย: </Typography>
                                                 <Typography fontWeight={600}>{company[0].cpn_soi}</Typography>
+                                            </div>
+
+                                            <div className='flex gap-2 mr-2'>
+                                                <Typography className='text-gray-600'>ตำบล: </Typography>
+                                                <Typography fontWeight={600}>{company[0].cpn_subdist}</Typography>
+                                            </div>
+
+                                            <div className='flex gap-2 mr-2'>
+                                                <Typography className='text-gray-600'>อำเภอ: </Typography>
+                                                <Typography fontWeight={600}>{company[0].cpn_dist}</Typography>
+                                            </div>
+
+                                            <div className='flex gap-2 mr-2'>
+                                                <Typography className='text-gray-600'>จังหวัด: </Typography>
+                                                <Typography fontWeight={600}>{company[0].cpn_prov}</Typography>
+                                            </div>
+
+                                            <div className='flex gap-2 mr-2'>
+                                                <Typography className='text-gray-600'>รหัสไปรษณีย์: </Typography>
+                                                <Typography fontWeight={600}>{company[0].cpn_zip}</Typography>
                                             </div>
                                         </div>
                                     </div>

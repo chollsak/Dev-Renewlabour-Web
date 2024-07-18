@@ -23,13 +23,11 @@ export default function TableRowLocationAll({ row, index }: { row: any, index: a
 
     const handleView = (row: any) => {
         // Handle view action here
-        console.log('View clicked:', row);
         window.location.href = `ViewLocation/${row.cpn_id}`;
     };
 
     const handleEdit = (row: any) => {
         // Handle edit action here
-        console.log('Edit clicked:', row);
         <div>
             <PageLoader />
         </div>
@@ -38,7 +36,6 @@ export default function TableRowLocationAll({ row, index }: { row: any, index: a
 
     const handleDelete = async (row: any) => {
         // Handle delete action here
-        console.log('Delete clicked:', row);
         const deleteData = await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/companies?companyId=${row.cpn_id}`)
         const deleteFolder = await axios.delete(`${process.env.NEXT_PUBLIC_FILE_API}/api/companys/${row.cpn_id}`)
         if (deleteData.status === 200 && (deleteFolder.status === 200 || deleteFolder.status === 404)) {

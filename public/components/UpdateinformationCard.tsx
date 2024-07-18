@@ -169,11 +169,12 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                         showConfirmButton: false,
                         allowOutsideClick: false,
                         timer: 1000,
-                    }).then((result: SweetAlertResult) => {
-                        if (result.dismiss === Swal.DismissReason.timer) {
-                            router.push(`/ViewEmployee/${params.person_id}/${decodeURIComponent(params.outlanderNo)}`);
-                        }
-                    });
+                    })
+                        .then((result: SweetAlertResult) => {
+                            if (result.dismiss === Swal.DismissReason.timer) {
+                                router.push(`/ViewEmployee/${params.person_id}/${decodeURIComponent(params.outlanderNo)}`);
+                            }
+                        });
                 } else {
                     Swal.fire({
                         title: 'ล้มเหลว!',
@@ -202,8 +203,6 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
             })
         }
     };
-
-    console.log(`${process.env.NEXT_PUBLIC_FILE_API}/file/persons/${params.outlanderNo}/picpath/${person.pic_path}`)
 
     return (
         <Card sx={{ width: '100%', boxShadow: 3 }}>

@@ -50,8 +50,6 @@ const UpdateAdmin: React.FC<UserFormProps> = ({ members, params }) => {
         lineID: members[0].lineID,
     });
 
-    console.log(member)
-
     const [profilePicture, setProfilePicture] = useState<File | null>(null);
     const [data, setData] = useState<any[]>([])
 

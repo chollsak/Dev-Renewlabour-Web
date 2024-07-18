@@ -161,11 +161,12 @@ const UserForm: React.FC = () => {
                         showConfirmButton: false,
                         allowOutsideClick: false,
                         timer: 1000,
-                    }).then((result: SweetAlertResult) => {
-                        if (result.dismiss === Swal.DismissReason.timer) {
-                            router.push("/employees");
-                        }
-                    });
+                    })
+                        .then((result: SweetAlertResult) => {
+                            if (result.dismiss === Swal.DismissReason.timer) {
+                                router.push("/employees");
+                            }
+                        });
                 } else {
                     //ลบข้อมูล persons 
                     await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${personId}&outlanderNo=${person.outlanderNo}`)

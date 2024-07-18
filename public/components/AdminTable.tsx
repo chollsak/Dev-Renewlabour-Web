@@ -19,7 +19,6 @@ export default function AdminTable() {
     useEffect(() => {
         axios.get(`${process.env.NEXT_PUBLIC_API}/api/admin`)
             .then(response => {
-                console.log('Fetched Data:', response.data);  // Log the fetched data
                 setData(response.data);
             })
             .catch(error => console.error('Error fetching member:', error));

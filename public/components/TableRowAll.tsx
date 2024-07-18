@@ -112,13 +112,11 @@ const TableRowAll: React.FC<TableRowProps> = ({ row }) => {
 
     const handleView = (row: any) => {
         // Handle view action here
-        console.log('View clicked:', row);
         window.location.href = `ViewEmployee/${row.person_id}/${encodeURIComponent(row.outlanderNo)}`;
     };
 
     const handleEdit = (row: any) => {
         // Handle edit action here
-        console.log('Edit clicked:', row);
         <div>
             <PageLoader />
         </div>
@@ -127,7 +125,6 @@ const TableRowAll: React.FC<TableRowProps> = ({ row }) => {
 
     const handleDelete = async (row: any) => {
         // Handle delete action here
-        console.log('Delete clicked:', row);
         const deleteData = await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${row.person_id}&outlanderNo=${row.outlanderNo}`)
         const deleteFolder = await axios.delete(`${process.env.NEXT_PUBLIC_FILE_API}/api/persons/${row.outlanderNo}`)
         if (deleteData.status === 200 && (deleteFolder.status === 200 || deleteFolder.status === 404)) {

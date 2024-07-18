@@ -26,8 +26,6 @@ export default function Home({
         fetchData();
     }, [params.mem_id]);
 
-    console.log(members)
-
     return (
         <>
             {members.length === 0 ? (

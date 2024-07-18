@@ -18,7 +18,6 @@ const DataTable: React.FC = () => {
     useEffect(() => {
         axios.get(`${process.env.NEXT_PUBLIC_API}/api/companies`)
             .then(response => {
-                console.log('Fetched Data:', response.data);  // Log the fetched data
                 setData(response.data);
             })
             .catch(error => console.error('Error fetching companies:', error));

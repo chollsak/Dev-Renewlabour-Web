@@ -15,9 +15,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const router = useRouter();
 
-  console.log("Session : ", session)
-  console.log("Status : ", status)
-
   useEffect(() => {
     if (status === 'unauthenticated') {
       return router.push('/');
@@ -33,7 +30,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
         {children}
       </Box>
-      <DraggableButton/>
+      <DraggableButton />
       <Footer />
     </Box>
   );

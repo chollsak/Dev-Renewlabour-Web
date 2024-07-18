@@ -12,7 +12,6 @@ export const uploadProfilePicture = async (profilePicture: any, category: any, n
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            console.log('Profile picture upload response:', response.data);
             return response;
         } catch (error) {
             console.error('Profile picture upload failed:', error);
@@ -24,8 +23,8 @@ export const uploadProfilePicture = async (profilePicture: any, category: any, n
 };
 
 export const uploadFileFormData = async (fileFormData: any, number: any) => {
-    for (let key in fileFormData) {
-        const fileData = fileFormData[key];
+
+    const uploadPromises = Object.values(fileFormData).map(async (fileData: any) => {
         if (fileData.file) {
             const formData = new FormData();
             formData.append('filePaths', fileData.file);
@@ -37,14 +36,14 @@ export const uploadFileFormData = async (fileFormData: any, number: any) => {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
-                console.log('Files upload response:', response.data);
                 return response;
             } catch (error) {
-                console.error('Files upload failed:', error);
                 return { status: 500 };
             }
         }
-    }
+    });
+
+    await Promise.all(uploadPromises);
     return { status: 200 };
 };
 
@@ -63,10 +62,8 @@ export const uploadOtherFiles = async (uploadedFiles: any, person: any, personId
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            console.log('Other files upload response:', response.data);
             return response;
         } catch (error) {
-            console.error('Other files upload failed:', error);
             return { status: 500 };
         }
     } else {

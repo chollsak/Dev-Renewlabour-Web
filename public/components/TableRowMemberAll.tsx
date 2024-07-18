@@ -23,13 +23,11 @@ export default function TableRowMemberAll({ row, index }: { row: any, index: any
 
     const handleView = (row: any) => {
         // Handle view action here
-        console.log('View clicked:', row);
         window.location.href = `ViewAdmin/${row.mem_id}`;
     };
 
     const handleEdit = (row: any) => {
         // Handle edit action here
-        console.log('Edit clicked:', row);
         <div>
             <PageLoader />
         </div>
@@ -38,7 +36,6 @@ export default function TableRowMemberAll({ row, index }: { row: any, index: any
 
     const handleDelete = async (row: any) => {
         // Handle delete action here
-        console.log('Delete clicked:', row);
         const deleteData = await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/admin?memberId=${row.mem_id}`)
         const deleteFolder = await axios.delete(`${process.env.NEXT_PUBLIC_FILE_API}/api/members/${row.mem_id}`)
         if (deleteData.status === 200 && (deleteFolder.status === 200 || deleteFolder.status === 404)) {
