@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, MouseEvent } from 'react';
 import { Button, Modal, Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import Image from 'next/image';
 
 const DraggableButtonRoot = styled(Button)(({ theme }) => ({
     position: 'fixed',
@@ -75,7 +76,7 @@ const DraggableButton: React.FC = () => {
                 className="text-white font-bold py-2 px-4 rounded"
                 onClick={handleOpen}
             >
-                <img src="/logo/linelogo.png" width={'50px'} height='50px' alt="" />
+                <Image src="/Logo/linelogo.png" width={50} height={50} alt="Logo" />
             </DraggableButtonRoot>
             <Modal
                 open={open}
@@ -83,7 +84,7 @@ const DraggableButton: React.FC = () => {
                 className="modal"
             >
                 <ModalContent style={{ display: 'flex', alignItems: 'center' }}>
-                    <ModalImage src="/logo/linenotilogo.jpg" alt="Modal Content" style={{ height: '300px' }} />
+                    <ModalImage src="/Logo/linenotilogo.jpg" alt="Modal Content" style={{ height: '300px' }} />
                     <div style={{ backgroundColor: '#48c404', height: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <Typography
                             className='text-center'
@@ -97,7 +98,7 @@ const DraggableButton: React.FC = () => {
                         >
                             เเสกน OR Code เพื่อรับการเเจ้งเตือนของเรา
                         </Typography>
-                        <ModalImage src="/logo/logo.png" alt="Modal Content" style={{ height: '60px', backgroundColor: 'black', padding: '10px', marginTop: '5px', borderRadius: '20px' }} />
+                        <ModalImage src="/Logo/logo.png" alt="Modal Content" style={{ height: '60px', backgroundColor: 'black', padding: '10px', marginTop: '5px', borderRadius: '20px' }} />
                     </div>
                 </ModalContent>
             </Modal>

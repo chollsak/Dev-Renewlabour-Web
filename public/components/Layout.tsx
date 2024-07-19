@@ -30,7 +30,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
         {children}
       </Box>
-      {/* <DraggableButton /> */}
+      <DraggableButton />
       <Footer />
     </Box>
   );
