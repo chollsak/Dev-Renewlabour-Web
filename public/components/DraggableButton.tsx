@@ -84,7 +84,7 @@ const DraggableButton: React.FC = () => {
                 className="modal"
             >
                 <ModalContent style={{ display: 'flex', alignItems: 'center' }}>
-                    <ModalImage src="/Logo/linenotilogo.jpg" alt="Modal Content" style={{ height: '300px' }} />
+                    <Image src="/Logo/linenotilogo.jpg" alt="Modal Content" style={{ height: '300px' }} />
                     <div style={{ backgroundColor: '#48c404', height: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <Typography
                             className='text-center'
@@ -98,7 +98,7 @@ const DraggableButton: React.FC = () => {
                         >
                             เเสกน OR Code เพื่อรับการเเจ้งเตือนของเรา
                         </Typography>
-                        <ModalImage src="/Logo/logo.png" alt="Modal Content" style={{ height: '60px', backgroundColor: 'black', padding: '10px', marginTop: '5px', borderRadius: '20px' }} />
+                        <Image src="/Logo/logo.png" alt="Modal Content" style={{ height: '60px', backgroundColor: 'black', padding: '10px', marginTop: '5px', borderRadius: '20px' }} />
                     </div>
                 </ModalContent>
             </Modal>
