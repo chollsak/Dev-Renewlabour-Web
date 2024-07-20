@@ -74,7 +74,7 @@ const DataTable: React.FC = () => {
                     <TableRow>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ID</TableCell>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ชื่อ</TableCell>
-                        <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ตึก</TableCell>
+                        <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>อาคาร</TableCell>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>สาขา</TableCell>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>อำเภอ</TableCell>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>

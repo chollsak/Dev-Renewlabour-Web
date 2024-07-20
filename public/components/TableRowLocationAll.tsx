@@ -73,7 +73,7 @@ export default function TableRowLocationAll({ row, index }: { row: any, index: a
                 {index + 1}
             </TableCell>
             <TableCell sx={{ ...FontStyle }}>{row.cpn_n}</TableCell>
-            <TableCell sx={{ ...FontStyle }}>{row.cpn_build}</TableCell>
+            <TableCell sx={{ ...FontStyle }}>{row.cpn_build ? row.cpn_build : '-'}</TableCell>
             <TableCell sx={{ ...FontStyle }}>{row.branch}</TableCell>
             <TableCell sx={{ ...FontStyle }}>{row.cpn_dist}</TableCell>
             <TableCell sx={{ ...FontStyle }}>{row.cpn_prov}</TableCell>

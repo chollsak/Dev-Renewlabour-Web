@@ -243,7 +243,7 @@ export default function Home({
                                                 item.type &&
                                                 <Box key={index} mb={2}>
                                                     <ButtonJoy className='rounded-md' color={item.type === 'workpermit' ? buttonColor(convertBEtoCE(item.endDate)) : buttonColor(item.endDate)} onClick={() => handleOpen(item)}>
-                                                        {item.type === 'ninetydays' ? '90 วัน' : item.type.toUpperCase()}
+                                                        {item.type === 'ninetydays' ? '90 วัน' : item.type === 'workpermit' ? 'Work Permit' : item.type.toUpperCase()}
                                                     </ButtonJoy>
                                                 </Box>
                                             ))}
