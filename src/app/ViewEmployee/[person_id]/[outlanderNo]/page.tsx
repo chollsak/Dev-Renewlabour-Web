@@ -105,7 +105,7 @@ export default function Home({
         const values = [
             row?.visa_enddate ? moment(row.visa_enddate, 'YYYY-MM-DD') : null,
             row?.passport_enddate ? moment(row.passport_enddate, 'YYYY-MM-DD') : null,
-            row?.workpermit_enddate ? moment(row.workpermit_enddate, 'YYYY-MM-DD') : null,
+            row?.workpermit_enddate ? moment(convertBEtoCE(row.workpermit_enddate), 'YYYY-MM-DD') : null,
             row?.ninetydays_enddate ? moment(row.ninetydays_enddate, 'YYYY-MM-DD') : null,
         ];
         const validValues = values.filter(value => value !== null) as moment.Moment[];
@@ -143,6 +143,13 @@ export default function Home({
         }
     };
 
+    const convertBEtoCE = (value: string) => {
+        // Convert B.E. year to C.E. year
+        const ceYear = parseInt(value.split('-')[0], 10) - 543;
+        const restOfDate = value.slice(4); // Extract the -MM-DD part
+        return `${ceYear}${restOfDate}`;
+    };
+
     const buttonColor = (value: string) => {
         const remainingDays = moment(value, 'YYYY-MM-DD').diff(moment(), 'days');
         if (remainingDays <= 0) {
@@ -171,15 +178,13 @@ export default function Home({
                 <PageLoader />
             ) : (
                 <Layout>
-
                     <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle }} marginLeft={2}>รายละเอียดเเรงงาน</Typography>
                         <IconButton color="primary" onClick={handleEditClick}>
                             <EditIcon />
                         </IconButton>
                     </div>
-
-                    <div className=''>
+                    <div>
                         <Card className='flex-wrap'>
                             <CardContent className='flex gap-5 flex-wrap'>
                                 <div className='w-1/5 h-fit flex flex-col gap-2 text-center justify-center items-center border-r-2 p-1'>
@@ -192,35 +197,28 @@ export default function Home({
                                         {status}
                                     </Chip>
                                 </div>
-
                                 <div className='grid grid-rows-3 grid-flow-col gap-1 ml-6'>
                                     <div className='flex flex-col'>
                                         <div className='text-gray-500'>ข้อมูลส่วนตัวเเรงงาน</div>
                                         <div className='flex space-x-10'>
-
                                             <div className='flex gap-2'>
                                                 <Typography className='text-gray-600'>คำนำหน้า: </Typography>
                                                 <Typography fontWeight={600}>{persons[0].prefixth}/{persons[0].prefix}</Typography>
                                             </div>
-
                                             <div className='flex gap-2'>
                                                 <Typography className='text-gray-600'>ชื่อเล่น: </Typography>
                                                 <Typography fontWeight={600}>{persons[0].nickname}</Typography>
                                             </div>
-
                                             <div className='flex gap-2'>
                                                 <Typography className='text-gray-600'>เลขประจำตัว: </Typography>
                                                 <Typography fontWeight={600}>{persons[0].outlanderNo}</Typography>
                                             </div>
-
                                             <div className='flex gap-2'>
                                                 <Typography className='text-gray-600'>สัญชาติ: </Typography>
                                                 <Typography fontWeight={600}>{persons[0].nationality}</Typography>
                                             </div>
-
                                         </div>
                                     </div>
-
                                     <div className='flex flex-col'>
                                         <div className='text-gray-500' >ข้อมูลที่ทำงานเบื้องต้น</div>
                                         <div className='flex space-x-10'>
@@ -228,27 +226,23 @@ export default function Home({
                                                 <Typography className='text-gray-600'>บริษัท: </Typography>
                                                 <a href='#'> <Typography color={'primary'} fontWeight={600}>{persons[0].cpn_n}</Typography></a>
                                             </div>
-
                                             <div className='flex gap-2'>
                                                 <Typography className='text-gray-600'>สาขา: </Typography>
                                                 <Typography fontWeight={600}>{persons[0].branch}</Typography>
                                             </div>
-
                                             <div className='flex gap-2'>
                                                 <Typography className='text-gray-600'>จังหวัด: </Typography>
                                                 <Typography fontWeight={600}>{persons[0].cpn_prov}</Typography>
                                             </div>
-
                                         </div>
                                     </div>
-
                                     <div className='flex flex-col'>
                                         <div className='text-gray-500 mb-1'>ตรวจสอบ</div>
                                         <div className='flex space-x-10'>
                                             {data.map((item: any, index: any) => (
                                                 item.type &&
                                                 <Box key={index} mb={2}>
-                                                    <ButtonJoy className='rounded-md' color={buttonColor(item.endDate)} onClick={() => handleOpen(item)}>
+                                                    <ButtonJoy className='rounded-md' color={item.type === 'workpermit' ? buttonColor(convertBEtoCE(item.endDate)) : buttonColor(item.endDate)} onClick={() => handleOpen(item)}>
                                                         {item.type.toUpperCase()}
                                                     </ButtonJoy>
                                                 </Box>
@@ -273,7 +267,7 @@ export default function Home({
                                             </Dialog>
                                             {fileOther.length === 0 ? <></> : (
                                                 <Box>
-                                                    <Box >
+                                                    <Box>
                                                         <ButtonJoy color='primary' onClick={() => handleOpenOtherFile()}>Other File</ButtonJoy>
                                                     </Box>
                                                     <Dialog open={openFile} onClose={handleCloseOtherFile}>
@@ -294,17 +288,12 @@ export default function Home({
                                                     </Dialog>
                                                 </Box>
                                             )}
-
                                         </div>
                                     </div>
-
-
                                 </div>
                             </CardContent>
                         </Card>
                     </div>
-
-
                 </Layout>
             )}
         </>

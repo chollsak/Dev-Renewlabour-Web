@@ -95,6 +95,13 @@ const UserForm: React.FC = () => {
         }
     };
 
+    const convertBEtoCE = (value: string) => {
+        // Convert B.E. year to C.E. year
+        const ceYear = parseInt(value.split('-')[0], 10) - 543;
+        const restOfDate = value.slice(4); // Extract the -MM-DD part
+        return `${ceYear}${restOfDate}`;
+    };
+
     const buttonColor = (value: string) => {
         const remainingDays = moment(value, 'YYYY-MM-DD').diff(moment(), 'days');
         if (remainingDays <= 0) {
@@ -353,7 +360,6 @@ const UserForm: React.FC = () => {
                                 </Grid>
                             </Grid>
                         </Grid>
-
                         <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>บริษัทที่แรงงานทำงาน</Typography>
                         <Grid container spacing={2} mb={2}>
                             <Grid item xs={12} md={4}>
@@ -367,19 +373,17 @@ const UserForm: React.FC = () => {
                                 />
                             </Grid>
                         </Grid>
-
                         <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>ไฟล์เอกสารของแรงงาน</Typography>
                         <Grid container spacing={2}>
                             <Grid item xs={3}><ButtonJoy sx={{ margin: 1 }} fullWidth size='lg' color={buttonColor(person.visa_enddate)} onClick={() => handleOpenDialog('Visa')}>Visa</ButtonJoy></Grid>
                             <Grid item xs={3}><ButtonJoy sx={{ margin: 1 }} fullWidth size='lg' color={buttonColor(person.passport_enddate)} onClick={() => handleOpenDialog('Passport')}>Passport</ButtonJoy></Grid>
-                            <Grid item xs={3}><ButtonJoy sx={{ margin: 1 }} fullWidth size='lg' color={buttonColor(person.workpermit_enddate)} onClick={() => handleOpenDialog('Workpermit')}>Work permit</ButtonJoy></Grid>
-                            <Grid item xs={3}><ButtonJoy sx={{ margin: 1 }} fullWidth size='lg' color={buttonColor(person.ninetydays_enddate)} onClick={() => handleOpenDialog('Ninetydays')}>ninetydays</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy sx={{ margin: 1 }} fullWidth size='lg' color={buttonColor(convertBEtoCE(person.workpermit_enddate))} onClick={() => handleOpenDialog('Workpermit')}>Work permit</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy sx={{ margin: 1 }} fullWidth size='lg' color={buttonColor(person.ninetydays_enddate)} onClick={() => handleOpenDialog('90 วัน')}>90 วัน</ButtonJoy></Grid>
                             <DialogComponent title="visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('visa', data)} />
                             <DialogComponent title="passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('passport', data)} />
                             <DialogComponent title="workpermit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('workpermit', data)} />
-                            <DialogComponent title="ninetydays" open={openDialog === 'Ninetydays'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('ninetydays', data)} />
+                            <DialogComponent title="ninetydays" open={openDialog === '90 วัน'} handleClose={handleCloseDialog} onSave={(data) => handleDialogSave('ninetydays', data)} />
                         </Grid>
-
                         <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>อัปโหลดไฟล์เพิ่มเติม</Typography>
                         <Grid container spacing={2}>
                             <Grid item xs={3}><Button variant="contained" sx={{ margin: 1 }} size='large' onClick={() => handleOpenDialog('Files')}>Upload Files</Button></Grid>

@@ -15,7 +15,7 @@ const getStatus = (row: any) => {
     const values = [
         row?.visa_enddate ? moment(row.visa_enddate, 'YYYY-MM-DD') : null,
         row?.passport_enddate ? moment(row.passport_enddate, 'YYYY-MM-DD') : null,
-        row?.workpermit_enddate ? moment(row.workpermit_enddate, 'YYYY-MM-DD') : null,
+        row?.workpermit_enddate ? moment(convertBEtoCE(row.workpermit_enddate), 'YYYY-MM-DD') : null,
         row?.ninetydays_enddate ? moment(row.ninetydays_enddate, 'YYYY-MM-DD') : null,
     ];
     // Filter out null values
@@ -84,8 +84,14 @@ const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
 };
 
-const getText = (value: string) => {
+const convertBEtoCE = (value: string) => {
+    // Convert B.E. year to C.E. year
+    const ceYear = parseInt(value.split('-')[0], 10) - 543;
+    const restOfDate = value.slice(4); // Extract the -MM-DD part
+    return `${ceYear}${restOfDate}`;
+};
 
+const getText = (value: string) => {
     const remainingDays = moment(value, 'YYYY-MM-DD').diff(moment(), 'days');
     if (!isNaN(remainingDays)) {
         if (remainingDays <= 0) {
@@ -175,8 +181,8 @@ const TableRowAll: React.FC<TableRowProps> = ({ row }) => {
                 </Chip>
             </TableCell>
             <TableCell sx={{ color: 'Black', fontWeight: '600', ...FontStyle }}>
-                <Chip sx={FontStyle} variant={isRed(row.workpermit_enddate)} color={getChipColor(row.workpermit_enddate)}>
-                    {getText(row.workpermit_enddate)}
+                <Chip sx={FontStyle} variant={isRed(row.workpermit_enddate)} color={getChipColor(convertBEtoCE(row.workpermit_enddate))}>
+                    {getText(convertBEtoCE(row.workpermit_enddate))}
                 </Chip>
             </TableCell>
             <TableCell sx={{ color: 'Black', fontWeight: '600', ...FontStyle }}>

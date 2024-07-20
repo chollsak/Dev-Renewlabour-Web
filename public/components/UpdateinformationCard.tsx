@@ -101,6 +101,13 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
         }
     };
 
+    const convertBEtoCE = (value: string) => {
+        // Convert B.E. year to C.E. year
+        const ceYear = parseInt(value.split('-')[0], 10) - 543;
+        const restOfDate = value.slice(4); // Extract the -MM-DD part
+        return `${ceYear}${restOfDate}`;
+    };
+
     const buttonColor = (value: string) => {
         const remainingDays = moment(value, 'YYYY-MM-DD').diff(moment(), 'days');
         if (remainingDays <= 0) {
@@ -240,7 +247,6 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                                 </label>
                             </Grid>
                         </Grid>
-
                         <Typography variant="h6" className='m-2 p-2' fontWeight={600} sx={{ ...FontStyle }}>ข้อมูลส่วนบุคคล</Typography>
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
@@ -358,7 +364,6 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                                 </Grid>
                             </Grid>
                         </Grid>
-
                         <Typography variant="h6" className='m-2 p-2' fontWeight={600} sx={{ ...FontStyle }}>บริษัทที่แรงงานทำงาน</Typography>
                         <Grid container spacing={2} mb={2}>
                             <Grid item xs={12} md={4}>
@@ -373,19 +378,17 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                                 />
                             </Grid>
                         </Grid>
-
                         <Typography variant="h6" fontWeight={600} className='m-2 p-2' sx={{ ...FontStyle }}>ไฟล์เอกสารของแรงงาน</Typography>
                         <Grid container spacing={2}>
                             <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(person.visa_enddate)} onClick={() => handleOpenDialog('Visa')}>Visa</ButtonJoy></Grid>
                             <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(person.passport_enddate)} onClick={() => handleOpenDialog('Passport')}>Passport</ButtonJoy></Grid>
-                            <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(person.workpermit_enddate)} onClick={() => handleOpenDialog('Workpermit')}>Work permit</ButtonJoy></Grid>
-                            <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(person.ninetydays_enddate)} onClick={() => handleOpenDialog('ninetydays')}>ninetydays</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(convertBEtoCE(person.workpermit_enddate))} onClick={() => handleOpenDialog('Workpermit')}>Work permit</ButtonJoy></Grid>
+                            <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(person.ninetydays_enddate)} onClick={() => handleOpenDialog('90 วัน')}>90 วัน</ButtonJoy></Grid>
                             <DialogComponent title="Visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Visa', data)} person={person} />
                             <DialogComponent title="Passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Passport', data)} person={person} />
                             <DialogComponent title="Workpermit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Workpermit', data)} person={person} />
-                            <DialogComponent title="ninetydays" open={openDialog === 'ninetydays'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('ninetydays', data)} person={person} />
+                            <DialogComponent title="ninetydays" open={openDialog === '90 วัน'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('ninetydays', data)} person={person} />
                         </Grid>
-
                         <Typography variant="h6" fontWeight={600} className='m-2 p-2' sx={{ ...FontStyle }}>อัปโหลดไฟล์เพิ่มเติม</Typography>
                         <Grid container spacing={2}>
                             <Grid item xs={3}><Button variant="contained" size='large' onClick={() => handleOpenDialog('Files')}>Upload Files</Button></Grid>

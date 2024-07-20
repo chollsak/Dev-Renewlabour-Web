@@ -59,7 +59,7 @@ const UserMenu: React.FC<LayoutSession> = ({ session }) => {
         })
             .then(response => {
                 if (response.ok) {
-                    router.push('/');
+                    window.location.href = "/";
                 } else {
                     console.error('Sign out failed', response.statusText);
                 }
