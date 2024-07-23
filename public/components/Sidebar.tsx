@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import WorkIcon from '@mui/icons-material/Work';
@@ -10,7 +8,7 @@ import InteractiveCard from './CompanyCard';
 import Image from 'next/image';
 
 interface LayoutSession {
-  session: any
+  session: any;
 }
 
 const Sidebar: React.FC<LayoutSession> = ({ session }) => {
@@ -26,55 +24,102 @@ const Sidebar: React.FC<LayoutSession> = ({ session }) => {
   };
 
   return (
-    <Box sx={{
+    <Box className='bg-gradient-to- from-cyan-500 to-blue-500' sx={{
       width: 300,
       height: '100vh',
-      borderRight: '1px solid #ccc',
+      backgroundColor:'whitesmoke',
       position: 'fixed',
       left: 0,
       top: 0,
       zIndex: 0,
-      backgroundColor: '#f5f5f5',
+      
     }}>
-      <Box textAlign="center" p={2} sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <Image onClick={() => handleLinkClick('/Dashboard')} src="/Logo/logo.png" alt="Company Logo" style={{ maxWidth: '200px' }} />
+      <Box textAlign="center" p={2} sx={{ display: 'flex', flexDirection: 'column', gap: '20px',backgroundColor:'whitesmoke' }}>
+        
+        <Image 
+          onClick={() => handleLinkClick('/Dashboard')} 
+          src="/Logo/logo.png" 
+          alt="Company Logo" 
+          width={200} 
+          height={200} 
+          style={{ maxWidth: '200px' }} 
+        />
         <InteractiveCard session={session} />
       </Box>
       <List>
-        <Link href="/employees" passHref style={{ textDecoration: 'none', color: 'black' }}>
+        <Link href="/employees" passHref>
           <ListItemButton
-            sx={{ textDecoration: 'none' }}
+            sx={{
+              textDecoration: 'none',
+              position: 'relative',
+              overflow: 'hidden',
+              '&:hover': {
+                background: 'linear-gradient(to right, #00bcd4, #2196f3)', // Tailwind gradient colors
+                color: 'white',
+                '& .MuiListItemIcon-root': {
+                  color: 'white',
+                },
+              },
+            }}
             selected={activeLink === '/employees'}
             onClick={() => handleLinkClick('/employees')}
           >
-            <ListItemIcon><PeopleIcon color='primary' /></ListItemIcon>
-            <ListItemText sx={{ fontWeight: activeLink === '/employees' ? 'bold' : 'normal' }} ><span style={FontStyle}>รายชื่อเเรงงาน</span></ListItemText>
+            <ListItemIcon><PeopleIcon /></ListItemIcon>
+            <ListItemText sx={{ fontWeight: activeLink === '/employees' ? 'bold' : 'normal' }} >
+              <span style={FontStyle}>รายชื่อเเรงงาน</span>
+            </ListItemText>
           </ListItemButton>
         </Link>
-        <Link href="/Location" passHref style={{ textDecoration: 'none', color: 'black' }}>
+        <Link href="/Location" passHref>
           <ListItemButton
-            sx={{ textDecoration: 'none' }}
+            sx={{
+              textDecoration: 'none',
+              position: 'relative',
+              overflow: 'hidden',
+              '&:hover': {
+                background: 'linear-gradient(to right, #00bcd4, #2196f3)', // Tailwind gradient colors
+                color: 'white',
+                '& .MuiListItemIcon-root': {
+                  color: 'white',
+                },
+              },
+            }}
             selected={activeLink === '/Location'}
             onClick={() => handleLinkClick('/Location')}
           >
-            <ListItemIcon><WorkIcon color='primary' /></ListItemIcon>
-            <ListItemText sx={{ fontWeight: activeLink === '/Location' ? 'bold' : 'normal' }} ><span style={FontStyle}>สถานที่ทำงาน</span></ListItemText>
+            <ListItemIcon><WorkIcon /></ListItemIcon>
+            <ListItemText sx={{ fontWeight: activeLink === '/Location' ? 'bold' : 'normal' }} >
+              <span style={FontStyle}>สถานที่ทำงาน</span>
+            </ListItemText>
           </ListItemButton>
         </Link>
-        <Link href="/Admin" passHref style={{ textDecoration: 'none', color: 'black' }}>
+        <Link href="/Admin" passHref>
           <ListItemButton
-            sx={{ textDecoration: 'none' }}
+            sx={{
+              textDecoration: 'none',
+              position: 'relative',
+              overflow: 'hidden',
+              '&:hover': {
+                background: 'linear-gradient(to right, #00bcd4, #2196f3)', // Tailwind gradient colors
+                color: 'white',
+                '& .MuiListItemIcon-root': {
+                  color: 'white',
+                },
+              },
+            }}
             selected={activeLink === '/Admin'}
             onClick={() => handleLinkClick('/Admin')}
           >
-            <ListItemIcon><HomeIcon color='primary' /></ListItemIcon>
-            <ListItemText sx={{ fontWeight: activeLink === '/Admin' ? 'bold' : 'normal' }} ><span style={FontStyle}>รายชื่อผู้ดูเเล</span></ListItemText>
+            <ListItemIcon><HomeIcon /></ListItemIcon>
+            <ListItemText sx={{ fontWeight: activeLink === '/Admin' ? 'bold' : 'normal' }} >
+              <span style={FontStyle}>รายชื่อผู้ดูเเล</span>
+            </ListItemText>
           </ListItemButton>
         </Link>
       </List>
+
     </Box>
   );
 };
 
 export default Sidebar;
-

@@ -223,7 +223,7 @@ const UserForm: React.FC = () => {
                                 <label htmlFor="icon-button-file">
                                     <Box sx={{ display: 'flex', alignItems: 'center', margin: 1 }}>
                                         <Avatar
-                                            className='border-4 border-[#2074d4]'
+                                            className='border-4 bg-gradient-to-r from-cyan-500 to-blue-500'
                                             sx={{
                                                 marginRight: 2,
                                                 width: '200px',
@@ -391,7 +391,7 @@ const UserForm: React.FC = () => {
                         </Grid>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button variant="contained" color='success' sx={{ width: '20%', marginTop: 2 }} type="submit">Submit</Button>
+                        <Button variant="contained" color='success' className='rounded-full' sx={{ width: '20%', marginTop: 2 }} type="submit">Submit</Button>
                     </Box>
                 </form>
             </CardContent>

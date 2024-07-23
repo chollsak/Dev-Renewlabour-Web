@@ -5,6 +5,7 @@ import Layout from '../../../public/components/Layout'
 import { Button, Typography } from '@mui/material'
 import MyTable from '../../../public/components/EmployeeTable'
 import AddIcon from '@mui/icons-material/Add';
+import PageLoader from '../../../public/components/Loading/Loading2';
 
 
 export default function employeePage() {
@@ -18,12 +19,14 @@ export default function employeePage() {
 
   return (
     <Layout>
-    
+      <PageLoader/>
       <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle }} marginLeft={2}>รายชื่อเเรงงาน</Typography>
         <Button
           onClick={tempRouter}
-          variant='contained' size='small' sx={FontStyle}>󠀫󠀫<AddIcon />เพิ่มเเรงงาน</Button>
+          variant='contained' size='medium' sx={FontStyle}
+          className='bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full'
+          >󠀫󠀫<AddIcon />เพิ่มเเรงงาน</Button>
       </div>
 
       <MyTable />

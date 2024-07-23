@@ -11,7 +11,9 @@ import {
   Tooltip,
   Typography,
   IconButton,
-  InputAdornment
+  InputAdornment,
+  FormControlLabel,
+  Checkbox
 } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
 import { Fingerprint, Visibility, VisibilityOff } from "@mui/icons-material";
@@ -23,6 +25,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -36,6 +39,7 @@ export default function LoginPage() {
       redirect: false,
       username,
       password,
+      rememberMe
     });
 
     if (result?.error) {
@@ -52,8 +56,8 @@ export default function LoginPage() {
       <Toaster position="top-right" reverseOrder={false} />
       <Box>
         <Box component="img"
+          src="/Logo/bg.png"
           style={{
-            backgroundImage: "url(/BackGround/bg.png)",
             opacity: "0.8",
             position: "fixed",
             zIndex: "-10000",
@@ -94,29 +98,23 @@ export default function LoginPage() {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  mb: 2,
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    alignContent: "center",
-                    justifyContent: "center",
-                  }}
-                >
+                <div>
+                  <Box
+                    component="img"
+                    className="mb-1"
+                    sx={{ width: "150px", marginTop:'-20px' }}
+                    src="/Logo/logo.png"
+                  />
                   <Typography
                     component="h4"
-                    variant="h6"
-                    fontWeight={550}
+                    variant="h4"
+                    fontWeight={400}
                     sx={{ fontFamily: "Kanit, sans-serif" }}
                   >
                     เข้าสู่ระบบ
                   </Typography>
-                  <Box
-                    component="img"
-                    sx={{ width: "150px", marginLeft: "10px" }}
-                    src="/Logo/logo.png"
-                  />
                 </div>
               </Box>
               <div
@@ -152,6 +150,7 @@ export default function LoginPage() {
                           <IconButton
                             aria-label="toggle password visibility"
                             onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
                             edge="end"
                           >
                             {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -159,6 +158,17 @@ export default function LoginPage() {
                         </InputAdornment>
                       ),
                     }}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={rememberMe}
+                        onChange={(e) => setRememberMe(e.target.checked)}
+                        color="primary"
+                      />
+                    }
+                    label="ให้ฉันอยู่ในระบบต่อไป"
+                    sx={{ marginTop: 1 }}
                   />
                   <Box
                     sx={{
@@ -174,19 +184,19 @@ export default function LoginPage() {
                       <Button
                         type="submit"
                         variant="contained"
-                        sx={{ width: "80px", border: "1px solid #0e74bc" }}
+                        className="rounded-full mb-4 "
+                        sx={{ width: "600px", height: '50px', border: "1px solid #0e74bc" }}
                       >
-                        <Fingerprint />
                         <Typography
                           sx={{
-                            fontWeight: "600",
                             color: "white",
-                            fontSize: "10px",
+                            fontSize: "20px",
                             marginRight: "10px",
                           }}
                         >
-                          Login
+                          เข้าสู่ระบบ
                         </Typography>
+                        <Fingerprint />
                       </Button>
                     </Tooltip>
                   </Box>

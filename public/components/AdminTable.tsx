@@ -56,7 +56,7 @@ export default function AdminTable() {
             />
             <Table sx={{ minWidth: '100%', margin: 1 }} aria-label="simple table">
                 <TableHead sx={{ backgroundColor: '#0e74bc' }}>
-                    <TableRow>
+                    <TableRow className='bg-gradient-to-r from-cyan-500 to-blue-500'>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>รหัสประจำตัว</TableCell>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ชื่อจริง</TableCell>
                         <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>อีเมลล์</TableCell>

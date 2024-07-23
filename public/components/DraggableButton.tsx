@@ -17,12 +17,9 @@ const ModalContent = styled(Box)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
+    gap: '20px', // Optional: adds space between the items
 }));
-
-const ModalImage = styled('img')({
-    maxWidth: '100%',
-    maxHeight: '100%',
-});
 
 const DraggableButton: React.FC = () => {
     const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -81,11 +78,11 @@ const DraggableButton: React.FC = () => {
             <Modal
                 open={open}
                 onClose={handleClose}
-                className="modal"
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
-                <ModalContent style={{ display: 'flex', alignItems: 'center' }}>
-                    <Image src="/Logo/linenotilogo.jpg" alt="Modal Content" style={{ height: '300px' }} />
-                    <div style={{ backgroundColor: '#48c404', height: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <ModalContent>
+                    <Image src="/Logo/linenotilogo.jpg" width={300} height={300} alt="Modal Content" />
+                    <Box style={{ backgroundColor: '#48c404', height: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <Typography
                             className='text-center'
                             style={{
@@ -98,8 +95,8 @@ const DraggableButton: React.FC = () => {
                         >
                             เเสกน OR Code เพื่อรับการเเจ้งเตือนของเรา
                         </Typography>
-                        <Image src="/Logo/logo.png" alt="Modal Content" style={{ height: '60px', backgroundColor: 'black', padding: '10px', marginTop: '5px', borderRadius: '20px' }} />
-                    </div>
+                        <Image src="/Logo/logo.png" alt="Modal Content" height={60} width={200} style={{ height: '60px', backgroundColor: 'black', padding: '10px', marginTop: '5px', borderRadius: '20px' }} />
+                    </Box>
                 </ModalContent>
             </Modal>
         </>

@@ -6,6 +6,7 @@ import { Button, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import AdminTable from '../../../public/components/AdminTable';
 import Footer from '../../../public/components/Footer';
+import PageLoader from '../../../public/components/Loading/Loading2';
 
 
 const FontStyle: React.CSSProperties = {
@@ -23,9 +24,11 @@ export default function page() {
 
   return (
     <Layout>
+      <PageLoader/>
       <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle }} marginLeft={2}>รายชื่อผู้ดูเเล</Typography>
         <Button
+          className='bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full'
           onClick={tempRouter}
           variant='contained' size='small' sx={FontStyle}>󠀫󠀫<AddIcon />เพิ่มผู้ดูเเล</Button>
       </div>

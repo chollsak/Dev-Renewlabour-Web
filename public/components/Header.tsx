@@ -69,7 +69,7 @@ const UserMenu: React.FC<LayoutSession> = ({ session }) => {
 
     return (
         <div>
-            <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
+            <IconButton onClick={handleClick} size="small" sx={{ ml: 2}}>
                 <Chip
                     style={fontStyle}
                     avatar={<Avatar src={`${process.env.NEXT_PUBLIC_FILE_API}/file/members/${session?.user_account[0]?.mem_id}/picpath/${session?.user_account[0]?.m_picpath}` || ''} />}

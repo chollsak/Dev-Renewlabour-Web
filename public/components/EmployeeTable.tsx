@@ -163,7 +163,7 @@ const MyTable: React.FC = () => {
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead sx={{ backgroundColor: '#0e74bc' }}>
-                            <TableRow >
+                            <TableRow className='bg-gradient-to-r from-cyan-500 to-blue-500' >
                                 <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ชื่อจริง</TableCell>
                                 <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ชื่อเล่น</TableCell>
                                 <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>

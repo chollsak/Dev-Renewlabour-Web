@@ -92,12 +92,12 @@ export default function Page() {
       </div>
 
       <div className='flex gap-2 ml-4 mb-4'>
-        <Button variant="contained" onClick={handleShowAccount}>
+        <Button variant="contained" className='rounded-full bg-gradient-to-r from-cyan-500 to-blue-500' onClick={handleShowAccount}>
           <PeopleIcon className=' mr-2' />
           บัญชี
         </Button>
 
-        <Button variant="contained" onClick={handleShowSecurity}>
+        <Button variant="contained" className='rounded-full bg-gradient-to-r from-cyan-500 to-blue-500' onClick={handleShowSecurity}>
           <PeopleIcon className='mr-2' />
           ความปลอดภัย
         </Button>
@@ -114,8 +114,8 @@ export default function Page() {
                   Username: {mockUserData.username}
                 </Typography>
                   <div className='m-6'>
-                    <Button variant='contained' className='mr-4'>อัพโหลดรูปใหม่</Button>
-                    <Button variant='contained'>รีเซ็ต</Button>
+                    <Button variant='contained' className='mr-4 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500'>อัพโหลดรูปใหม่</Button>
+                    <Button variant='contained' className='rounded-full bg-gradient-to-r from-cyan-500 to-blue-500'>รีเซ็ต</Button>
                   </div>
 
                   <div>
@@ -214,7 +214,7 @@ export default function Page() {
                   </Grid>
                   
                 </Grid>
-                <Button variant="contained" className='mt-3' color="primary" onClick={handleSubmit}>
+                <Button variant="contained" className='rounded-full mt-3 bg-gradient-to-r from-cyan-500 to-blue-500' color="primary" onClick={handleSubmit}>
                   บันทึกข้อมูล
                 </Button>
               </div>
@@ -310,7 +310,7 @@ export default function Page() {
                     <ListItem><CircleIcon className='w-4 mr-1'/>ไม่ควรใช้รหัสผ่านที่เคยใช้มาก่อน</ListItem>
                   </List>
                 </Box>
-                <Button variant="contained" color="primary" onClick={handleSubmit}>
+                <Button variant="contained" className='rounded-full bg-gradient-to-r from-cyan-500 to-blue-500'  color="primary" onClick={handleSubmit}>
                   บันทึกรหัสผ่าน
                 </Button>
               </div>
