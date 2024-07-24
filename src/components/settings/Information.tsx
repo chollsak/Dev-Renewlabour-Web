@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Autocomplete, Avatar, Button, Grid, Stack, TextField, Typography } from '@mui/material';
 import { mockUserData, FontStyle } from './mockUserData';
 import axios from 'axios';
+import MembersAvatar from '../membersAvatar';
 
 interface AdminData {
     member_name: string;
@@ -46,19 +47,28 @@ const AccountDetails: React.FC<UserFormProps> = ({ members }) => {
         m_picpath: members[0].m_picpath,
         lineID: members[0].lineID,
     });
-
-    console.log(member)
+    const [profilePicture, setProfilePicture] = useState<File | null>(null);
 
     const handleCompany = (event: any, newValue: any) => {
         setMember({ ...member, company: newValue });
     }
 
-    const handleFileChange = () => {
-
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            setProfilePicture(event.target.files[0])
+            setMember({
+                ...member,
+                m_picpath: event.target.files[0].name,
+            });
+        }
     }
 
     const handleResetFileChange = () => {
-
+        setProfilePicture(null)
+        setMember({
+            ...member,
+            m_picpath: members[0].m_picpath,
+        });
     }
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -76,14 +86,42 @@ const AccountDetails: React.FC<UserFormProps> = ({ members }) => {
         <div>
             <form onSubmit={handleSubmit}>
                 <div className='flex m-4'>
-                    <Avatar sx={{ width: 150, height: 150 }} className='border-4 border-[#2074d4]' alt="Person Picture" src="https://media.licdn.com/dms/image/D4E03AQGPMRJkyA8GGg/profile-displayphoto-shrink_200_200/0/1698657454419?e=2147483647&v=beta&t=nFBkvYjCc-h0YKsEuTHzRSX-UZVY2ix512kHshTHUyE" />
+                    <Avatar className='border-4 border-[#2074d4]'
+                        sx={{
+                            marginRight: 2,
+                            width: '200px',
+                            height: '200px',
+                            cursor: 'pointer',
+                            '&:hover': {
+                                cursor: 'pointer',
+                            },
+                        }}>
+                        {profilePicture ? (
+                            <Avatar src={URL.createObjectURL(profilePicture)} sx={{ width: 200, height: 200 }} alt="No Picture" />
+                        ) : (
+                            <MembersAvatar mem_id={members[0]?.mem_id} m_picpath={member.m_picpath} />
+                        )}
+                    </Avatar>
                     <Stack spacing={1} className='m-6'>
                         <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle, marginLeft: 2 }}>
                             Username: {mockUserData.username}
                         </Typography>
                         <div className='m-6'>
-                            <Button variant='contained' className='mr-4 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500'>อัพโหลดรูปใหม่</Button>
-                            <Button variant='contained' className='rounded-full bg-gradient-to-r from-cyan-500 to-blue-500'>รีเซ็ต</Button>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                style={{ display: 'none' }}
+                                id="upload-profile-picture"
+                                onChange={handleFileChange}
+                            />
+                            <Button
+                                variant='contained'
+                                className='mr-4 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500'
+                                onClick={() => document.getElementById('upload-profile-picture')?.click()}
+                            >
+                                อัพโหลดรูปใหม่
+                            </Button>
+                            <Button variant='contained' className='rounded-full bg-gradient-to-r from-cyan-500 to-blue-500' onClick={handleResetFileChange}>รีเซ็ต</Button>
                         </div>
                         <div>อนุญาต JPG, GIF or PNG, Max size 800K</div>
                     </Stack>
