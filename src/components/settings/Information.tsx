@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Autocomplete, Avatar, Button, Grid, Stack, TextField, Typography } from '@mui/material';
 import { mockUserData, FontStyle } from './mockUserData';
 import axios from 'axios';
@@ -53,6 +53,14 @@ const AccountDetails: React.FC<UserFormProps> = ({ members }) => {
         setMember({ ...member, company: newValue });
     }
 
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setMember({
+            ...member,
+            [name]: value,
+        });
+    };
+
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             setProfilePicture(event.target.files[0])
@@ -71,15 +79,16 @@ const AccountDetails: React.FC<UserFormProps> = ({ members }) => {
         });
     }
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        try {
-            await axios.post(`${process.env.NEXT_PUBLIC_API}/api/updateMember`, member);
-            alert('ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
-        } catch (error) {
-            console.error('Error updating data:', error);
-            alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
-        }
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log(member)
+        // try {
+        //     await axios.post(`${process.env.NEXT_PUBLIC_API}/api/updateMember`, member);
+        //     alert('ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
+        // } catch (error) {
+        //     console.error('Error updating data:', error);
+        //     alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+        // }
     };
 
     return (
@@ -130,19 +139,19 @@ const AccountDetails: React.FC<UserFormProps> = ({ members }) => {
                     <div className='text-gray-500 mb-3'>ข้อมูลเบื้องต้น</div>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
-                            <TextField name='member_name' size='small' label="ชื่อจริง" variant="outlined" fullWidth value={member.member_name} sx={{ marginBottom: '10px' }} />
+                            <TextField name='member_name' onChange={handleChange} size='small' label="ชื่อจริง" variant="outlined" fullWidth value={member.member_name} sx={{ marginBottom: '10px' }} />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField name='member_lastname' size='small' label="นามสกุล" fullWidth variant="outlined" value={member.member_lastname} sx={{ marginBottom: '10px' }} />
+                            <TextField name='member_lastname' onChange={handleChange} size='small' label="นามสกุล" fullWidth variant="outlined" value={member.member_lastname} sx={{ marginBottom: '10px' }} />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField name='email' size='small' label="Email" fullWidth variant="outlined" value={member.email} sx={{ marginBottom: '10px' }} />
+                            <TextField name='email' onChange={handleChange} size='small' label="Email" fullWidth variant="outlined" value={member.email} sx={{ marginBottom: '10px' }} />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField name='tel' size='small' label="เบอร์โทร" fullWidth variant="outlined" value={member.tel} sx={{ marginBottom: '10px' }} />
+                            <TextField name='tel' onChange={handleChange} size='small' label="เบอร์โทร" fullWidth variant="outlined" value={member.tel} sx={{ marginBottom: '10px' }} />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField name='lineID' size='small' label="LineID" fullWidth variant="outlined" value={member.lineID} sx={{ marginBottom: '10px' }} />
+                            <TextField name='lineID' onChange={handleChange} size='small' label="LineID" fullWidth variant="outlined" value={member.lineID} sx={{ marginBottom: '10px' }} />
                         </Grid>
                         <Grid item xs={6}>
                             <Autocomplete
@@ -155,7 +164,7 @@ const AccountDetails: React.FC<UserFormProps> = ({ members }) => {
                             />
                         </Grid>
                     </Grid>
-                    <Button variant="contained" className='rounded-full mt-3 bg-gradient-to-r from-cyan-500 to-blue-500' color="primary">
+                    <Button type='submit' variant="contained" className='rounded-full mt-3 bg-gradient-to-r from-cyan-500 to-blue-500' color="primary">
                         บันทึกข้อมูล
                     </Button>
                 </div>
