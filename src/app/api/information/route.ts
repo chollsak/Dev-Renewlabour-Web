@@ -17,7 +17,7 @@ async function getCompanyId(pool: sql.ConnectionPool, member: any) {
 async function updateMembers(
   pool: sql.ConnectionPool,
   member: any,
-  memberId: string,
+  memberId: number,
   companyId: number
 ) {
   const request = new sql.Request(pool);
@@ -33,38 +33,17 @@ async function updateMembers(
     { name: "email", type: sql.VarChar, value: member.email },
     { name: "tel", type: sql.VarChar, value: member.tel },
     { name: "company_id", type: sql.Int, value: companyId },
-    { name: "lineID", type: sql.VarChar, value: member.lineID },
-    { name: "mem_id", type: sql.VarChar, value: memberId },
-  ];
-
-  inputs.forEach((input) => request.input(input.name, input.type, input.value));
-
-  const insertResult = await request.query(`
-      UPDATE members SET 
-      member_name = @member_name, member_lastname = @member_lastname, username = @username, email = @email, tel = @tel, company_id = @company_id, lineID = @lineId
-        WHERE mem_id = @mem_id
-      ;
-    `);
-  return insertResult;
-}
-
-async function updatePicpath(
-  pool: sql.ConnectionPool,
-  member: any,
-  memberId: string
-) {
-  const request = new sql.Request(pool);
-
-  const inputs = [
     { name: "m_picpath", type: sql.VarChar, value: member.m_picpath },
-    { name: "mem_id", type: sql.VarChar, value: memberId },
+    { name: "lineID", type: sql.VarChar, value: member.lineID },
+    { name: "mem_id", type: sql.Int, value: memberId },
   ];
 
   inputs.forEach((input) => request.input(input.name, input.type, input.value));
 
   const insertResult = await request.query(`
       UPDATE members SET 
-      m_picpath = @m_picpath WHERE mem_id = @mem_id
+      member_name = @member_name, member_lastname = @member_lastname, username = @username, email = @email, tel = @tel, company_id = @company_id, m_picpath = @m_picpath, lineID = @lineId
+        WHERE mem_id = @mem_id
       ;
     `);
   return insertResult;
@@ -73,13 +52,13 @@ async function updatePicpath(
 async function updatePassword(
   pool: sql.ConnectionPool,
   member: any,
-  memberId: string
+  memberId: number
 ) {
   const request = new sql.Request(pool);
 
   const inputs = [
     { name: "password", type: sql.VarChar, value: member.password },
-    { name: "mem_id", type: sql.VarChar, value: memberId },
+    { name: "mem_id", type: sql.Int, value: memberId },
   ];
 
   inputs.forEach((input) => request.input(input.name, input.type, input.value));
@@ -120,18 +99,19 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const memberId = req.nextUrl.searchParams.get("memberId");
+  const memberId = Number(req.nextUrl.searchParams.get("memberId"));
   const type = req.nextUrl.searchParams.get("type");
   const requestBody = await req.json();
   const { member } = requestBody;
   const pool = await sqlConnect();
+  console.log(memberId);
   if (type === "information") {
     try {
       if (memberId) {
         const companyId = await getCompanyId(pool, member);
         await updateMembers(pool, member, memberId, companyId);
         return NextResponse.json({
-          message: `แก้ไขข้อมูลแรงงานต่างด้าวสำเร็จ`,
+          message: `แก้ไขข้อมูลผู้ใช้งานสำเร็จ`,
         });
       } else {
         throw new Error("Invalid memberId");
@@ -139,24 +119,7 @@ export async function PATCH(req: NextRequest) {
     } catch (error) {
       console.error("Database query failed:", error);
       return NextResponse.json(
-        { message: "ล้มเหลวในการแก้ไขข้อมูลแรงงาน", error: error },
-        { status: 500 }
-      );
-    }
-  } else if (type === "picpath") {
-    try {
-      if (memberId) {
-        await updatePicpath(pool, member, memberId);
-        return NextResponse.json({
-          message: `แก้ไขข้อมูลแรงงานต่างด้าวสำเร็จ`,
-        });
-      } else {
-        throw new Error("Invalid memberId");
-      }
-    } catch (error) {
-      console.error("Database query failed:", error);
-      return NextResponse.json(
-        { message: "ล้มเหลวในการแก้ไขข้อมูลแรงงาน", error: error },
+        { message: "ล้มเหลวในการแก้ไขข้อมูลผู้ใช้งาน", error: error },
         { status: 500 }
       );
     }
