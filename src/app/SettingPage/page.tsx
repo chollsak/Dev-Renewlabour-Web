@@ -21,7 +21,7 @@ const mockUserData = {
   branch: 'Main Branch',
   province: 'Bangkok',
   name: 'John',
-  lName:'Wick',
+  lName: 'Wick',
   password: '123456',
 };
 
@@ -113,18 +113,15 @@ export default function Page() {
                 <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle, marginLeft: 2 }}>
                   Username: {mockUserData.username}
                 </Typography>
-                  <div className='m-6'>
-                    <Button variant='contained' className='mr-4 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500'>อัพโหลดรูปใหม่</Button>
-                    <Button variant='contained' className='rounded-full bg-gradient-to-r from-cyan-500 to-blue-500'>รีเซ็ต</Button>
-                  </div>
+                <div className='m-6'>
+                  <Button variant='contained' className='mr-4 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500'>อัพโหลดรูปใหม่</Button>
+                  <Button variant='contained' className='rounded-full bg-gradient-to-r from-cyan-500 to-blue-500'>รีเซ็ต</Button>
+                </div>
 
-                  <div>
-                    อนุญาต JPG, GIF or PNG, Max size 800K
-                  </div>
-
+                <div>
+                  อนุญาต JPG, GIF or PNG, Max size 800K
+                </div>
               </Stack>
-
-
             </div>
           )}
           <div className='ml-4 mr-4 flex flex-col gap-4'>
@@ -140,7 +137,7 @@ export default function Page() {
                       fullWidth
                       defaultValue={mockUserData.name}
                       sx={{ marginBottom: '10px' }}
-                    />                    
+                    />
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
@@ -150,7 +147,7 @@ export default function Page() {
                       variant="outlined"
                       defaultValue={mockUserData.lName}
                       sx={{ marginBottom: '10px' }}
-                    />                    
+                    />
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
@@ -160,7 +157,7 @@ export default function Page() {
                       variant="outlined"
                       defaultValue={mockUserData.email}
                       sx={{ marginBottom: '10px' }}
-                    />                    
+                    />
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
@@ -170,7 +167,7 @@ export default function Page() {
                       variant="outlined"
                       defaultValue={mockUserData.phone}
                       sx={{ marginBottom: '10px' }}
-                    />                    
+                    />
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
@@ -180,7 +177,7 @@ export default function Page() {
                       variant="outlined"
                       defaultValue={mockUserData.lineId}
                       sx={{ marginBottom: '10px' }}
-                    />                    
+                    />
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
@@ -190,7 +187,7 @@ export default function Page() {
                       variant="outlined"
                       defaultValue={mockUserData.province}
                       sx={{ marginBottom: '10px' }}
-                    />                    
+                    />
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
@@ -200,7 +197,7 @@ export default function Page() {
                       variant="outlined"
                       defaultValue={mockUserData.company}
                       sx={{ marginBottom: '10px' }}
-                    />                    
+                    />
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
@@ -210,9 +207,9 @@ export default function Page() {
                       variant="outlined"
                       defaultValue={mockUserData.branch}
                       sx={{ marginBottom: '10px' }}
-                    />                    
+                    />
                   </Grid>
-                  
+
                 </Grid>
                 <Button variant="contained" className='rounded-full mt-3 bg-gradient-to-r from-cyan-500 to-blue-500' color="primary" onClick={handleSubmit}>
                   บันทึกข้อมูล
@@ -221,81 +218,81 @@ export default function Page() {
             )}
             {showSecurity && (
               <div className='flex flex-col'>
-               <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle}} className='m-4'>
-                เปลี่ยนรหัสผ่าน
+                <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle }} className='m-4'>
+                  เปลี่ยนรหัสผ่าน
                 </Typography>
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="รหัสผ่านเดิม"
-                    className='w-1/2'
-                    variant="outlined"
-                    type={showPassword ? "text" : "password"}
-                    value={oldPassword}
-                    onChange={handleChangeOldPassword}
-                    sx={{ marginBottom: '10px' }}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={handleClickShowPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
+                    <TextField
+                      fullWidth
+                      label="รหัสผ่านเดิม"
+                      className='w-1/2'
+                      variant="outlined"
+                      type={showPassword ? "text" : "password"}
+                      value={oldPassword}
+                      onChange={handleChangeOldPassword}
+                      sx={{ marginBottom: '10px' }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={handleClickShowPassword}
+                              edge="end"
+                            >
+                              {showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
                   </Grid>
                   <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    label="รหัสผ่านใหม่"
-                    variant="outlined"
-                    type={showPassword ? "text" : "password"}
-                    value={newPassword}
-                    onChange={handleChangeNewPassword}
-                    sx={{ marginBottom: '10px' }}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={handleClickShowPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
+                    <TextField
+                      fullWidth
+                      label="รหัสผ่านใหม่"
+                      variant="outlined"
+                      type={showPassword ? "text" : "password"}
+                      value={newPassword}
+                      onChange={handleChangeNewPassword}
+                      sx={{ marginBottom: '10px' }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={handleClickShowPassword}
+                              edge="end"
+                            >
+                              {showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
                   </Grid>
                   <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    label="ยืนยันรหัสผ่าน"
-                    variant="outlined"
-                    type={showPassword ? "text" : "password"}
-                    value={confirmPassword}
-                    onChange={handleChangeConfirmPassword}
-                    sx={{ marginBottom: '10px' }}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={handleClickShowPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
+                    <TextField
+                      fullWidth
+                      label="ยืนยันรหัสผ่าน"
+                      variant="outlined"
+                      type={showPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={handleChangeConfirmPassword}
+                      sx={{ marginBottom: '10px' }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={handleClickShowPassword}
+                              edge="end"
+                            >
+                              {showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
                   </Grid>
-                  
+
                 </Grid>
                 {passwordError && (
                   <Typography variant="body2" color="error">
@@ -305,12 +302,12 @@ export default function Page() {
                 <Box>
                   <Typography className='mt-4'>เงื่อนไขรหัสผ่าน</Typography>
                   <List>
-                    <ListItem><CircleIcon className='w-4 mr-1'/>รหัสผ่านควรมีความยาวอย่างน้อย 6 ตัวอักษร</ListItem>
-                    <ListItem><CircleIcon className='w-4 mr-1'/>รหัสผ่านควรประกอบด้วยตัวอักษรพิมพ์เล็ก ตัวอักษรพิมพ์ใหญ่ และตัวเลข</ListItem>
-                    <ListItem><CircleIcon className='w-4 mr-1'/>ไม่ควรใช้รหัสผ่านที่เคยใช้มาก่อน</ListItem>
+                    <ListItem><CircleIcon className='w-4 mr-1' />รหัสผ่านควรมีความยาวอย่างน้อย 6 ตัวอักษร</ListItem>
+                    <ListItem><CircleIcon className='w-4 mr-1' />รหัสผ่านควรประกอบด้วยตัวอักษรพิมพ์เล็ก ตัวอักษรพิมพ์ใหญ่ และตัวเลข</ListItem>
+                    <ListItem><CircleIcon className='w-4 mr-1' />ไม่ควรใช้รหัสผ่านที่เคยใช้มาก่อน</ListItem>
                   </List>
                 </Box>
-                <Button variant="contained" className='rounded-full bg-gradient-to-r from-cyan-500 to-blue-500'  color="primary" onClick={handleSubmit}>
+                <Button variant="contained" className='rounded-full bg-gradient-to-r from-cyan-500 to-blue-500' color="primary" onClick={handleSubmit}>
                   บันทึกรหัสผ่าน
                 </Button>
               </div>
