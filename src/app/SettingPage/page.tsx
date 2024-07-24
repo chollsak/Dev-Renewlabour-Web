@@ -35,11 +35,13 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/admin?memberId=${session?.user_account[0]?.mem_id}`);
-        setMembers(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      if (session?.user_account[0]?.mem_id && session) {
+        try {
+          const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/information?memberId=${session?.user_account[0]?.mem_id}`);
+          setMembers(response.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
       }
     };
 

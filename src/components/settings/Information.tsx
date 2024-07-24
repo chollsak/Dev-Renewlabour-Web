@@ -140,10 +140,6 @@ const AccountDetails: React.FC<UserFormProps> = ({ members }) => {
                             marginRight: 2,
                             width: '200px',
                             height: '200px',
-                            cursor: 'pointer',
-                            '&:hover': {
-                                cursor: 'pointer',
-                            },
                         }}>
                         {profilePicture ? (
                             <Avatar src={URL.createObjectURL(profilePicture)} sx={{ width: 200, height: 200 }} alt="No Picture" />
