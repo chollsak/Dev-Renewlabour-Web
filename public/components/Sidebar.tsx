@@ -42,7 +42,7 @@ const Sidebar: React.FC<LayoutSession> = ({ session }) => {
           alt="Company Logo"
           width={200}
           height={200}
-          style={{ maxWidth: '200px' }}
+          style={{ maxWidth: '200px' , marginTop:'40px'}}
         />
         <InteractiveCard session={session} />
       </Box>

@@ -55,28 +55,34 @@ export default function LoginPage() {
       <CssBaseline />
       <Toaster position="top-right" reverseOrder={false} />
       <Box>
-        <Box component="img"
-          src="/Logo/bg.png"
-          style={{
-            opacity: "0.8",
-            position: "fixed",
-            zIndex: "-10000",
-            backgroundSize: "cover",
-            width: "100vw",
-            backgroundPosition: "center",
-            overflow: "hidden",
-            height: "100vh",
-            margin: 0,
-            padding: 0,
-          }}
-        />
+      <Box component="img"
+  src="/Logo/bg.png"
+  style={{
+    opacity: "0.8",
+    position: "fixed",
+    zIndex: "-10000",
+    backgroundSize: "cover",
+    width: "100%",
+    backgroundPosition: "center",
+    overflow: "hidden",
+    height: "100%",
+    margin: 0,
+    padding: 0,
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    WebkitMaskImage: "radial-gradient(circle, white, transparent 400%)", // For Safari and Chrome
+    maskImage: "radial-gradient(circle, white, transparent 400%)" // Standard
+  }}
+/>
+
         <Container
           sx={{
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            minHeight: "80vh",
+            minHeight: "90vh",
             width: "100vw",
             maxWidth: "1024px",
             padding: 0,
@@ -184,7 +190,7 @@ export default function LoginPage() {
                       <Button
                         type="submit"
                         variant="contained"
-                        className="rounded-full mb-4 "
+                        className="rounded-full mb-4 bg-gradient-to-r from-cyan-500 to-blue-500"
                         sx={{ width: "600px", height: '50px', border: "1px solid #0e74bc" }}
                       >
                         <Typography

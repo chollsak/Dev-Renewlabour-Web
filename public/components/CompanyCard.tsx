@@ -28,8 +28,8 @@ export default function InteractiveCard({ session }: { session: any }) {
       variant="outlined"
       orientation="horizontal"
       sx={{
-        marginLeft: 2,
-        width: 230,
+        width: 270,
+        marginLeft: '-3px',
         boxShadow: 'md',
         borderColor: 'neutral.outlinedHoverBorder',
         marginBottom: '15px'
@@ -50,7 +50,7 @@ export default function InteractiveCard({ session }: { session: any }) {
       <CardContent>
         <Box display="flex" alignItems="center">
           <Typography
-            level="title-sm"
+            level="title-lg"
             id="card-description"
             sx={{ ...FontStyle, fontWeight: '600' }}
           >
@@ -62,24 +62,40 @@ export default function InteractiveCard({ session }: { session: any }) {
         </Box>
         {showDescription && (
           <Typography
-            level="body-sm"
+            level="body-md"
+            
             aria-describedby="card-description"
             mb={1}
-            sx={{ color: 'text.tertiary', ...FontStyle }}
+            sx={{ color: 'text.tertiary', ...FontStyle,marginLeft:'-40px',width:'200px',marginTop:'10px' }}
           >
             {session ? session[0]?.cpn_subdist : ''} {session ? session[0]?.cpn_dist : ''} {session ? session[0]?.cpn_prov : ''} {session ? session[0]?.cpn_zip : ''}
           </Typography>
         )}
-        <div className='rounded-full flex mt-2 border p-2' style={{ marginLeft: '-20px', backgroundColor: '#E5E4E2' }}>
-          <Chip label={pro} className='bg-gradient-to-r from-cyan-500 to-blue-500' style={{ color: 'white' }} />
+        <div
+          className="rounded-full flex mt-3 border p-2"
+          style={{
+            marginLeft: '-20px',
+            width: 'fit-content',
+            height: '40px',
+            backgroundColor: '#E5E4E2',
+            alignItems: 'center', // Center vertically
+            justifyContent: 'center' // Center horizontally
+          }}
+        >
+          <Chip
+            label={pro}
+            className="bg-gradient-to-r from-cyan-500 to-blue-500 w-fit h-fit p-1"
+            style={{ color: 'white' }}
+          />
           <Typography
             fontSize={'15px'}
             id="card-description"
-            sx={{ ...FontStyle, padding: '3px', marginLeft: '7px' }}
+            sx={{ ...FontStyle, marginLeft: '7px' }}
           >
             เหลือ 30 วัน
           </Typography>
         </div>
+
       </CardContent>
 
     </Card>
