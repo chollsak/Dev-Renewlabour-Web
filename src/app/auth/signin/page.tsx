@@ -56,25 +56,20 @@ export default function LoginPage() {
       <Toaster position="top-right" reverseOrder={false} />
       <Box>
       <Box component="img"
-  src="/Logo/bg.png"
-  style={{
-    opacity: "0.8",
-    position: "fixed",
-    zIndex: "-10000",
-    backgroundSize: "cover",
-    width: "100%",
-    backgroundPosition: "center",
-    overflow: "hidden",
-    height: "100%",
-    margin: 0,
-    padding: 0,
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    WebkitMaskImage: "radial-gradient(circle, white, transparent 400%)", // For Safari and Chrome
-    maskImage: "radial-gradient(circle, white, transparent 400%)" // Standard
-  }}
-/>
+        src="/Logo/bg.png"
+        style={{
+          opacity: "0.8",
+          position: "fixed",
+          zIndex: "-10000",
+          width: "100%",
+          backgroundPosition: "center",
+          top: "32%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          WebkitMaskImage: "radial-gradient(circle, white, transparent 400%)", // For Safari and Chrome
+          maskImage: "radial-gradient(circle, white, transparent 100%)" // Standard
+        }}
+      />
 
         <Container
           sx={{
