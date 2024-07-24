@@ -18,6 +18,7 @@ declare module "next-auth" {
         name: string;
         department: string;
         initial_name: string;
+        mem_id: string;
       }
     ];
     name: string;

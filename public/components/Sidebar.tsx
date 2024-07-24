@@ -27,22 +27,22 @@ const Sidebar: React.FC<LayoutSession> = ({ session }) => {
     <Box className='bg-gradient-to- from-cyan-500 to-blue-500' sx={{
       width: 300,
       height: '100vh',
-      backgroundColor:'whitesmoke',
+      backgroundColor: 'whitesmoke',
       position: 'fixed',
       left: 0,
       top: 0,
       zIndex: 0,
-      
+
     }}>
-      <Box textAlign="center" p={2} sx={{ display: 'flex', flexDirection: 'column', gap: '20px',backgroundColor:'whitesmoke' }}>
-        
-        <Image 
-          onClick={() => handleLinkClick('/Dashboard')} 
-          src="/Logo/logo.png" 
-          alt="Company Logo" 
-          width={200} 
-          height={200} 
-          style={{ maxWidth: '200px' }} 
+      <Box textAlign="center" p={2} sx={{ display: 'flex', flexDirection: 'column', gap: '20px', backgroundColor: 'whitesmoke' }}>
+
+        <Image
+          onClick={() => handleLinkClick('/Dashboard')}
+          src="/Logo/logo.png"
+          alt="Company Logo"
+          width={200}
+          height={200}
+          style={{ maxWidth: '200px' }}
         />
         <InteractiveCard session={session} />
       </Box>

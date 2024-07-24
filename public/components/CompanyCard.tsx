@@ -17,7 +17,7 @@ export default function InteractiveCard({ session }: { session: any }) {
   const pro = 'PRO';
 
   // Construct the image URL
-  const imageUrl = `${process.env.NEXT_PUBLIC_FILE_API}/file/companys/${session?.user_account[0]?.cpn_id}/logo/${session?.user_account[0]?.logo}`;
+  const imageUrl = session ? `${process.env.NEXT_PUBLIC_FILE_API}/file/companys/${session[0]?.cpn_id}/logo/${session[0]?.logo}` : '';
 
   const toggleDescription = () => {
     setShowDescription((prev) => !prev);
@@ -32,7 +32,7 @@ export default function InteractiveCard({ session }: { session: any }) {
         width: 230,
         boxShadow: 'md',
         borderColor: 'neutral.outlinedHoverBorder',
-        marginBottom:'15px'
+        marginBottom: '15px'
       }}
     >
       <AspectRatio ratio="1" sx={{ width: 40, height: 40 }}>
@@ -54,9 +54,9 @@ export default function InteractiveCard({ session }: { session: any }) {
             id="card-description"
             sx={{ ...FontStyle, fontWeight: '600' }}
           >
-            {session?.user_account[0]?.cpn_n}
+            {session ? session[0]?.cpn_n : ''}
           </Typography>
-          <IconButton sx={{width:'10px'}} onClick={toggleDescription}>
+          <IconButton sx={{ width: '10px' }} onClick={toggleDescription}>
             {showDescription ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </IconButton>
         </Box>
@@ -67,21 +67,21 @@ export default function InteractiveCard({ session }: { session: any }) {
             mb={1}
             sx={{ color: 'text.tertiary', ...FontStyle }}
           >
-            {session?.user_account[0]?.cpn_subdist} {session?.user_account[0]?.cpn_dist} {session?.user_account[0]?.cpn_prov} {session?.user_account[0]?.cpn_zip}
+            {session ? session[0]?.cpn_subdist : ''} {session ? session[0]?.cpn_dist : ''} {session ? session[0]?.cpn_prov : ''} {session ? session[0]?.cpn_zip : ''}
           </Typography>
         )}
-        <div className='rounded-full flex mt-2 border p-2' style={{marginLeft:'-20px', backgroundColor:'#E5E4E2'}}>
-        <Chip label={pro} className='bg-gradient-to-r from-cyan-500 to-blue-500' style={{ color: 'white'}} />
-        <Typography
+        <div className='rounded-full flex mt-2 border p-2' style={{ marginLeft: '-20px', backgroundColor: '#E5E4E2' }}>
+          <Chip label={pro} className='bg-gradient-to-r from-cyan-500 to-blue-500' style={{ color: 'white' }} />
+          <Typography
             fontSize={'15px'}
             id="card-description"
-            sx={{ ...FontStyle, padding:'3px', marginLeft:'7px'}}
+            sx={{ ...FontStyle, padding: '3px', marginLeft: '7px' }}
           >
             เหลือ 30 วัน
           </Typography>
         </div>
       </CardContent>
-      
+
     </Card>
   );
 }

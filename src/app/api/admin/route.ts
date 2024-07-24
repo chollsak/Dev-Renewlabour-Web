@@ -178,7 +178,7 @@ export async function PATCH(req: NextRequest) {
         message: `แก้ไขข้อมูลแรงงานต่างด้าวสำเร็จ`,
       });
     } else {
-      throw new Error("Invalid memberId or outlanderNo");
+      throw new Error("Invalid memberId");
     }
   } catch (error) {
     console.error("Database query failed:", error);
