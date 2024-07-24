@@ -131,7 +131,7 @@ export async function PATCH(req: NextRequest) {
         const companyId = await getCompanyId(pool, member);
         await updateMembers(pool, member, memberId, companyId);
         return NextResponse.json({
-          message: `แก้ไขข้อมูลแรงงานต่างด้าวสำเร็จ`,
+          message: `แก้ไขข้อมูลผู้ใช้งานสำเร็จ`,
         });
       } else {
         throw new Error("Invalid memberId");
@@ -139,7 +139,7 @@ export async function PATCH(req: NextRequest) {
     } catch (error) {
       console.error("Database query failed:", error);
       return NextResponse.json(
-        { message: "ล้มเหลวในการแก้ไขข้อมูลแรงงาน", error: error },
+        { message: "ล้มเหลวในการแก้ไขข้อมูลผู้ใช้งาน", error: error },
         { status: 500 }
       );
     }
