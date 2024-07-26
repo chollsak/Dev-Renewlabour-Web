@@ -69,7 +69,7 @@ const Page: React.FC = () => {
             <AccountDetails members={members} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <SecuritySettings />
+            <SecuritySettings members={members} />
           </TabPanel>
         </Layout>
       )}

@@ -51,13 +51,13 @@ async function updateMembers(
 
 async function updatePassword(
   pool: sql.ConnectionPool,
-  member: any,
+  newPassword: any,
   memberId: number
 ) {
   const request = new sql.Request(pool);
 
   const inputs = [
-    { name: "password", type: sql.VarChar, value: member.password },
+    { name: "password", type: sql.VarChar, value: newPassword },
     { name: "mem_id", type: sql.Int, value: memberId },
   ];
 
@@ -102,7 +102,7 @@ export async function PATCH(req: NextRequest) {
   const memberId = Number(req.nextUrl.searchParams.get("memberId"));
   const type = req.nextUrl.searchParams.get("type");
   const requestBody = await req.json();
-  const { member } = requestBody;
+  const { member, newPassword } = requestBody;
   const pool = await sqlConnect();
   console.log(memberId);
   if (type === "information") {
@@ -126,7 +126,7 @@ export async function PATCH(req: NextRequest) {
   } else if (type === "password") {
     try {
       if (memberId) {
-        await updatePassword(pool, member, memberId);
+        await updatePassword(pool, newPassword, memberId);
         return NextResponse.json({
           message: `แก้ไขข้อมูลแรงงานต่างด้าวสำเร็จ`,
         });

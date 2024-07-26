@@ -1,52 +1,75 @@
 import React, { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+import Swal from 'sweetalert2';
+import axios from 'axios';
 import { Box, Button, Grid, IconButton, InputAdornment, List, ListItem, TextField, Typography } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import CircleIcon from '@mui/icons-material/Circle';
-import { mockUserData, FontStyle } from './mockUserData';
+import { FontStyle } from './mockUserData';
 
-const SecuritySettings: React.FC = () => {
-    const [oldPassword, setOldPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [passwordError, setPasswordError] = useState('');
+const validationSchema = Yup.object().shape({
+    oldPassword: Yup.string().required('กรุณากรอกรหัสผ่านเดิม'),
+    newPassword: Yup.string()
+        .required('กรุณากรอกรหัสผ่านใหม่')
+        .min(6, 'รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 6 ตัวอักษร')
+        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'รหัสผ่านควรประกอบด้วยตัวอักษรพิมพ์เล็ก ตัวอักษรพิมพ์ใหญ่ และตัวเลข'),
+    confirmPassword: Yup.string()
+        .oneOf([Yup.ref('newPassword')], 'รหัสผ่านใหม่และยืนยันรหัสผ่านไม่ตรงกัน')
+        .required('กรุณายืนยันรหัสผ่าน'),
+});
+
+interface UserFormProps {
+    members: any;
+}
+
+const SecuritySettings: React.FC<UserFormProps> = ({ members }) => {
     const [showPassword, setShowPassword] = useState(false);
+
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm({
+        resolver: yupResolver(validationSchema),
+    });
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
 
-    const handleChangeOldPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setOldPassword(event.target.value);
-    };
-
-    const handleChangeNewPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setNewPassword(event.target.value);
-    };
-
-    const handleChangeConfirmPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setConfirmPassword(event.target.value);
-    };
-
-    const handleSubmit = () => {
-        if (oldPassword !== mockUserData.password) {
-            setPasswordError('รหัสผ่านเดิมไม่ถูกต้อง');
+    const onSubmit = async (data: any) => {
+        if (data.oldPassword !== members[0].password) {
+            Swal.fire({
+                icon: 'error',
+                title: 'เกิดข้อผิดพลาด',
+                text: 'รหัสผ่านเดิมไม่ถูกต้อง',
+            });
             return;
         }
 
-        if (newPassword.length < 6) {
-            setPasswordError('รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 6 ตัวอักษร');
-            return;
-        }
+        try {
+            const response = await axios.patch(`${process.env.NEXT_PUBLIC_API}/api/information?memberId=${members[0].mem_id}&type=password`, {
+                newPassword: data.newPassword,
+            });
+            if (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'สำเร็จ!',
+                    text: 'รหัสผ่านถูกเปลี่ยนเรียบร้อยแล้ว',
+                });
+                reset();
+            }
 
-        if (newPassword !== confirmPassword) {
-            setPasswordError('รหัสผ่านใหม่และยืนยันรหัสผ่านไม่ตรงกัน');
-            return;
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'เกิดข้อผิดพลาด',
+                text: 'ไม่สามารถเปลี่ยนรหัสผ่านได้',
+            });
         }
-
-        setOldPassword('');
-        setNewPassword('');
-        setConfirmPassword('');
-        setPasswordError('');
     };
 
     return (
@@ -54,85 +77,106 @@ const SecuritySettings: React.FC = () => {
             <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle }} className='m-4'>
                 เปลี่ยนรหัสผ่าน
             </Typography>
-            <Grid container spacing={1}>
-                <Grid item xs={12}>
-                    <TextField
-                        fullWidth
-                        label="รหัสผ่านเดิม"
-                        className='w-1/2'
-                        variant="outlined"
-                        type={showPassword ? "text" : "password"}
-                        value={oldPassword}
-                        onChange={handleChangeOldPassword}
-                        sx={{ marginBottom: '10px' }}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton onClick={handleClickShowPassword} edge="end">
-                                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                        <Controller
+                            name="oldPassword"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="รหัสผ่านเดิม"
+                                    className='w-1/2'
+                                    variant="outlined"
+                                    type={showPassword ? "text" : "password"}
+                                    error={!!errors.oldPassword}
+                                    helperText={errors.oldPassword ? errors.oldPassword.message : ''}
+                                    sx={{ marginBottom: '10px' }}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton onClick={handleClickShowPassword} edge="end">
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Controller
+                            name="newPassword"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="รหัสผ่านใหม่"
+                                    variant="outlined"
+                                    type={showPassword ? "text" : "password"}
+                                    error={!!errors.newPassword}
+                                    helperText={errors.newPassword ? errors.newPassword.message : ''}
+                                    sx={{ marginBottom: '10px' }}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton onClick={handleClickShowPassword} edge="end">
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Controller
+                            name="confirmPassword"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="ยืนยันรหัสผ่าน"
+                                    variant="outlined"
+                                    type={showPassword ? "text" : "password"}
+                                    error={!!errors.confirmPassword}
+                                    helperText={errors.confirmPassword ? errors.confirmPassword.message : ''}
+                                    sx={{ marginBottom: '10px' }}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton onClick={handleClickShowPassword} edge="end">
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                        fullWidth
-                        label="รหัสผ่านใหม่"
-                        variant="outlined"
-                        type={showPassword ? "text" : "password"}
-                        value={newPassword}
-                        onChange={handleChangeNewPassword}
-                        sx={{ marginBottom: '10px' }}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton onClick={handleClickShowPassword} edge="end">
-                                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                        fullWidth
-                        label="ยืนยันรหัสผ่าน"
-                        variant="outlined"
-                        type={showPassword ? "text" : "password"}
-                        value={confirmPassword}
-                        onChange={handleChangeConfirmPassword}
-                        sx={{ marginBottom: '10px' }}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton onClick={handleClickShowPassword} edge="end">
-                                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                </Grid>
-            </Grid>
-            {passwordError && (
-                <Typography variant="body2" color="error">
-                    {passwordError}
-                </Typography>
-            )}
-            <Box>
-                <Typography className='mt-4'>เงื่อนไขรหัสผ่าน</Typography>
-                <List>
-                    <ListItem><CircleIcon className='w-4 mr-1' />รหัสผ่านควรมีความยาวอย่างน้อย 6 ตัวอักษร</ListItem>
-                    <ListItem><CircleIcon className='w-4 mr-1' />รหัสผ่านควรประกอบด้วยตัวอักษรพิมพ์เล็ก ตัวอักษรพิมพ์ใหญ่ และตัวเลข</ListItem>
-                    <ListItem><CircleIcon className='w-4 mr-1' />ไม่ควรใช้รหัสผ่านที่เคยใช้มาก่อน</ListItem>
-                </List>
-            </Box>
-            <Button variant="contained" className='rounded-full bg-gradient-to-r from-cyan-500 to-blue-500' color="primary" onClick={handleSubmit}>
-                บันทึกรหัสผ่าน
-            </Button>
+                <Box>
+                    <Typography className='mt-4'>เงื่อนไขรหัสผ่าน</Typography>
+                    <List>
+                        <ListItem><CircleIcon className='w-4 mr-1' />รหัสผ่านควรมีความยาวอย่างน้อย 6 ตัวอักษร</ListItem>
+                        <ListItem><CircleIcon className='w-4 mr-1' />รหัสผ่านควรประกอบด้วยตัวอักษรพิมพ์เล็ก ตัวอักษรพิมพ์ใหญ่ และตัวเลข</ListItem>
+                        <ListItem><CircleIcon className='w-4 mr-1' />ไม่ควรใช้รหัสผ่านที่เคยใช้มาก่อน</ListItem>
+                    </List>
+                </Box>
+                <Button type="submit" variant="contained" className='rounded-full bg-gradient-to-r from-cyan-500 to-blue-500' color="primary">
+                    บันทึกรหัสผ่าน
+                </Button>
+            </form>
         </div>
     );
 };
