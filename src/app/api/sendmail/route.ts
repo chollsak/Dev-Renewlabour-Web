@@ -22,10 +22,10 @@ export async function POST(req: NextRequest) {
 
   // Setup email data
   let mailOptions = {
-    from: process.env.EMAIL_RECEIVER,
+    from: `Guru IT Support <${process.env.EMAIL_RECEIVER}>`,
     to: email, // your receiving email address
-    subject: "รีเซ็ตรหัสผ่านใหม่!",
-    text: `Click on the following link to reset your password: [Reset Password Link]`,
+    subject: "Reset your Renewlabour Next password!",
+    text: `คลิกตามลิงค์เว็บสำหรับรีเซ็ตรหัสผ่านใหม่ที่วางไว้: '${process.env.NEXT_PUBLIC_API}/reset-password'`,
     html: `<b>คลิกตามลิงค์เว็บสำหรับรีเซ็ตรหัสผ่านใหม่ที่วางไว้:</b> <a href='${process.env.NEXT_PUBLIC_API}/reset-password'>Reset Password</a>`,
   };
 
