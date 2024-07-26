@@ -1,0 +1,44 @@
+// src/app/api/send-email/route.ts
+import { NextRequest, NextResponse } from "next/server";
+import nodemailer from "nodemailer";
+
+export async function POST(req: NextRequest) {
+  const requestBody = await req.json();
+  const { email } = requestBody;
+
+  console.log(email);
+
+  // Create transporter object using SMTP transport
+  let transporter = nodemailer.createTransport({
+    service: "Gmail",
+    host: `${process.env.EMAIL_HOST}`,
+    port: Number(process.env.EMAIL_PORT),
+    secure: true,
+    auth: {
+      user: process.env.EMAIL_USER, // your Gmail email address
+      pass: process.env.EMAIL_PASS, // your Gmail password or app password
+    },
+  });
+
+  // Setup email data
+  let mailOptions = {
+    from: process.env.EMAIL_RECEIVER,
+    to: email, // your receiving email address
+    subject: "รีเซ็ตรหัสผ่านใหม่!",
+    text: `Click on the following link to reset your password: [Reset Password Link]`,
+    html: `<b>คลิกตามลิงค์เว็บสำหรับรีเซ็ตรหัสผ่านใหม่ที่วางไว้:</b> <a href='${process.env.NEXT_PUBLIC_API}/reset-password'>Reset Password</a>`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    return NextResponse.json(
+      { message: "Email sent successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Failed to send email", error },
+      { status: 500 }
+    );
+  }
+}

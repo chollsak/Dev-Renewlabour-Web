@@ -13,7 +13,8 @@ import {
   IconButton,
   InputAdornment,
   FormControlLabel,
-  Checkbox
+  Checkbox,
+  Link
 } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
 import { Fingerprint, Visibility, VisibilityOff } from "@mui/icons-material";
@@ -55,21 +56,21 @@ export default function LoginPage() {
       <CssBaseline />
       <Toaster position="top-right" reverseOrder={false} />
       <Box>
-      <Box component="img"
-        src="/Logo/bg.png"
-        style={{
-          opacity: "0.8",
-          position: "fixed",
-          zIndex: "-10000",
-          width: "100%",
-          backgroundPosition: "center",
-          top: "32%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          WebkitMaskImage: "radial-gradient(circle, white, transparent 400%)", // For Safari and Chrome
-          maskImage: "radial-gradient(circle, white, transparent 100%)" // Standard
-        }}
-      />
+        <Box component="img"
+          src="/Logo/bg.png"
+          style={{
+            opacity: "0.8",
+            position: "fixed",
+            zIndex: "-10000",
+            width: "100%",
+            backgroundPosition: "center",
+            top: "32%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            WebkitMaskImage: "radial-gradient(circle, white, transparent 400%)", // For Safari and Chrome
+            maskImage: "radial-gradient(circle, white, transparent 100%)" // Standard
+          }}
+        />
 
         <Container
           sx={{
@@ -105,7 +106,7 @@ export default function LoginPage() {
                   <Box
                     component="img"
                     className="mb-1"
-                    sx={{ width: "150px", marginTop:'-20px' }}
+                    sx={{ width: "150px", marginTop: '-20px' }}
                     src="/Logo/logo.png"
                   />
                   <Typography
@@ -171,6 +172,9 @@ export default function LoginPage() {
                     label="ให้ฉันอยู่ในระบบต่อไป"
                     sx={{ marginTop: 1 }}
                   />
+                  <Link href="/forgot-password" variant="body2" sx={{ marginTop: 2 }}>
+                    ลืมรหัสผ่าน?
+                  </Link>
                   <Box
                     sx={{
                       display: "flex",
