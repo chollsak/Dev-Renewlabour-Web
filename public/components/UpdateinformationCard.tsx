@@ -112,9 +112,9 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
         const remainingDays = moment(value, 'YYYY-MM-DD').diff(moment(), 'days');
         if (remainingDays <= 0) {
             return 'neutral';
-        } else if (remainingDays > 0 && remainingDays <= 15) {
+        } else if (remainingDays > 0 && remainingDays <= 31) {
             return 'danger';
-        } else if (remainingDays > 15 && remainingDays < 30) {
+        } else if (remainingDays > 31 && remainingDays <= 61) {
             return 'warning';
         } else if (remainingDays > 15) {
             return 'success';

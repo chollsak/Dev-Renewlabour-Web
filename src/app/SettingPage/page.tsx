@@ -4,9 +4,11 @@ import Layout from '../../../public/components/Layout';
 import { AppBar, Box, Button, Tab, Tabs, Typography } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import SecurityIcon from '@mui/icons-material/Security';
+import PaymentIcon from '@mui/icons-material/Payment';
 import TabPanel from '@/components/settings/TabPanelCard';
 import AccountDetails from '@/components/settings/Information';
 import SecuritySettings from '@/components/settings/Password';
+import BillingPlan from '@/components/settings/BillingPlan';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import PageLoader from '../../../public/components/Loading/Loading2';
@@ -63,6 +65,7 @@ const Page: React.FC = () => {
             <Tabs value={value} onChange={handleChange} aria-label="account and security tabs">
               <Tab icon={<PeopleIcon />} label="บัญชี" {...a11yProps(0)} />
               <Tab icon={<SecurityIcon />} label="ความปลอดภัย" {...a11yProps(1)} />
+              <Tab icon={<PaymentIcon />} label="การเรียกเก็บเงินและแผน" {...a11yProps(2)} />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
@@ -70,6 +73,9 @@ const Page: React.FC = () => {
           </TabPanel>
           <TabPanel value={value} index={1}>
             <SecuritySettings members={members} />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <BillingPlan />
           </TabPanel>
         </Layout>
       )}

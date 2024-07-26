@@ -116,9 +116,9 @@ export default function Home({
         if (remainingDays !== null) {
             if (remainingDays <= 0) {
                 return 'หมดอายุ';
-            } else if (remainingDays > 0 && remainingDays <= 15) {
+            } else if (remainingDays > 0 && remainingDays <= 31) {
                 return 'ต่ออายุด่วน';
-            } else if (remainingDays > 15 && remainingDays < 30) {
+            } else if (remainingDays > 31 && remainingDays <= 61) {
                 return 'ใกล้หมดอายุ';
             } else {
                 return 'ปกติ';
@@ -154,9 +154,9 @@ export default function Home({
         const remainingDays = moment(value, 'YYYY-MM-DD').diff(moment(), 'days');
         if (remainingDays <= 0) {
             return 'neutral';
-        } else if (remainingDays > 0 && remainingDays <= 15) {
+        } else if (remainingDays > 0 && remainingDays <= 31) {
             return 'danger';
-        } else if (remainingDays > 15 && remainingDays < 30) {
+        } else if (remainingDays > 31 && remainingDays <= 61) {
             return 'warning';
         } else {
             return 'success';
