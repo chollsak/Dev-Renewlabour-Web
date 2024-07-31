@@ -6,6 +6,9 @@ export const uploadProfilePicture = async (profilePicture: any, category: any, n
         formData.append('filePaths', profilePicture);
         formData.append('number', number);
 
+
+        console.log(profilePicture)
+
         try {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_FILE_API}/upload/${category}/${type}`, formData, {
                 headers: {

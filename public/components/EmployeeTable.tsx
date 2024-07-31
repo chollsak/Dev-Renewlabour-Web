@@ -20,11 +20,18 @@ interface RowData {
 
 const statuses = ['ทั้งหมด', 'ต่ออายุด่วน', 'ใกล้หมดอายุ', 'หมดอายุ', 'ปกติ'];
 
+const convertBEtoCE = (value: string) => {
+    // Convert B.E. year to C.E. year
+    const ceYear = parseInt(value.split('-')[0], 10) - 543;
+    const restOfDate = value.slice(4); // Extract the -MM-DD part
+    return `${ceYear}${restOfDate}`;
+};
+
 const getStatus = (row: any) => {
     const values = [
         row?.visa_enddate ? moment(row.visa_enddate, 'YYYY-MM-DD') : null,
         row?.passport_enddate ? moment(row.passport_enddate, 'YYYY-MM-DD') : null,
-        row?.workpermit_enddate ? moment(row.workpermit_enddate, 'YYYY-MM-DD') : null,
+        row?.workpermit_enddate ? moment(convertBEtoCE(row.workpermit_enddate), 'YYYY-MM-DD') : null,
         row?.ninetydays_enddate ? moment(row.ninetydays_enddate, 'YYYY-MM-DD') : null,
     ];
     // Filter out null values
@@ -126,7 +133,7 @@ const MyTable: React.FC = () => {
     const toggleSortDirection = () => {
         setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     };
-
+    console.log("sortedData", sortedData)
 
     return (
         <Card sx={{ width: '100%', boxShadow: 3 }}>

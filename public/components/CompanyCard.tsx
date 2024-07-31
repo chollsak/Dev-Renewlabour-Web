@@ -36,16 +36,23 @@ export default function InteractiveCard({ session }: { session: any }) {
       }}
     >
       <AspectRatio ratio="1" sx={{ width: 40, height: 40 }}>
-        <Box
-          component="img"
-          className='rounded-full'
-          src={imageUrl}
-          loading="lazy"
-          alt="Company Logo"
-          onError={(e) => {
-            e.currentTarget.src = '../Logo/logosmall.png'; // Fallback image URL
-          }}
-        />
+        {imageUrl ? (
+          <Box
+            component="img"
+            className='rounded-full'
+            src={imageUrl}
+            loading="lazy"
+            alt="Company Logo"
+          />
+        ) : (
+          <Box
+            component="img"
+            className='rounded-full'
+            src='Logo/logosmall.png'
+            loading="lazy"
+            alt="Company Logo"
+          />
+        )}
       </AspectRatio>
       <CardContent>
         <Box display="flex" alignItems="center">
@@ -63,10 +70,10 @@ export default function InteractiveCard({ session }: { session: any }) {
         {showDescription && (
           <Typography
             level="body-md"
-            
+
             aria-describedby="card-description"
             mb={1}
-            sx={{ color: 'text.tertiary', ...FontStyle,marginLeft:'-40px',width:'200px',marginTop:'10px' }}
+            sx={{ color: 'text.tertiary', ...FontStyle, marginLeft: '-40px', width: '200px', marginTop: '10px' }}
           >
             {session ? session[0]?.cpn_subdist : ''} {session ? session[0]?.cpn_dist : ''} {session ? session[0]?.cpn_prov : ''} {session ? session[0]?.cpn_zip : ''}
           </Typography>
