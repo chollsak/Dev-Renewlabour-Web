@@ -1,12 +1,11 @@
 // src/app/api/send-email/route.ts
+import { templateEmail } from "@/core/htmlmail";
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
   const requestBody = await req.json();
   const { email } = requestBody;
-
-  console.log(email);
 
   // Create transporter object using SMTP transport
   let transporter = nodemailer.createTransport({
@@ -26,7 +25,7 @@ export async function POST(req: NextRequest) {
     to: email, // your receiving email address
     subject: "Reset your Renewlabour Next password!",
     text: `คลิกตามลิงค์เว็บสำหรับรีเซ็ตรหัสผ่านใหม่ที่วางไว้: '${process.env.NEXT_PUBLIC_API}/reset-password'`,
-    html: `<b>คลิกตามลิงค์เว็บสำหรับรีเซ็ตรหัสผ่านใหม่ที่วางไว้:</b> <a href='${process.env.NEXT_PUBLIC_API}/reset-password'>Reset Password</a>`,
+    html: templateEmail(),
   };
 
   try {
