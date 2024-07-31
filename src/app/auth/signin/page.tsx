@@ -172,9 +172,9 @@ export default function LoginPage() {
                     label="ให้ฉันอยู่ในระบบต่อไป"
                     sx={{ marginTop: 1 }}
                   />
-                  <Link href="/forgot-password" variant="body2" sx={{ marginTop: 2 }}>
+                  {/* <Link href="/forgot-password" variant="body2" sx={{ marginTop: 2 }}>
                     ลืมรหัสผ่าน?
-                  </Link>
+                  </Link> */}
                   <Box
                     sx={{
                       display: "flex",

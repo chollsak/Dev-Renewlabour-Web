@@ -3,6 +3,15 @@ import { templateEmail } from "@/core/htmlmail";
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+function generateToken(length = 12) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  let token = '';
+  for (let i = 0; i < length; i++) {
+    token += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return token;
+}
+
 export async function POST(req: NextRequest) {
   const requestBody = await req.json();
   const { email } = requestBody;
