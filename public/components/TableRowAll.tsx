@@ -181,7 +181,7 @@ const TableRowAll: React.FC<TableRowProps> = ({ row }) => {
                 </Chip>
             </TableCell>
             <TableCell sx={{ color: 'Black', fontWeight: '600', ...FontStyle }}>
-                <Chip sx={FontStyle} variant={isRed(row.workpermit_enddate)} color={getChipColor(convertBEtoCE(row.workpermit_enddate))}>
+                <Chip sx={FontStyle} variant={isRed(convertBEtoCE(row.workpermit_enddate))} color={getChipColor(convertBEtoCE(row.workpermit_enddate))}>
                     {getText(convertBEtoCE(row.workpermit_enddate))}
                 </Chip>
             </TableCell>
