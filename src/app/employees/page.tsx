@@ -19,20 +19,16 @@ export default function employeePage() {
 
   return (
     <Layout>
-      <PageLoader/>
+      <PageLoader />
       <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle }} marginLeft={2}>รายชื่อเเรงงาน</Typography>
         <Button
           onClick={tempRouter}
           variant='contained' size='medium' sx={FontStyle}
           className='bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full'
-          >󠀫󠀫<AddIcon />เพิ่มเเรงงาน</Button>
+        >󠀫󠀫<AddIcon />เพิ่มเเรงงาน</Button>
       </div>
-
       <MyTable />
-
-      
-
     </Layout>
   )
 }

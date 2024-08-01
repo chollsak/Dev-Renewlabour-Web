@@ -1,11 +1,12 @@
 'use client';
 import Chip from '@mui/joy/Chip';
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, MenuItem, Box, TablePagination, IconButton, Menu } from '@mui/material';
+import { Card, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, MenuItem, Box, TablePagination, IconButton, Menu, Button } from '@mui/material';
 import { ArrowUpward, ArrowDownward, MoreVert as MoreVertIcon } from '@mui/icons-material';
 import axios from 'axios';
 import moment from 'moment';
 import TableRowAll from './TableRowAll';
+import ExportButton from '@/components/exportexcelbutton';
 
 interface RowData {
     id: number;
@@ -141,7 +142,6 @@ const MyTable: React.FC = () => {
                 {/* Search and filter components remain the same */}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
                     <TextField
-
                         label="ค้นหา"
                         variant="outlined"
                         value={searchTerm}
@@ -165,8 +165,9 @@ const MyTable: React.FC = () => {
                         ))}
                     </TextField>
                 </Box>
-
-
+                <Box sx={{ my: 2, display: 'flex', justifyContent: 'end' }}>
+                    <ExportButton />
+                </Box>
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead sx={{ backgroundColor: '#0e74bc' }}>
