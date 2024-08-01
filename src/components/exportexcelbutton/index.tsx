@@ -20,7 +20,7 @@ const ExportButton = () => {
         }
     };
 
-    return <Button variant='contained' color='success' onClick={handleExport}>Export to Excel</Button>;
+    return <Button variant='contained' color='success' onClick={handleExport}>Export Excel</Button>;
 };
 
 export default ExportButton;
