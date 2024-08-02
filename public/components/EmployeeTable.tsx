@@ -146,7 +146,6 @@ const MyTable: React.FC = () => {
     const toggleSortDirection = () => {
         setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     };
-    console.log("sortedData", sortedData)
 
     return (
         <Card sx={{ width: '100%', boxShadow: 3 }}>

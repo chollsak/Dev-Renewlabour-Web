@@ -104,7 +104,6 @@ export async function PATCH(req: NextRequest) {
   const requestBody = await req.json();
   const { member, newPassword } = requestBody;
   const pool = await sqlConnect();
-  console.log(memberId);
   if (type === "information") {
     try {
       if (memberId) {
