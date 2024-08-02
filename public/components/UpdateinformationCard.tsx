@@ -384,9 +384,9 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                             <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(person.passport_enddate)} onClick={() => handleOpenDialog('Passport')}>Passport</ButtonJoy></Grid>
                             <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(convertBEtoCE(person.workpermit_enddate))} onClick={() => handleOpenDialog('Workpermit')}>Work permit</ButtonJoy></Grid>
                             <Grid item xs={3}><ButtonJoy fullWidth size='lg' color={buttonColor(person.ninetydays_enddate)} onClick={() => handleOpenDialog('90 วัน')}>90 วัน</ButtonJoy></Grid>
-                            <DialogComponent title="Visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Visa', data)} person={person} />
-                            <DialogComponent title="Passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Passport', data)} person={person} />
-                            <DialogComponent title="Workpermit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('Workpermit', data)} person={person} />
+                            <DialogComponent title="visa" open={openDialog === 'Visa'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('visa', data)} person={person} />
+                            <DialogComponent title="passport" open={openDialog === 'Passport'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('passport', data)} person={person} />
+                            <DialogComponent title="workpermit" open={openDialog === 'Workpermit'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('workpermit', data)} person={person} />
                             <DialogComponent title="ninetydays" open={openDialog === '90 วัน'} handleClose={handleCloseDialog} onSave={(data: any) => handleDialogSave('ninetydays', data)} person={person} />
                         </Grid>
                         <Typography variant="h6" fontWeight={600} className='m-2 p-2' sx={{ ...FontStyle }}>อัปโหลดไฟล์เพิ่มเติม</Typography>

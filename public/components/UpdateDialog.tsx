@@ -60,24 +60,50 @@ const DialogComponent: React.FC<DialogComponentProps> = ({ title, open, handleCl
                     />
                 )}
                 <input type="file" onChange={handleFileChange} className="mb-4" />
-                <InputTextMasked
-                    label={`Start Date (กรอกแบบตัวเลข เช่น ${moment().format('YYYY-MM-DD')})`}
-                    placeholder={`ปีค.ศ-เดือน-วัน`}
-                    value={startDate}
-                    onChange={(e: any) => setStartDate(e.target.value)}
-                    fullWidth
-                    options={{ date: true, delimiter: '-', datePattern: ['Y', 'm', 'd'] }}
-                    margin="normal"
-                />
-                <InputTextMasked
-                    label={`End Date (กรอกแบบตัวเลข เช่น ${moment().format('YYYY-MM-DD')})`}
-                    placeholder={`ปีค.ศ-เดือน-วัน`}
-                    value={endDate}
-                    onChange={(e: any) => setEndDate(e.target.value)}
-                    fullWidth
-                    options={{ date: true, delimiter: '-', datePattern: ['Y', 'm', 'd'] }}
-                    margin="normal"
-                />
+                {title === "workpermit" ? (
+                    <>
+                        <InputTextMasked
+                            label={`Start Date (กรอกแบบตัวเลข เช่น ${moment().add(543, 'years').format('YYYY-MM-DD')})`}
+                            placeholder={`ปีค.ศ-เดือน-วัน`}
+                            value={startDate}
+                            onChange={(e: any) => setStartDate(e.target.value)}
+                            fullWidth
+                            options={{ date: true, delimiter: '-', datePattern: ['Y', 'm', 'd'] }}
+                            margin="normal"
+                        />
+                        <InputTextMasked
+                            label={`End Date (กรอกแบบตัวเลข เช่น ${moment().add(543, 'years').format('YYYY-MM-DD')})`}
+                            placeholder={`ปีค.ศ-เดือน-วัน`}
+                            value={endDate}
+                            onChange={(e: any) => setEndDate(e.target.value)}
+                            fullWidth
+                            options={{ date: true, delimiter: '-', datePattern: ['Y', 'm', 'd'] }}
+                            margin="normal"
+                        />
+                    </>
+                ) : (
+                    <>
+                        <InputTextMasked
+                            label={`Start Date (กรอกแบบตัวเลข เช่น ${moment().format('YYYY-MM-DD')})`}
+                            placeholder={`ปีค.ศ-เดือน-วัน`}
+                            value={startDate}
+                            onChange={(e: any) => setStartDate(e.target.value)}
+                            fullWidth
+                            options={{ date: true, delimiter: '-', datePattern: ['Y', 'm', 'd'] }}
+                            margin="normal"
+                        />
+                        <InputTextMasked
+                            label={`End Date (กรอกแบบตัวเลข เช่น ${moment().format('YYYY-MM-DD')})`}
+                            placeholder={`ปีค.ศ-เดือน-วัน`}
+                            value={endDate}
+                            onChange={(e: any) => setEndDate(e.target.value)}
+                            fullWidth
+                            options={{ date: true, delimiter: '-', datePattern: ['Y', 'm', 'd'] }}
+                            margin="normal"
+                        />
+                    </>
+                )}
+
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
