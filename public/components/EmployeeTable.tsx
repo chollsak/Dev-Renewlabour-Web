@@ -58,6 +58,23 @@ const getStatus = (row: any) => {
     }
 };
 
+const getRemainingDays = (row: any) => {
+    const values = [
+        row?.visa_enddate ? moment(row.visa_enddate, 'YYYY-MM-DD') : null,
+        row?.passport_enddate ? moment(row.passport_enddate, 'YYYY-MM-DD') : null,
+        row?.workpermit_enddate ? moment(convertBEtoCE(row.workpermit_enddate), 'YYYY-MM-DD') : null,
+        row?.ninetydays_enddate ? moment(row.ninetydays_enddate, 'YYYY-MM-DD') : null,
+    ];
+    // Filter out null values
+    const validValues = values.filter(value => value !== null) as moment.Moment[];
+
+    // Calculate minValue only if there are valid values
+    const minValue = validValues.length > 0 ? moment.min(validValues) : null;
+    const remainingDays = minValue ? minValue.diff(moment(), 'days') : null;
+
+    return remainingDays !== null ? remainingDays : Infinity;
+};
+
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
 };
@@ -107,18 +124,13 @@ const MyTable: React.FC = () => {
     });
 
     const sortedData = filteredData.slice().sort((a, b) => {
-        const statusA = getStatus(a); // Assuming getStatus correctly extracts the status
-        const statusB = getStatus(b);
+        const remainingDaysA = getRemainingDays(a);
+        const remainingDaysB = getRemainingDays(b);
 
-        // Get the index of each status from the predefined order
-        const indexA = statuses.indexOf(statusA);
-        const indexB = statuses.indexOf(statusB);
-
-        // Determine sort direction
         if (sortDirection === 'asc') {
-            return indexA - indexB;
+            return remainingDaysA - remainingDaysB;
         } else {
-            return indexB - indexA;
+            return remainingDaysB - remainingDaysA;
         }
     });
 
