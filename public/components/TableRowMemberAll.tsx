@@ -41,20 +41,20 @@ export default function TableRowMemberAll({ row, index }: { row: any, index: any
         if (deleteData.status === 200 && (deleteFolder.status === 200 || deleteFolder.status === 404)) {
             Swal.fire({
                 title: 'สำเร็จ!',
-                text: 'เพิ่มข้อมูลแรงงานได้สำเร็จ!',
+                text: 'ลบข้อมูลผู้ดูแลได้สำเร็จ!',
                 icon: 'success',
                 showConfirmButton: false,
                 allowOutsideClick: false,
                 timer: 1000,
             }).then((result: SweetAlertResult) => {
                 if (result.dismiss === Swal.DismissReason.timer) {
-                    window.location.href = "/employees";
+                    window.location.href = "/Admin";
                 }
             });
         } else {
             Swal.fire({
                 title: 'ล้มเหลว!',
-                text: "ไม่สามารถลบข้อมูลแรงงานได้",
+                text: "ไม่สามารถลบข้อมูลผู้ดูแลได้",
                 icon: 'error',
                 showConfirmButton: true,
                 allowOutsideClick: false,
@@ -92,7 +92,7 @@ export default function TableRowMemberAll({ row, index }: { row: any, index: any
                     onClose={handleMenuClose}
                 >
                     <MenuItem onClick={() => handleView(row)} sx={FontStyle}>ดูเพิ่มเติม</MenuItem>
-                    <MenuItem onClick={() => handleEdit(row)} sx={FontStyle}>เเก้ไข</MenuItem>
+                    {/* <MenuItem onClick={() => handleEdit(row)} sx={FontStyle}>เเก้ไข</MenuItem> */}
                     <MenuItem onClick={() => handleDelete(row)} sx={FontStyle}>ลบ</MenuItem>
                 </Menu>
             </TableCell>

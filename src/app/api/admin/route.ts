@@ -151,13 +151,46 @@ export async function POST(req: NextRequest) {
   const { member } = requestBody;
   const pool = await sqlConnect();
   try {
-    const companyId = await getCompanyId(pool, member);
-    const memberId = await createMembers(pool, member, companyId);
+    // ตรวจสอบว่าชื่อผู้ใช้หรืออีเมลมีอยู่ในระบบหรือไม่
+    const checkQuery = `
+      SELECT 
+        (SELECT COUNT(*) FROM members WHERE username = @username) AS usernameCount,
+        (SELECT COUNT(*) FROM members WHERE email = @email) AS emailCount
+    `;
+    const checkResult = await pool
+      .request()
+      .input("username", sql.VarChar, member.username)
+      .input("email", sql.VarChar, member.email)
+      .query(checkQuery);
 
-    return NextResponse.json({
-      message: `เพิ่มข้อมูลผู้ดูแลสำเร็จ`,
-      memberId: memberId,
-    });
+    console.log(checkResult);
+
+    const { usernameCount, emailCount } = checkResult.recordset[0];
+
+    if (usernameCount > 0 && emailCount > 0) {
+      return NextResponse.json(
+        { message: "ชื่อผู้ใช้และอีเมลมีอยู่แล้วในระบบ" },
+        { status: 400 }
+      );
+    } else if (usernameCount > 0) {
+      return NextResponse.json(
+        { message: "ชื่อผู้ใช้มีอยู่แล้วในระบบ" },
+        { status: 400 }
+      );
+    } else if (emailCount > 0) {
+      return NextResponse.json(
+        { message: "อีเมลมีอยู่แล้วในระบบ" },
+        { status: 400 }
+      );
+    } else {
+      const companyId = await getCompanyId(pool, member);
+      const memberId = await createMembers(pool, member, companyId);
+
+      return NextResponse.json({
+        message: `เพิ่มข้อมูลผู้ดูแลสำเร็จ`,
+        memberId: memberId,
+      });
+    }
   } catch (error) {
     console.error("Database query failed:", error);
     return NextResponse.json(

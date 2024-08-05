@@ -13,13 +13,12 @@ export default function page() {
     <Layout>
       <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle }} marginLeft={2}>เพิ่มผู้ดูเเล</Typography>
-
       </div>
 
       <Card>
         <div className='p-5 '>
-        <AddAdmin />
-      </div>
+          <AddAdmin />
+        </div>
       </Card>
 
     </Layout>
