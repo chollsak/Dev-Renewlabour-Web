@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { sqlConnect } from "../../../../public/components/lib/db";
 import * as sql from "mssql";
 import { hashPassword } from "@/core/hashpassword";
+import { getToken } from "next-auth/jwt";
 
 async function getCompanyId(pool: sql.ConnectionPool, member: any) {
   const request = new sql.Request(pool);
@@ -100,6 +101,16 @@ async function deleteMembers(pool: sql.ConnectionPool, memberId: any) {
 }
 
 export async function GET(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "You do not have permission to view or use this data",
+      }),
+      { status: 403 }
+    );
+  }
   const memberId = req.nextUrl.searchParams.get("memberId");
   const pool = await sqlConnect();
   if (!memberId) {
@@ -147,6 +158,16 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "You do not have permission to view or use this data",
+      }),
+      { status: 403 }
+    );
+  }
   const requestBody = await req.json();
   const { member } = requestBody;
   const pool = await sqlConnect();
@@ -199,6 +220,16 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "You do not have permission to view or use this data",
+      }),
+      { status: 403 }
+    );
+  }
   const memberId = req.nextUrl.searchParams.get("memberId");
   const requestBody = await req.json();
   const { member } = requestBody;
@@ -224,6 +255,16 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "You do not have permission to view or use this data",
+      }),
+      { status: 403 }
+    );
+  }
   const memberId = req.nextUrl.searchParams.get("memberId");
   const pool = await sqlConnect();
   try {

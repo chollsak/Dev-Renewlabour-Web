@@ -1,8 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sqlConnect } from "../../../../../public/components/lib/db";
 import ExcelJS from "exceljs";
+import { getToken } from "next-auth/jwt";
 
 export async function GET(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "You do not have permission to view or use this data",
+      }),
+      { status: 403 }
+    );
+  }
   const pool = await sqlConnect();
   try {
     const query = ` SELECT person_id, outlanderNo, prefix, firstname, lastname, prefixth, firstnameth, lastnameth, nationality, cpn_n, nickname, 

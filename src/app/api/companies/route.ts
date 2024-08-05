@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sqlConnect } from "../../../../public/components/lib/db";
 import * as sql from "mssql";
+import { getToken } from "next-auth/jwt";
 
 async function createCompany(pool: sql.ConnectionPool, company: any) {
   const request = new sql.Request(pool);
@@ -86,6 +87,16 @@ async function deleteCompany(pool: sql.ConnectionPool, companyId: any) {
 }
 
 export async function GET(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "You do not have permission to view or use this data",
+      }),
+      { status: 403 }
+    );
+  }
   const companyId = req.nextUrl.searchParams.get("companyId");
   const pool = await sqlConnect();
   if (!companyId) {
@@ -132,6 +143,16 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "You do not have permission to view or use this data",
+      }),
+      { status: 403 }
+    );
+  }
   const requestBody = await req.json();
   const { company } = requestBody;
   const pool = await sqlConnect();
@@ -152,6 +173,16 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "You do not have permission to view or use this data",
+      }),
+      { status: 403 }
+    );
+  }
   const companyId = req.nextUrl.searchParams.get("companyId");
   const requestBody = await req.json();
   const { company } = requestBody;
@@ -176,6 +207,16 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "You do not have permission to view or use this data",
+      }),
+      { status: 403 }
+    );
+  }
   const companyId = req.nextUrl.searchParams.get("companyId");
   const pool = await sqlConnect();
   try {

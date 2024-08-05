@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { sqlConnect } from "../../../../public/components/lib/db";
 import * as sql from "mssql";
 import { hashPassword } from "@/core/hashpassword";
+import { getToken } from "next-auth/jwt";
 
 async function getCompanyId(pool: sql.ConnectionPool, member: any) {
   const request = new sql.Request(pool);
@@ -104,6 +105,16 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "You do not have permission to view or use this data",
+      }),
+      { status: 403 }
+    );
+  }
   const memberId = Number(req.nextUrl.searchParams.get("memberId"));
   const type = req.nextUrl.searchParams.get("type");
   const requestBody = await req.json();

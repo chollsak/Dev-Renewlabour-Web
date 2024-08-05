@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sqlConnect } from "../../../../public/components/lib/db";
 import * as sql from "mssql";
+import { getToken } from "next-auth/jwt";
 
 async function getCompany(pool: sql.ConnectionPool) {
   try {
@@ -17,6 +18,16 @@ async function getCompany(pool: sql.ConnectionPool) {
 }
 
 export async function GET(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "You do not have permission to view or use this data",
+      }),
+      { status: 403 }
+    );
+  }
   try {
     const pool = await sqlConnect();
     const result = await getCompany(pool);

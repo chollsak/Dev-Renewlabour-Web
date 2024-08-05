@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { sqlConnect } from "../../../../public/components/lib/db";
 import * as sql from "mssql";
 import moment from "moment";
+import { getToken } from "next-auth/jwt";
 
 async function getCompanyId(pool: sql.ConnectionPool, person: any) {
   const request = new sql.Request(pool);
@@ -283,6 +284,17 @@ async function deleteFileOther(pool: sql.ConnectionPool, personId: any) {
 }
 
 export async function GET(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "You do not have permission to view or use this data",
+      }),
+      { status: 403 }
+    );
+  }
+
   const personId = req.nextUrl.searchParams.get("person_id");
   const outlanderNo = req.nextUrl.searchParams.get("outlanderNo");
   const pool = await sqlConnect();
@@ -384,6 +396,17 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "You do not have permission to view or use this data",
+      }),
+      { status: 403 }
+    );
+  }
+
   const requestBody = await req.json();
   const { person, dataOtherFiles } = requestBody;
   const pool = await sqlConnect();
@@ -425,6 +448,17 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "You do not have permission to view or use this data",
+      }),
+      { status: 403 }
+    );
+  }
+
   const personId = req.nextUrl.searchParams.get("personId");
   const outlanderNo = req.nextUrl.searchParams.get("outlanderNo");
   const requestBody = await req.json();
@@ -457,6 +491,17 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "You do not have permission to view or use this data",
+      }),
+      { status: 403 }
+    );
+  }
+
   const personId = req.nextUrl.searchParams.get("personId");
   const outlanderNo = req.nextUrl.searchParams.get("outlanderNo");
   const pool = await sqlConnect();
