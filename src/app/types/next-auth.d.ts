@@ -6,21 +6,10 @@ declare module "next-auth" {
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
   interface Session {
-    user_account: [
-      {
-        /** The user's postal address. */
-        id: string;
-        email: string;
-        status: string;
-        telephone: string;
-        username: string;
-        password: string;
-        name: string;
-        department: string;
-        initial_name: string;
-        mem_id: string;
-      }
-    ];
+    user_account: {
+      /** The user's postal address. */
+      mem_id: any;
+    };
     name: string;
   }
   interface User {
@@ -33,6 +22,7 @@ declare module "next-auth/jwt" {
   /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
   interface User_Account {
     email: string;
+    mem_id: any;
     name: string;
   }
   interface JWT {

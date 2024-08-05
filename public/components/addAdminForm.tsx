@@ -253,29 +253,6 @@ const AddAdmin: React.FC = () => {
                                 size="small"
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                name="FirstPassword"
-                                label="รหัสเข้าสู่ระบบครั้งเเรก"
-                                type={showPassword ? "text" : "password"}
-                                onChange={handleChange}
-                                fullWidth
-                                required
-                                size="small"
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                onClick={handleClickShowPassword}
-                                                edge="end"
-                                            >
-                                                {showPassword ? <Visibility /> : <VisibilityOff />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                        </Grid>
                     </Grid>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>

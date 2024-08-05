@@ -22,8 +22,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
     const fetchInformation = async () => {
       try {
-        if (session && session.user && session?.user_account[0]?.mem_id) {
-          const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/information?memberId=${session?.user_account[0]?.mem_id}`);
+        if (session && session.user && session?.user_account?.mem_id) {
+          const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/information?memberId=${session?.user_account?.mem_id}`);
           setInformation(response.data);
         }
       } catch (error) {

@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { NextResponse } from "next/server";
 import { sqlConnect } from "../../../../../public/components/lib/db";
 import * as sql from "mssql";
+import { comparePassword, hashPassword } from "@/core/hashpassword";
 
 const handler = NextAuth({
   session: {
@@ -26,26 +27,35 @@ const handler = NextAuth({
           const users = await pool
             .request()
             .input("username", sql.VarChar, credentials?.username)
-            .input("password", sql.VarChar, credentials?.password)
             .query(
               `SELECT * FROM members LEFT JOIN company ON members.company_id = company.cpn_id
               WHERE 
-                  username = @username
-                  AND BINARY_CHECKSUM(password) = BINARY_CHECKSUM(@password)`
+                  username = @username`
             );
 
           if (users.recordset.length === 0) {
             return null;
-          } else {
-            user = {
-              user_account: users.recordset,
-              name: "admin",
-            };
-            if (!user) {
-              return null; // User not found
-            }
-            return user;
           }
+
+          console.log(users.recordset[0]);
+
+          const dbUser = users.recordset[0];
+
+          const isValid = await comparePassword(
+            credentials.password,
+            dbUser.password
+          );
+
+          if (!isValid) {
+            return null;
+          }
+
+          user = {
+            user_account: dbUser,
+            name: "admin",
+          };
+
+          return user;
         } catch (error) {
           console.error("Authentication error: ", error);
           return new NextResponse("Database Error", { status: 500 });

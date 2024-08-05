@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sqlConnect } from "../../../../public/components/lib/db";
 import * as sql from "mssql";
+import { hashPassword } from "@/core/hashpassword";
 
 async function getCompanyId(pool: sql.ConnectionPool, member: any) {
   const request = new sql.Request(pool);
@@ -21,6 +22,8 @@ async function createMembers(
 ) {
   const request = new sql.Request(pool);
 
+  const hashedPassword = await hashPassword("12345");
+
   const inputs = [
     { name: "member_name", type: sql.VarChar, value: member.member_name },
     {
@@ -29,7 +32,7 @@ async function createMembers(
       value: member.member_lastname,
     },
     { name: "username", type: sql.VarChar, value: member.username },
-    { name: "password", type: sql.VarChar, value: "12345" },
+    { name: "password", type: sql.VarChar, value: hashedPassword },
     { name: "email", type: sql.VarChar, value: member.email },
     { name: "tel", type: sql.VarChar, value: member.tel },
     { name: "company_id", type: sql.Int, value: companyId },
@@ -152,13 +155,13 @@ export async function POST(req: NextRequest) {
     const memberId = await createMembers(pool, member, companyId);
 
     return NextResponse.json({
-      message: `เพิ่มข้อมูลแรงงานต่างด้าวสำเร็จ`,
+      message: `เพิ่มข้อมูลผู้ดูแลสำเร็จ`,
       memberId: memberId,
     });
   } catch (error) {
     console.error("Database query failed:", error);
     return NextResponse.json(
-      { message: "ล้มเหลวในการเพิ่มแรงงาน", error: error },
+      { message: "ล้มเหลวในการเพิ่มผู้ดูแล", error: error },
       { status: 500 }
     );
   }
