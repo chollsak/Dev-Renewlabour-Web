@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, MouseEvent, FormEvent } from "react";
 import {
   Box,
   Button,
@@ -14,49 +14,64 @@ import {
   InputAdornment,
   FormControlLabel,
   Checkbox,
-  Link
 } from "@mui/material";
-import toast, { Toaster } from "react-hot-toast";
+import Swal, { SweetAlertResult } from "sweetalert2";
 import { Fingerprint, Visibility, VisibilityOff } from "@mui/icons-material";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
-  const handleLogin = async (event: React.FormEvent) => {
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const result = await signIn("credentials", {
       redirect: false,
       username,
       password,
-      rememberMe
+      rememberMe,
     });
 
     if (result?.error) {
-      toast.error("รหัสผ่านหรือชื่อผู้ใช้ไม่ถูกต้อง!");
+      Swal.fire({
+        icon: "error",
+        title: "เข้าสู่ระบบ",
+        text: 'รหัสผ่านหรือชื่อผู้ใช้ไม่ถูกต้อง!',
+        showConfirmButton: true,
+        allowOutsideClick: false,
+      });
     } else if (result?.ok) {
-      toast.success("เข้าสู่ระบบสำเร็จ!");
-      window.location.href = "/";
+      Swal.fire({
+        icon: "success",
+        title: "เข้าสู่ระบบ",
+        text: 'คุณเข้าสู่ระบบได้สำเร็จ!',
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        timer: 1000,
+      }).then((result: SweetAlertResult) => {
+        if (result.dismiss === Swal.DismissReason.timer) {
+          window.location.href = "/";
+        }
+      });
     }
   };
 
   return (
     <React.Fragment>
       <CssBaseline />
-      <Toaster position="top-right" reverseOrder={false} />
       <Box>
-        <Box component="img"
+        <Box
+          component="img"
           src="/Logo/bg.png"
           style={{
             opacity: "0.8",
@@ -68,7 +83,7 @@ export default function LoginPage() {
             left: "50%",
             transform: "translate(-50%, -50%)",
             WebkitMaskImage: "radial-gradient(circle, white, transparent 400%)", // For Safari and Chrome
-            maskImage: "radial-gradient(circle, white, transparent 100%)" // Standard
+            maskImage: "radial-gradient(circle, white, transparent 100%)", // Standard
           }}
         />
 
@@ -106,7 +121,7 @@ export default function LoginPage() {
                   <Box
                     component="img"
                     className="mb-1"
-                    sx={{ width: "150px", marginTop: '-20px' }}
+                    sx={{ width: "150px", marginTop: "-20px" }}
                     src="/Logo/logo.png"
                   />
                   <Typography
@@ -172,9 +187,6 @@ export default function LoginPage() {
                     label="ให้ฉันอยู่ในระบบต่อไป"
                     sx={{ marginTop: 1 }}
                   />
-                  {/* <Link href="/forgot-password" variant="body2" sx={{ marginTop: 2 }}>
-                    ลืมรหัสผ่าน?
-                  </Link> */}
                   <Box
                     sx={{
                       display: "flex",
@@ -190,7 +202,11 @@ export default function LoginPage() {
                         type="submit"
                         variant="contained"
                         className="rounded-full mb-4 bg-gradient-to-r from-cyan-500 to-blue-500"
-                        sx={{ width: "600px", height: '50px', border: "1px solid #0e74bc" }}
+                        sx={{
+                          width: "600px",
+                          height: "50px",
+                          border: "1px solid #0e74bc",
+                        }}
                       >
                         <Typography
                           sx={{
