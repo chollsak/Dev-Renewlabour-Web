@@ -37,8 +37,6 @@ const handler = NextAuth({
             return null;
           }
 
-          console.log(users.recordset[0]);
-
           const dbUser = users.recordset[0];
 
           const isValid = await comparePassword(
@@ -63,38 +61,44 @@ const handler = NextAuth({
       },
     }),
   ],
-  // cookies: {
-  //   sessionToken: {
-  //     name: `next-auth.session-token`,
-  //     options: {
-  //       httpOnly: true,
-  //       sameSite: "lax",
-  //       path: "/",
-  //       domain: "http://localhost/",
-  //       port: "3000", // เพิ่มพอร์ตที่นี่
-  //     },
-  //   },
-  //   callbackUrl: {
-  //     name: `next-auth.callback-url`,
-  //     options: {
-  //       httpOnly: true,
-  //       sameSite: "lax",
-  //       path: "/",
-  //       domain: "http://localhost/",
-  //       port: "3000", // เพิ่มพอร์ตที่นี่
-  //     },
-  //   },
-  //   csrfToken: {
-  //     name: `next-auth.csrf-token`,
-  //     options: {
-  //       httpOnly: true,
-  //       sameSite: "lax",
-  //       path: "/",
-  //       domain: "http://localhost",
-  //       port: "3000", // เพิ่มพอร์ตที่นี่
-  //     },
-  //   },
-  // },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        domain: new URL(
+          process.env.NEXTAUTH_URL ?? "https://default-domain.com"
+        ).hostname,
+        port: "3000", // เพิ่มพอร์ตที่นี่
+      },
+    },
+    callbackUrl: {
+      name: `next-auth.callback-url`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        domain: new URL(
+          process.env.NEXTAUTH_URL ?? "https://default-domain.com"
+        ).hostname,
+        port: "3000", // เพิ่มพอร์ตที่นี่
+      },
+    },
+    csrfToken: {
+      name: `next-auth.csrf-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        domain: new URL(
+          process.env.NEXTAUTH_URL ?? "https://default-domain.com"
+        ).hostname,
+        port: "3000", // เพิ่มพอร์ตที่นี่
+      },
+    },
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
