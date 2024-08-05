@@ -195,14 +195,24 @@ const UserForm: React.FC = () => {
                     allowOutsideClick: false,
                 })
             }
-        } catch (error) {
-            Swal.fire({
-                title: 'ล้มเหลว!',
-                text: "การเชื่อมต่อกับ Database ล้มเหลว",
-                icon: 'error',
-                showConfirmButton: true,
-                allowOutsideClick: false,
-            })
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error) && error.response) {
+                Swal.fire({
+                    title: 'ล้มเหลว!',
+                    text: error.response.data.message,
+                    icon: 'error',
+                    showConfirmButton: true,
+                    allowOutsideClick: false,
+                });
+            } else {
+                Swal.fire({
+                    title: 'ล้มเหลว!',
+                    text: 'เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ',
+                    icon: 'error',
+                    showConfirmButton: true,
+                    allowOutsideClick: false,
+                });
+            }
         }
     };
     return (

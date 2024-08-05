@@ -163,8 +163,6 @@ export async function POST(req: NextRequest) {
       .input("email", sql.VarChar, member.email)
       .query(checkQuery);
 
-    console.log(checkResult);
-
     const { usernameCount, emailCount } = checkResult.recordset[0];
 
     if (usernameCount > 0 && emailCount > 0) {

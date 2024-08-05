@@ -388,6 +388,24 @@ export async function POST(req: NextRequest) {
   const { person, dataOtherFiles } = requestBody;
   const pool = await sqlConnect();
   try {
+    // ตรวจสอบว่า outlanderNo มีอยู่ในระบบหรือไม่
+    const checkQuery = `
+      SELECT COUNT(*) as count FROM persons WHERE outlanderNo = @outlanderNo
+    `;
+    const checkResult = await pool
+      .request()
+      .input("outlanderNo", sql.VarChar, person.outlanderNo)
+      .query(checkQuery);
+
+    const { count } = checkResult.recordset[0];
+
+    if (count > 0) {
+      return NextResponse.json(
+        { message: "หมายเลขคนต่างด้าวนี้มีอยู่แล้วในระบบ" },
+        { status: 400 }
+      );
+    }
+
     const companyId = await getCompanyId(pool, person);
     const personId = await createPersons(pool, person, companyId);
     if (personId) {
