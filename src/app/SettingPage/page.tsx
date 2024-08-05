@@ -37,9 +37,9 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (session?.user_account[0]?.mem_id && session) {
+      if (session?.user_account?.mem_id && session) {
         try {
-          const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/information?memberId=${session?.user_account[0]?.mem_id}`);
+          const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/information?memberId=${session?.user_account?.mem_id}`);
           setMembers(response.data);
         } catch (error) {
           console.error('Error fetching data:', error);

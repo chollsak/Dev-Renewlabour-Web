@@ -8,6 +8,7 @@ import { Box, Button, Grid, IconButton, InputAdornment, List, ListItem, TextFiel
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import CircleIcon from '@mui/icons-material/Circle';
 import { FontStyle } from './mockUserData';
+import { comparePassword } from '@/core/hashpassword';
 
 const validationSchema = Yup.object().shape({
     oldPassword: Yup.string().required('กรุณากรอกรหัสผ่านเดิม'),
@@ -41,7 +42,9 @@ const SecuritySettings: React.FC<UserFormProps> = ({ members }) => {
     };
 
     const onSubmit = async (data: any) => {
-        if (data.oldPassword !== members[0].password) {
+        const isOldPasswordValid = await comparePassword(data.oldPassword, members[0].password);
+
+        if (!isOldPasswordValid) {
             Swal.fire({
                 icon: 'error',
                 title: 'เกิดข้อผิดพลาด',

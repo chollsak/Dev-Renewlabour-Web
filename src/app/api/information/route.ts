@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sqlConnect } from "../../../../public/components/lib/db";
 import * as sql from "mssql";
+import { hashPassword } from "@/core/hashpassword";
 
 async function getCompanyId(pool: sql.ConnectionPool, member: any) {
   const request = new sql.Request(pool);
@@ -51,24 +52,28 @@ async function updateMembers(
 
 async function updatePassword(
   pool: sql.ConnectionPool,
-  newPassword: any,
+  newPassword: string,
   memberId: number
 ) {
   const request = new sql.Request(pool);
 
+  // แฮชรหัสผ่านใหม่
+  const hashedPassword = await hashPassword(newPassword);
+
   const inputs = [
-    { name: "password", type: sql.VarChar, value: newPassword },
+    { name: "password", type: sql.VarChar, value: hashedPassword },
     { name: "mem_id", type: sql.Int, value: memberId },
   ];
 
   inputs.forEach((input) => request.input(input.name, input.type, input.value));
 
-  const insertResult = await request.query(`
+  const updateResult = await request.query(`
       UPDATE members SET 
       password = @password WHERE mem_id = @mem_id
       ;
-    `);
-  return insertResult;
+  `);
+
+  return updateResult;
 }
 
 export async function GET(req: NextRequest) {
