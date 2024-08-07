@@ -1,5 +1,5 @@
-export function templateEmail() {
-    return `
+export function templateEmail(resetToken: any, memberName: any, memberLastName: any) {
+  return `
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html
   dir="ltr"
@@ -713,7 +713,7 @@ export function templateEmail() {
                                         text-align: center;
                                       "
                                     >
-                                      สวัสดีครับ,&nbsp;%FIRSTNAME|% %LASTNAME|%
+                                      สวัสดีครับ,&nbsp;${memberName} ${memberLastName}
                                     </p>
                                   </td>
                                 </tr>
@@ -796,7 +796,7 @@ export function templateEmail() {
                                         width: auto;
                                       "
                                       ><a
-                                        href="${process.env.NEXT_PUBLIC_API}/reset-password"
+                                        href="${process.env.NEXT_PUBLIC_API}/reset-password?token=${resetToken}"
                                         target="_blank"
                                         class="es-button"
                                         style="

@@ -14,6 +14,7 @@ import {
   InputAdornment,
   FormControlLabel,
   Checkbox,
+  Link,
 } from "@mui/material";
 import Swal, { SweetAlertResult } from "sweetalert2";
 import { Fingerprint, Visibility, VisibilityOff } from "@mui/icons-material";
@@ -176,17 +177,22 @@ export default function LoginPage() {
                       ),
                     }}
                   />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={rememberMe}
-                        onChange={(e) => setRememberMe(e.target.checked)}
-                        color="primary"
-                      />
-                    }
-                    label="ให้ฉันอยู่ในระบบต่อไป"
-                    sx={{ marginTop: 1 }}
-                  />
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={rememberMe}
+                          onChange={(e) => setRememberMe(e.target.checked)}
+                          color="primary"
+                        />
+                      }
+                      label="ให้ฉันอยู่ในระบบต่อไป"
+                      sx={{ marginTop: 1 }}
+                    />
+                    <Link href="/forgot-password" variant="body2" sx={{ marginTop: 2 }}>
+                      ลืมรหัสผ่าน?
+                    </Link>
+                  </Box>
                   <Box
                     sx={{
                       display: "flex",
