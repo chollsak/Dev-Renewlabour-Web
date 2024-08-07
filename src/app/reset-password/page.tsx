@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import {
     Box,
     Button,
@@ -18,7 +18,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import CircleIcon from '@mui/icons-material/Circle';
 import axios from "axios";
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation';
 import PageLoader from "../../../public/components/Loading/Loading2";
 import moment from "moment";
 import Swal, { SweetAlertResult } from "sweetalert2";
@@ -33,11 +33,11 @@ const validationSchema = Yup.object().shape({
         .required('กรุณายืนยันรหัสผ่าน'),
 });
 
-export default function ResetPasswordPage() {
-
+function ResetPasswordPage() {
     const [dataToken, setDataToken] = useState<any[]>([])
-    const searchParams = useSearchParams()
-    const query = new URLSearchParams(searchParams.toString())
+    const [tokenUsed, setTokenUsed] = useState(false);
+    const searchParams = useSearchParams();
+    const query = new URLSearchParams(searchParams.toString());
     const token = query.get('token');
     const [expired, setExpired] = useState(false);
 
@@ -46,7 +46,10 @@ export default function ResetPasswordPage() {
             try {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/resetpasswords?token=${token}`);
                 const tokenData = response.data;
-                if (moment().isAfter(moment(tokenData[0].expires_at, 'YYYY-MM-DD HH:mm'))) {
+
+                if (!tokenData.length) {
+                    setTokenUsed(true);
+                } else if (moment().isAfter(moment(tokenData[0].expires_at, 'YYYY-MM-DD HH:mm'))) {
                     setExpired(true);
                 } else {
                     setDataToken(tokenData);
@@ -57,8 +60,7 @@ export default function ResetPasswordPage() {
         };
 
         fetchData();
-    }, [token]); // Empty dependency array means this useEffect runs once on mount
-
+    }, [token]);
 
     const {
         control,
@@ -69,8 +71,6 @@ export default function ResetPasswordPage() {
     });
 
     const onSubmit = async (data: any) => {
-        // Implement the password reset logic here
-        // Replace this with your API call to reset the password
         try {
             const response = await axios.patch(`${process.env.NEXT_PUBLIC_API}/api/resetpasswords?token=${token}`, {
                 newPassword: data.newPassword,
@@ -117,7 +117,56 @@ export default function ResetPasswordPage() {
 
     return (
         <>
-            {(!dataToken || dataToken.length === 0) && !expired ? (
+            {tokenUsed ? (
+                <React.Fragment>
+                    <CssBaseline />
+                    <Box>
+                        <Toaster position="top-right" reverseOrder={false} />
+                        <Container
+                            sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                minHeight: "90vh",
+                            }}
+                        >
+                            <Stack mx={5} my={5}>
+                                <Paper
+                                    elevation={3}
+                                    sx={{
+                                        my: 2,
+                                        mx: 2,
+                                        padding: 7,
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <Typography component="h4" variant="h4" fontWeight={400}>
+                                            Token ถูกใช้ไปแล้ว
+                                        </Typography>
+                                        <Typography component="p" variant="body1">
+                                            กรุณาขอ Token สำหรับเปลี่ยนรหัสผ่านใหม่
+                                        </Typography>
+                                        <Button
+                                            variant="contained"
+                                            onClick={requestNewToken}
+                                            sx={{ marginTop: 2 }}
+                                        >
+                                            ขอ Token ใหม่
+                                        </Button>
+                                    </Box>
+                                </Paper>
+                            </Stack>
+                        </Container>
+                    </Box>
+                </React.Fragment>
+            ) : (!dataToken || dataToken.length === 0) && !expired ? (
                 <PageLoader />
             ) : (
                 <React.Fragment>
@@ -258,5 +307,13 @@ export default function ResetPasswordPage() {
                 </React.Fragment>
             )}
         </>
+    );
+}
+
+export default function ResetPasswordPageWrapper() {
+    return (
+        <Suspense fallback={<PageLoader />}>
+            <ResetPasswordPage />
+        </Suspense>
     );
 }
