@@ -10,10 +10,15 @@ import DraggableButton from './DraggableButton';
 import axios from 'axios';
 import { FontStyle } from '@/components/settings/mockUserData';
 
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/joy/styles/ThemeProvider';
+
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [information, setInformation] = useState(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -80,7 +85,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </Box>
         <Box className="bg-gradient-to-r from-cyan-500 to-blue-500" style={{ height: '5px', width: '100%', color: 'white', boxShadow: '0px 4px 2px -2px gray' }} />
       </Box>
-      <Box component="main" sx={{ flexGrow: 1, p: 1, marginTop: '35px', marginLeft: '300px', overflowY: 'auto' }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 1, marginTop: '35px', marginLeft: isMobile ? '0px' : '300px' }}>
         <div style={{ textAlign: 'right', width: '100%', marginBottom: '15px' }}>
           <Header session={information} />
         </div>

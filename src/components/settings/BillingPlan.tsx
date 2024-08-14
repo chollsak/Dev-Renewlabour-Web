@@ -5,12 +5,12 @@ import { FontStyle } from './mockUserData';
 const BillingPlan: React.FC = () => {
     // Mock data for current plan details
     const currentPlan = {
-        name: 'Basic',
-        description: 'A simple start for everyone',
-        expirationDate: 'Dec 09, 2021',
+        name: 'เเพคเกจเริ่มต้น',
+        description: 'เหมาะสำหรับ: ทุกองค์กรที่ต้องการเริ่มต้นอย่างมั่นคง',
+        expirationDate: 'สถานะ: ใช้งานได้จนถึง 9 ธันวาคม 2564',
         price: '$199 Per Month',
         priceTag: 'Popular',
-        additionalInfo: 'Standard plan for small to medium businesses',
+        additionalInfo: 'เเพคเกจพื้นฐานสำหรับทุกองค์กร',
         daysRemaining: 18,
         totalDays: 30,
     };
@@ -33,16 +33,16 @@ const BillingPlan: React.FC = () => {
             <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
                     <Typography variant="body1" fontWeight="bold">
-                        Your Current Plan is {currentPlan.name}
+                        เเพคเกจปัจจุบันของคุณ: {currentPlan.name}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
                         {currentPlan.description}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" mt={1}>
-                        Active until {currentPlan.expirationDate}
+                        {currentPlan.expirationDate}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" mt={1}>
-                        We will send you a notification upon subscription expiration
+                        เราจะแจ้งเตือนคุณก่อนที่การสมัครสมาชิกจะหมดอายุ
                     </Typography>
                     <Typography variant="h6" fontWeight="bold" mt={2}>
                         {currentPlan.price} <span style={{ color: '#9575cd', fontSize: '0.875rem' }}>{currentPlan.priceTag}</span>
@@ -62,15 +62,15 @@ const BillingPlan: React.FC = () => {
                 <Grid item xs={12} md={6}>
                     <Box sx={{ backgroundColor: '#fff3e0', padding: 2, borderRadius: 1 }}>
                         <Typography variant="body1" color="textSecondary">
-                            <span style={{ color: '#f57c00', fontWeight: 'bold' }}>We need your attention!</span> Your plan requires update
+                            <span style={{ color: '#f57c00', fontWeight: 'bold' }}>ต้องการความสนใจจากคุณ!</span> แผนการของคุณต้องการการอัปเดต
                         </Typography>
                         <Box mt={2}>
                             <Typography variant="body2" color="textSecondary">
-                                Days
+                                จำนวนวัน
                             </Typography>
                             <LinearProgress variant="determinate" value={(currentPlan.daysRemaining / currentPlan.totalDays) * 100} />
                             <Typography variant="body2" color="textSecondary" mt={1}>
-                                {currentPlan.daysRemaining} days remaining until your plan requires update
+                                เหลืออีก {currentPlan.daysRemaining} วัน ก่อนที่แผนการของคุณจะต้องอัปเดต
                             </Typography>
                             <Typography variant="body2" color="textSecondary" align="right">
                                 {currentPlan.daysRemaining} of {currentPlan.totalDays} Days

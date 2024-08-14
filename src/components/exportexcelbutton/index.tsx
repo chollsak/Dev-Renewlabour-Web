@@ -1,5 +1,5 @@
 // components/ExportButton.js
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import axios from 'axios';
 
 const ExportButton = () => {
@@ -20,7 +20,7 @@ const ExportButton = () => {
         }
     };
 
-    return <Button variant='contained' color='success' onClick={handleExport}>Export Excel</Button>;
+    return <Button variant='contained' className='p-2 font-bold bg-gradient-to-r from-emerald-400 to-emerald-700 rounded-full'  onClick={handleExport}> <span className='p-2'>Export</span> <Box component={'img'} className='w-10 h-fit' src='https://static.vecteezy.com/system/resources/previews/027/179/360/original/microsoft-excel-icon-logo-symbol-free-png.png'/></Button>;
 };
 
 export default ExportButton;
