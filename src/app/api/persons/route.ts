@@ -286,6 +286,8 @@ async function deleteFileOther(pool: sql.ConnectionPool, personId: any) {
 export async function GET(req: NextRequest) {
   const token = await getToken({ req });
 
+  console.log(token)
+
   if (!token) {
     return new NextResponse(
       JSON.stringify({
