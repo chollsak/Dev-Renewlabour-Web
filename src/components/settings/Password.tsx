@@ -9,6 +9,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import CircleIcon from '@mui/icons-material/Circle';
 import { FontStyle } from './mockUserData';
 import { comparePassword } from '@/core/hashpassword';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const validationSchema = Yup.object().shape({
     oldPassword: Yup.string().required('กรุณากรอกรหัสผ่านเดิม'),
@@ -27,7 +28,7 @@ interface UserFormProps {
 
 const SecuritySettings: React.FC<UserFormProps> = ({ members }) => {
     const [showPassword, setShowPassword] = useState(false);
-
+    const isMobile = useMediaQuery('(max-width:600px)');
     const {
         control,
         handleSubmit,
@@ -180,6 +181,11 @@ const SecuritySettings: React.FC<UserFormProps> = ({ members }) => {
                     บันทึกรหัสผ่าน
                 </Button>
             </form>
+            <div className='w-60 h-80' style={{
+          display: isMobile ? 'block' : 'none'
+        }}>
+          {/* Display bugs empty div */}
+        </div>
         </div>
     );
 };

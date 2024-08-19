@@ -6,6 +6,8 @@ import moment from 'moment';
 import PageLoader from './Loading/Loading2';
 import axios from 'axios';
 import Swal, { SweetAlertResult } from 'sweetalert2';
+import { useMediaQuery, useTheme } from '@mui/material';
+
 
 interface TableRowProps {
     row: any;
@@ -108,6 +110,10 @@ const getText = (value: string) => {
 const TableRowAll: React.FC<TableRowProps> = ({ row }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
+    // Determine screen size
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
     const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -117,12 +123,10 @@ const TableRowAll: React.FC<TableRowProps> = ({ row }) => {
     };
 
     const handleView = (row: any) => {
-        // Handle view action here
         window.location.href = `ViewEmployee/${row.person_id}/${encodeURIComponent(row.outlanderNo)}`;
     };
 
     const handleEdit = (row: any) => {
-        // Handle edit action here
         <div>
             <PageLoader />
         </div>
@@ -130,9 +134,8 @@ const TableRowAll: React.FC<TableRowProps> = ({ row }) => {
     };
 
     const handleDelete = async (row: any) => {
-        // Handle delete action here
-        const deleteData = await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${row.person_id}&outlanderNo=${row.outlanderNo}`)
-        const deleteFolder = await axios.delete(`${process.env.NEXT_PUBLIC_FILE_API}/api/persons/${row.outlanderNo}`)
+        const deleteData = await axios.delete(`${process.env.NEXT_PUBLIC_API}/api/persons?personId=${row.person_id}&outlanderNo=${row.outlanderNo}`);
+        const deleteFolder = await axios.delete(`${process.env.NEXT_PUBLIC_FILE_API}/api/persons/${row.outlanderNo}`);
         if (deleteData.status === 200 && (deleteFolder.status === 200 || deleteFolder.status === 404)) {
             Swal.fire({
                 title: 'สำเร็จ!',
@@ -153,7 +156,7 @@ const TableRowAll: React.FC<TableRowProps> = ({ row }) => {
                 icon: 'error',
                 showConfirmButton: true,
                 allowOutsideClick: false,
-            })
+            });
         }
         return (
             <div>
@@ -165,32 +168,40 @@ const TableRowAll: React.FC<TableRowProps> = ({ row }) => {
     const status = getStatus(row);
     const color = getColor(status);
 
+    const dynamicFontSize = isSmallScreen ? '0.8rem' : '1rem';
+
     return (
         <tr key={row.person_id}>
-            <TableCell sx={{ color: 'Black', ...FontStyle }}>{row.firstnameth + ' ' + row.lastnameth}</TableCell>
-            <TableCell sx={{ color: 'Black', ...FontStyle }}>{row.nickname}</TableCell>
-            <TableCell sx={{ color: color, fontWeight: '600', ...FontStyle }}>{status}</TableCell>
-            <TableCell sx={{ color: 'Black', fontWeight: '600', ...FontStyle }}>
-                <Chip sx={FontStyle} variant={isRed(row.visa_enddate)} color={getChipColor(row.visa_enddate)}>
+            <TableCell sx={{ color: 'Black', width: isSmallScreen ? '35%' : '15%', fontSize: dynamicFontSize, ...FontStyle }}>
+                {row.firstnameth + ' ' + row.lastnameth}
+            </TableCell>
+            <TableCell sx={{ color: 'Black', width: isSmallScreen ? '25%' : 'fit-content', fontSize: dynamicFontSize, ...FontStyle }}>
+                {row.nickname}
+            </TableCell>
+            <TableCell sx={{ color: color, width: isSmallScreen ? '15%' : '10%', fontWeight: '600', fontSize: dynamicFontSize, ...FontStyle }}>
+                {status}
+            </TableCell>
+            <TableCell sx={{ color: 'Black', fontWeight: '600', width: isSmallScreen ? '30%' : 'fit-content', fontSize: dynamicFontSize, ...FontStyle }}>
+                <Chip sx={{ fontSize: dynamicFontSize, ...FontStyle }} variant={isRed(row.visa_enddate)} color={getChipColor(row.visa_enddate)}>
                     {getText(row.visa_enddate)}
                 </Chip>
             </TableCell>
-            <TableCell sx={{ color: 'Black', fontWeight: '600', ...FontStyle }}>
-                <Chip sx={FontStyle} variant={isRed(row.passport_enddate)} color={getChipColor(row.passport_enddate)}>
+            <TableCell sx={{ color: 'Black', fontWeight: '600', width: isSmallScreen ? '30%' : 'fit-content', fontSize: dynamicFontSize, ...FontStyle }}>
+                <Chip sx={{ fontSize: dynamicFontSize, ...FontStyle }} variant={isRed(row.passport_enddate)} color={getChipColor(row.passport_enddate)}>
                     {getText(row.passport_enddate)}
                 </Chip>
             </TableCell>
-            <TableCell sx={{ color: 'Black', fontWeight: '600', ...FontStyle }}>
-                <Chip sx={FontStyle} variant={isRed(convertBEtoCE(row.workpermit_enddate))} color={getChipColor(convertBEtoCE(row.workpermit_enddate))}>
+            <TableCell sx={{ color: 'Black', fontWeight: '600', width: isSmallScreen ? '35%' : 'fit-content', fontSize: dynamicFontSize, ...FontStyle }}>
+                <Chip sx={{ fontSize: dynamicFontSize, ...FontStyle }} variant={isRed(convertBEtoCE(row.workpermit_enddate))} color={getChipColor(convertBEtoCE(row.workpermit_enddate))}>
                     {getText(convertBEtoCE(row.workpermit_enddate))}
                 </Chip>
             </TableCell>
-            <TableCell sx={{ color: 'Black', fontWeight: '600', ...FontStyle }}>
-                <Chip sx={FontStyle} variant={isRed(row.ninetydays_enddate)} color={getChipColor(row.ninetydays_enddate)}>
+            <TableCell sx={{ color: 'Black', fontWeight: '600', width: isSmallScreen ? '35%' : 'fit-content', fontSize: dynamicFontSize, ...FontStyle }}>
+                <Chip sx={{ fontSize: dynamicFontSize, ...FontStyle }} variant={isRed(row.ninetydays_enddate)} color={getChipColor(row.ninetydays_enddate)}>
                     {getText(row.ninetydays_enddate)}
                 </Chip>
             </TableCell>
-            <TableCell>
+            <TableCell sx={{ width: isSmallScreen ? '15%' : '5%' }}>
                 <IconButton
                     aria-controls="actions-menu"
                     aria-haspopup="true"
@@ -206,9 +217,9 @@ const TableRowAll: React.FC<TableRowProps> = ({ row }) => {
                     open={Boolean(anchorEl)}
                     onClose={handleMenuClose}
                 >
-                    <MenuItem onClick={() => handleView(row)} sx={FontStyle}>ดูเพิ่มเติม</MenuItem>
-                    <MenuItem onClick={() => handleEdit(row)} sx={FontStyle}>เเก้ไข</MenuItem>
-                    <MenuItem onClick={() => handleDelete(row)} sx={FontStyle}>ลบ</MenuItem>
+                    <MenuItem onClick={() => handleView(row)} sx={{ fontSize: dynamicFontSize, ...FontStyle }}>ดูเพิ่มเติม</MenuItem>
+                    <MenuItem onClick={() => handleEdit(row)} sx={{ fontSize: dynamicFontSize, ...FontStyle }}>เเก้ไข</MenuItem>
+                    <MenuItem onClick={() => handleDelete(row)} sx={{ fontSize: dynamicFontSize, ...FontStyle }}>ลบ</MenuItem>
                 </Menu>
             </TableCell>
         </tr>

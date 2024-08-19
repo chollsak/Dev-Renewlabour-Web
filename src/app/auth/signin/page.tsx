@@ -15,6 +15,8 @@ import {
   FormControlLabel,
   Checkbox,
   Link,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import Swal, { SweetAlertResult } from "sweetalert2";
 import { Fingerprint, Visibility, VisibilityOff } from "@mui/icons-material";
@@ -23,6 +25,9 @@ import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const router = useRouter();
+  const theme = useTheme();
+  const isMobile = useMediaQuery('(max-width:600px)');
+  
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -80,7 +85,7 @@ export default function LoginPage() {
             zIndex: "-10000",
             width: "100%",
             backgroundPosition: "center",
-            top: "32%",
+            top: isMobile ? "10%" : "32%",
             left: "50%",
             transform: "translate(-50%, -50%)",
             WebkitMaskImage: "radial-gradient(circle, white, transparent 400%)", // For Safari and Chrome
@@ -102,13 +107,15 @@ export default function LoginPage() {
             zIndex: 10000,
           }}
         >
-          <Stack mx={5} my={5}>
+          <Stack mx={isMobile ? 2 : 5} my={5}>
             <Paper
               elevation={3}
               sx={{
                 my: 2,
                 mx: 2,
-                padding: 7,
+                padding: isMobile ? 4 : 7,
+                width: isMobile ? "90%" : "auto",
+                marginTop: isMobile ?'-100px' : ''
               }}
             >
               <Box
@@ -118,117 +125,115 @@ export default function LoginPage() {
                   alignItems: "center",
                 }}
               >
-                <div>
-                  <Box
-                    component="img"
-                    className="mb-1"
-                    sx={{ width: "150px", marginTop: "-20px" }}
-                    src="/Logo/logo.png"
-                  />
-                  <Typography
-                    component="h4"
-                    variant="h4"
-                    fontWeight={400}
-                    sx={{ fontFamily: "Kanit, sans-serif" }}
-                  >
-                    เข้าสู่ระบบ
-                  </Typography>
-                </div>
+                <Box
+                  component="img"
+                  className="mb-1"
+                  sx={{ width: isMobile ? "0px" : "150px", marginTop: "-20px" }}
+                  src="/Logo/logo.png"
+                />
+                <Typography
+                  component="h4"
+                  variant={isMobile ? "h5" : "h4"}
+                  fontWeight={400}
+                  sx={{ fontFamily: "Kanit, sans-serif", fontSize: isMobile ? "24px" : "32px" }}
+                >
+                  เข้าสู่ระบบ
+                </Typography>
               </Box>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                }}
-              >
-                <form onSubmit={handleLogin}>
-                  <TextField
-                    required
-                    name="username"
-                    label="Username"
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    fullWidth
-                    sx={{ marginTop: 2 }}
+              <form onSubmit={handleLogin}>
+                <TextField
+                  required
+                  name="username"
+                  label="Username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  fullWidth
+                  sx={{ marginTop: 2 }}
+                />
+                <TextField
+                  required
+                  name="password"
+                  label="รหัสผ่าน"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  fullWidth
+                  sx={{ marginTop: 2 }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: isMobile ? "column" : "row",
+                    justifyContent: isMobile ? "center" : "space-between",
+                    alignItems: "center",
+                    marginTop: 2,
+                  }}
+                >
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={rememberMe}
+                        onChange={(e) => setRememberMe(e.target.checked)}
+                        color="primary"
+                      />
+                    }
+                    label="ให้ฉันอยู่ในระบบต่อไป"
+                    sx={{ marginTop: 1 }}
                   />
-                  <TextField
-                    required
-                    name="password"
-                    label="รหัสผ่าน"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    fullWidth
-                    sx={{ marginTop: 2 }}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={rememberMe}
-                          onChange={(e) => setRememberMe(e.target.checked)}
-                          color="primary"
-                        />
-                      }
-                      label="ให้ฉันอยู่ในระบบต่อไป"
-                      sx={{ marginTop: 1 }}
-                    />
-                    <Link href="/forgot-password" variant="body2" sx={{ marginTop: 2 }}>
-                      ลืมรหัสผ่าน?
-                    </Link>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      marginY: 1,
-                      alignItems: "center",
-                      marginBottom: "-40px",
-                      marginTop: "20px",
-                    }}
-                  >
-                    <Tooltip title="เข้าสู่ระบบเลย!">
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        className="rounded-full mb-4 bg-gradient-to-r from-cyan-500 to-blue-500"
+                  <Link href="/forgot-password" variant="body2" sx={{ marginTop: isMobile ? 1 : 2 }}>
+                    ลืมรหัสผ่าน?
+                  </Link>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginY: 1,
+                    alignItems: "center",
+                    marginBottom: "-40px",
+                    marginTop: "20px",
+                  }}
+                >
+                  <Tooltip title="เข้าสู่ระบบเลย!">
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      className="rounded-full mb-4 bg-gradient-to-r from-cyan-500 to-blue-500"
+                      sx={{
+                        width: isMobile ? "100%" : "600px",
+                        height: "50px",
+                        border: "1px solid #0e74bc",
+                      }}
+                    >
+                      <Typography
                         sx={{
-                          width: "600px",
-                          height: "50px",
-                          border: "1px solid #0e74bc",
+                          color: "white",
+                          fontSize: isMobile ? "16px" : "20px",
+                          marginRight: "10px",
                         }}
                       >
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: "20px",
-                            marginRight: "10px",
-                          }}
-                        >
-                          เข้าสู่ระบบ
-                        </Typography>
-                        <Fingerprint />
-                      </Button>
-                    </Tooltip>
-                  </Box>
-                </form>
-              </div>
+                        เข้าสู่ระบบ
+                      </Typography>
+                      <Fingerprint />
+                    </Button>
+                  </Tooltip>
+                </Box>
+              </form>
             </Paper>
           </Stack>
         </Container>

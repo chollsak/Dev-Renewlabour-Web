@@ -6,6 +6,8 @@ import DataTable from '../../../public/components/LocationCard';
 import Footer from '../../../public/components/Footer';
 import AddIcon from '@mui/icons-material/Add';
 import PageLoader from '../../../public/components/Loading/Loading2';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 
 const tempRouter = () => {
   window.location.href = "/AddLocation";
@@ -18,6 +20,7 @@ const FontStyle: React.CSSProperties = {
 
 
 export default function page() {
+  const isMobile = useMediaQuery('(max-width:600px)');
   return (
     <Layout>
       <PageLoader/>
@@ -32,6 +35,11 @@ export default function page() {
       <div style={{ marginTop: '20' }}>
         <DataTable/>
       </div>
+      <div className='w-60 h-80' style={{
+          display: isMobile ? 'block' : 'none'
+        }}>
+          {/* Display bugs empty div */}
+        </div>
     </Layout>
     
   )

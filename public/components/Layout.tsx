@@ -10,8 +10,7 @@ import DraggableButton from './DraggableButton';
 import axios from 'axios';
 import { FontStyle } from '@/components/settings/mockUserData';
 
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/joy/styles/ThemeProvider';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { data: session, status } = useSession();
@@ -45,28 +44,31 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <Box sx={{ position: 'fixed', width: '100%', zIndex: 1000 }}>
         <Box
           className="text-center"
-          style={{
+          sx={{
             ...FontStyle,
-            height: '30px',
+            height: isMobile ? '25px':'30px',
             width: '100%',
             color: '#71797E',
             backgroundColor: '#FFDB58',
-            padding: '3px'
+            padding: '3px',
+            fontSize: isMobile ? '12px' : '16px',
           }}
         >
-          เเพ็กเกจของคุณจะหมดอายุใน
+          <span>
+            แพ็กเกจของคุณจะหมดอายุใน
+          </span>
           <span
             style={{
               display: 'inline-block',
-              width: '2rem',
-              height: '1rem',
+              width: isMobile ? '1.5rem' : '2rem',
+              height: isMobile ? '0.75rem' : '1rem',
               backgroundColor: 'white',
               marginLeft: '10px',
               marginRight: '8px',
               borderRadius: '20%',
-              lineHeight: '1rem', // Ensures the text is vertically centered within the span
-              textAlign: 'center', // Ensures the text is horizontally centered within the span
-              color: 'black' // Ensures the text color matches the surrounding text
+              lineHeight: isMobile ? '0.75rem' : '1rem',
+              textAlign: 'center',
+              color: 'black',
             }}
           >
             30
@@ -77,13 +79,13 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             style={{
               color: 'black',
               textDecoration: 'underline',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
           >
             คลิกเพื่อต่ออายุ{' >'}
           </span>
         </Box>
-        <Box className="bg-gradient-to-r from-cyan-500 to-blue-500" style={{ height: '5px', width: '100%', color: 'white', boxShadow: '0px 4px 2px -2px gray' }} />
+        <Box className="bg-gradient-to-r from-cyan-500 to-blue-500" sx={{ height: '5px', width: '100%', color: 'white', boxShadow: '0px 4px 2px -2px gray' }} />
       </Box>
       <Box component="main" sx={{ flexGrow: 1, p: 1, marginTop: '35px', marginLeft: isMobile ? '0px' : '300px' }}>
         <div style={{ textAlign: 'right', width: '100%', marginBottom: '15px' }}>

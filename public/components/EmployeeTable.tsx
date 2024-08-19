@@ -7,6 +7,7 @@ import axios from 'axios';
 import moment from 'moment';
 import TableRowAll from './TableRowAll';
 import ExportButton from '@/components/exportexcelbutton';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface RowData {
     id: number;
@@ -22,9 +23,8 @@ interface RowData {
 const statuses = ['ทั้งหมด', 'ต่ออายุด่วน', 'ใกล้หมดอายุ', 'หมดอายุ', 'ปกติ'];
 
 const convertBEtoCE = (value: string) => {
-    // Convert B.E. year to C.E. year
     const ceYear = parseInt(value.split('-')[0], 10) - 543;
-    const restOfDate = value.slice(4); // Extract the -MM-DD part
+    const restOfDate = value.slice(4);
     return `${ceYear}${restOfDate}`;
 };
 
@@ -35,10 +35,7 @@ const getStatus = (row: any) => {
         row?.workpermit_enddate ? moment(convertBEtoCE(row.workpermit_enddate), 'YYYY-MM-DD') : null,
         row?.ninetydays_enddate ? moment(row.ninetydays_enddate, 'YYYY-MM-DD') : null,
     ];
-    // Filter out null values
     const validValues = values.filter(value => value !== null) as moment.Moment[];
-
-    // Calculate minValue only if there are valid values
     const minValue = validValues.length > 0 ? moment.min(validValues) : null;
     const remainingDays = minValue ? minValue.diff(moment(), 'days') : null;
 
@@ -53,7 +50,6 @@ const getStatus = (row: any) => {
             return 'ปกติ';
         }
     } else {
-        // Handle case when all dates are null
         return 'No date available';
     }
 };
@@ -65,10 +61,7 @@ const getRemainingDays = (row: any) => {
         row?.workpermit_enddate ? moment(convertBEtoCE(row.workpermit_enddate), 'YYYY-MM-DD') : null,
         row?.ninetydays_enddate ? moment(row.ninetydays_enddate, 'YYYY-MM-DD') : null,
     ];
-    // Filter out null values
     const validValues = values.filter(value => value !== null) as moment.Moment[];
-
-    // Calculate minValue only if there are valid values
     const minValue = validValues.length > 0 ? moment.min(validValues) : null;
     const remainingDays = minValue ? minValue.diff(moment(), 'days') : null;
 
@@ -80,12 +73,12 @@ const FontStyle: React.CSSProperties = {
 };
 
 const MyTable: React.FC = () => {
+    const isSmallScreen = useMediaQuery('(max-width:600px)');
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('ทั้งหมด');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-
     const [data, setData] = useState<any[]>([])
 
     useEffect(() => {
@@ -99,7 +92,7 @@ const MyTable: React.FC = () => {
         };
 
         fetchData();
-    }, []); // Empty dependency array means this useEffect runs once on mount
+    }, []);
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -127,11 +120,9 @@ const MyTable: React.FC = () => {
         const remainingDaysA = getRemainingDays(a);
         const remainingDaysB = getRemainingDays(b);
 
-        if (sortDirection === 'asc') {
-            return remainingDaysA - remainingDaysB;
-        } else {
-            return remainingDaysB - remainingDaysA;
-        }
+        return sortDirection === 'asc'
+            ? remainingDaysA - remainingDaysB
+            : remainingDaysB - remainingDaysA;
     });
 
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -148,9 +139,8 @@ const MyTable: React.FC = () => {
     };
 
     return (
-        <Card sx={{ width: '100%', boxShadow: 3 }}>
+        <Card sx={{ width:'100%', boxShadow: 3 }}>
             <CardContent>
-                {/* Search and filter components remain the same */}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
                     <TextField
                         label="ค้นหา"
@@ -158,7 +148,8 @@ const MyTable: React.FC = () => {
                         value={searchTerm}
                         onChange={handleSearch}
                         size='small'
-                        sx={{ width: '15%' }}
+                        
+                        sx={{ width: isSmallScreen ? '70%' : '15%' }}
                     />
                     <TextField
                         select
@@ -167,7 +158,7 @@ const MyTable: React.FC = () => {
                         value={statusFilter}
                         onChange={handleStatusChange}
                         size='small'
-                        sx={{ width: '10%' }}
+                        
                     >
                         {statuses.map(status => (
                             <MenuItem key={status} value={status} sx={FontStyle}>
@@ -180,35 +171,36 @@ const MyTable: React.FC = () => {
                     <ExportButton />
                 </Box>
                 <TableContainer component={Paper}>
-                    <Table>
-                        <TableHead sx={{ backgroundColor: '#0e74bc' }}>
-                            <TableRow className='bg-gradient-to-r from-cyan-500 to-blue-500' >
-                                <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ชื่อจริง</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ชื่อเล่น</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>
+                    <Table >
+                        <TableHead sx={{ backgroundColor: '#0e74bc', width:'200px' }}>
+                            <TableRow className='bg-gradient-to-r from-cyan-500 to-blue-500'>
+                                <TableCell sx={{ color: 'white', fontWeight: '600', fontSize: isSmallScreen ? '0.8rem' : '1rem', ...FontStyle }}>ชื่อจริง</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: '600', fontSize: isSmallScreen ? '0.8rem'  : '1rem', ...FontStyle }}>ชื่อเล่น</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: '600', fontSize: isSmallScreen ? '0.8rem'  : '1rem', ...FontStyle }}>
                                     สถานะ
-                                    <IconButton onClick={toggleSortDirection} size="small" sx={{ color: 'white' }}>
+                                    <IconButton onClick={toggleSortDirection} sx={{ color: 'white',display: isSmallScreen ? 'none' : 'inline-flex',}}>
                                         {sortDirection === 'asc' ? <ArrowUpward /> : <ArrowDownward />}
                                     </IconButton>
                                 </TableCell>
-                                <TableCell align='inherit' sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>Visa</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>Passport</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>ใบอนุญาตทำงาน</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>เอกสาร 90 วัน</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600', ...FontStyle }}>จัดการ</TableCell>
+                                <TableCell align='inherit' sx={{ color: 'white', fontWeight: '600', fontSize: isSmallScreen ? '0.57rem' : '1rem', ...FontStyle }}>Visa</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: '600', fontSize: isSmallScreen ? '0.8rem'  : '1rem', ...FontStyle }}>Passport</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: '600', fontSize: isSmallScreen ? '0.8rem'  : '1rem', ...FontStyle }}>ใบอนุญาตทำงาน</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: '600', fontSize: isSmallScreen ? '0.8rem'  : '1rem', ...FontStyle }}>เอกสาร 90 วัน</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: '600', fontSize: isSmallScreen ? '0.8rem'  : '1rem', ...FontStyle }}>จัดการ</TableCell>
                             </TableRow>
                         </TableHead>
-                        <TableBody>
-                            {sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
-                                return (
-                                    <TableRowAll row={row} key={row.person_id} />
-                                );
-                            })}
+                        <TableBody
+                            sx={{
+                                fontSize: isSmallScreen ? '0.57rem' : '1rem',
+                                ...FontStyle,
+                            }}
+                        >
+                            {sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
+                                <TableRowAll row={row} key={row.person_id} />
+                            ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
-
-                {/* Pagination remains the same */}
                 <TablePagination
                     component="div"
                     count={filteredData.length}
@@ -216,6 +208,7 @@ const MyTable: React.FC = () => {
                     onPageChange={handleChangePage}
                     rowsPerPage={rowsPerPage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
+                    sx={{ fontSize: isSmallScreen ?'0.57rem' : '1rem'}}
                 />
             </CardContent>
         </Card>

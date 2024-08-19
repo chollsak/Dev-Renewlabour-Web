@@ -24,7 +24,7 @@ export default function RootLayout({
           <link href="https://fonts.googleapis.com/css?family=Kanit&display=optional" rel="stylesheet" />
           <link rel="icon" type="image/x-icon" href="../Logo/logosmall.png"></link>
         </head>
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className} style={{}}>{children}</body>
       </html>
     </CustomProviders>
   )

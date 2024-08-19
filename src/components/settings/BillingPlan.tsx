@@ -1,9 +1,12 @@
 import React from 'react';
 import { Typography, Button, Grid, Stack, Box, LinearProgress } from '@mui/material';
 import { FontStyle } from './mockUserData';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const BillingPlan: React.FC = () => {
     // Mock data for current plan details
+    const isMobile = useMediaQuery('(max-width:600px)');
+
     const currentPlan = {
         name: 'เเพคเกจเริ่มต้น',
         description: 'เหมาะสำหรับ: ทุกองค์กรที่ต้องการเริ่มต้นอย่างมั่นคง',
@@ -79,6 +82,11 @@ const BillingPlan: React.FC = () => {
                     </Box>
                 </Grid>
             </Grid>
+            <div className='w-60 h-80' style={{
+          display: isMobile ? 'block' : 'none'
+        }}>
+          {/* Display bugs empty div */}
+        </div>
         </Box>
     );
 };

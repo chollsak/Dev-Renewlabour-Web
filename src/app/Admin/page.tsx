@@ -7,7 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import AdminTable from '../../../public/components/AdminTable';
 import Footer from '../../../public/components/Footer';
 import PageLoader from '../../../public/components/Loading/Loading2';
-
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const FontStyle: React.CSSProperties = {
   fontFamily: 'Kanit, sans-serif',
@@ -20,7 +20,7 @@ const tempRouter = () => {
 
 
 export default function page() {
-
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   return (
     <Layout>
@@ -35,6 +35,11 @@ export default function page() {
       <div style={{ marginTop: '50px' }}>
         <AdminTable />
       </div>
+      <div className='w-60 h-80' style={{
+          display: isMobile ? 'block' : 'none'
+        }}>
+          {/* Display bugs empty div */}
+        </div>
     </Layout>
   )
 }

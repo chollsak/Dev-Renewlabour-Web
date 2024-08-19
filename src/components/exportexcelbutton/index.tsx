@@ -1,5 +1,5 @@
 // components/ExportButton.js
-import { Box, Button } from '@mui/material';
+import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import axios from 'axios';
 
 const ExportButton = () => {
@@ -20,7 +20,31 @@ const ExportButton = () => {
         }
     };
 
-    return <Button variant='contained' className='p-2 font-bold bg-gradient-to-r from-emerald-400 to-emerald-700 rounded-full'  onClick={handleExport}> <span className='p-2'>Export</span> <Box component={'img'} className='w-10 h-fit' src='https://static.vecteezy.com/system/resources/previews/027/179/360/original/microsoft-excel-icon-logo-symbol-free-png.png'/></Button>;
+    // Get theme and set up media queries
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+    return (
+        <Button
+            variant='contained'
+            className='font-bold bg-gradient-to-r from-emerald-400 to-emerald-700 rounded-full'
+            onClick={handleExport}
+            sx={{
+                p: isSmallScreen ? '0.5rem' : '1rem',
+                fontSize: isSmallScreen ? '0.7rem' : '1rem',
+            }}
+        >
+            <span className='p-1'>Export</span>
+            <Box
+                component={'img'}
+                sx={{
+                    width: isSmallScreen ? '1.5rem' : '2.5rem',
+                    height: 'auto',
+                }}
+                src='https://static.vecteezy.com/system/resources/previews/027/179/360/original/microsoft-excel-icon-logo-symbol-free-png.png'
+            />
+        </Button>
+    );
 };
 
 export default ExportButton;

@@ -1,5 +1,5 @@
 import React, { FormEvent, useEffect, useState } from 'react';
-import { Autocomplete, Avatar, Button, Grid, Stack, TextField, Typography } from '@mui/material';
+import { Autocomplete, Avatar, Button, Grid, Stack, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FontStyle } from './mockUserData';
 import axios from 'axios';
 import MembersAvatar from '../membersAvatar';
@@ -22,23 +22,7 @@ interface UserFormProps {
 }
 
 const AccountDetails: React.FC<UserFormProps> = ({ members }) => {
-
-    const [data, setData] = useState<any[]>([])
-
-    useEffect(() => {
-
-        const fetchCompany = async () => {
-            try {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/companyform`);
-                setData(response.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchCompany()
-    }, []); // Empty dependency array means this useEffect runs once on mount
-
+    const [data, setData] = useState<any[]>([]);
     const [member, setMember] = useState<AdminData>({
         member_name: members[0].member_name,
         member_lastname: members[0].member_lastname,
@@ -50,6 +34,22 @@ const AccountDetails: React.FC<UserFormProps> = ({ members }) => {
         lineID: members[0].lineID,
     });
     const [profilePicture, setProfilePicture] = useState<File | null>(null);
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+    useEffect(() => {
+        const fetchCompany = async () => {
+            try {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API}/api/companyform`);
+                setData(response.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchCompany();
+    }, []); // Empty dependency array means this useEffect runs once on mount
 
     const handleCompany = (event: any, newValue: any) => {
         setMember({ ...member, company: newValue });
@@ -65,7 +65,7 @@ const AccountDetails: React.FC<UserFormProps> = ({ members }) => {
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
-            setProfilePicture(event.target.files[0])
+            setProfilePicture(event.target.files[0]);
             setMember({
                 ...member,
                 m_picpath: event.target.files[0].name,
@@ -74,7 +74,7 @@ const AccountDetails: React.FC<UserFormProps> = ({ members }) => {
     }
 
     const handleResetFileChange = () => {
-        setProfilePicture(null)
+        setProfilePicture(null);
         setMember({
             ...member,
             m_picpath: members[0].m_picpath,
@@ -98,7 +98,7 @@ const AccountDetails: React.FC<UserFormProps> = ({ members }) => {
                         timer: 1000,
                     }).then((result: SweetAlertResult) => {
                         if (result.dismiss === Swal.DismissReason.timer) {
-                            window.location.href = '/SettingPage'
+                            window.location.href = '/SettingPage';
                         }
                     });
                 } else {
@@ -134,24 +134,25 @@ const AccountDetails: React.FC<UserFormProps> = ({ members }) => {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <div className='flex m-4'>
+                <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', margin: '16px' }}>
                     <Avatar className='border-4 border-[#2074d4]'
                         sx={{
-                            marginRight: 2,
-                            width: '200px',
-                            height: '200px',
+                            marginRight: isMobile ? 0 : 2,
+                            marginBottom: isMobile ? 2 : 0,
+                            width: isMobile ? '150px' : '200px',
+                            height: isMobile ? '150px' : '200px',
                         }}>
                         {profilePicture ? (
-                            <Avatar src={URL.createObjectURL(profilePicture)} sx={{ width: 200, height: 200 }} alt="No Picture" />
+                            <Avatar src={URL.createObjectURL(profilePicture)} sx={{ width: '100%', height: '100%' }} alt="No Picture" />
                         ) : (
                             <MembersAvatar mem_id={members[0]?.mem_id} m_picpath={member.m_picpath} />
                         )}
                     </Avatar>
-                    <Stack spacing={1} className='m-6'>
-                        <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle, marginLeft: 2 }}>
+                    <Stack spacing={1} sx={{ margin: isMobile ? '0' : '16px' }}>
+                        <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle, textAlign: isMobile ? 'center' : 'left' }}>
                             Username: {member.username}
                         </Typography>
-                        <div className='m-6'>
+                        <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', gap: '8px' }}>
                             <input
                                 type="file"
                                 accept="image/*"
@@ -161,35 +162,35 @@ const AccountDetails: React.FC<UserFormProps> = ({ members }) => {
                             />
                             <Button
                                 variant='contained'
-                                className='mr-4 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500'
+                                className='rounded-full bg-gradient-to-r from-cyan-500 to-blue-500'
                                 onClick={() => document.getElementById('upload-profile-picture')?.click()}
                             >
                                 อัพโหลดรูปใหม่
                             </Button>
                             <Button variant='contained' className='rounded-full bg-gradient-to-r from-cyan-500 to-blue-500' onClick={handleResetFileChange}>รีเซ็ต</Button>
                         </div>
-                        <div>อนุญาต JPG, GIF or PNG, Max size 800K</div>
+                        <div style={{ textAlign: isMobile ? 'center' : 'left' }}>อนุญาต JPG, GIF or PNG, Max size 800K</div>
                     </Stack>
                 </div>
-                <div className='flex flex-col'>
-                    <div className='text-gray-500 mb-3'>ข้อมูลเบื้องต้น</div>
+                <div>
+                    <div style={{ marginBottom: '16px', fontSize: '14px', color: '#6b6b6b' }}>ข้อมูลเบื้องต้น</div>
                     <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={6}>
                             <TextField name='member_name' onChange={handleChange} size='small' label="ชื่อจริง" variant="outlined" fullWidth value={member.member_name} sx={{ marginBottom: '10px' }} />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={6}>
                             <TextField name='member_lastname' onChange={handleChange} size='small' label="นามสกุล" fullWidth variant="outlined" value={member.member_lastname} sx={{ marginBottom: '10px' }} />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={6}>
                             <TextField name='email' onChange={handleChange} size='small' label="Email" fullWidth variant="outlined" value={member.email} sx={{ marginBottom: '10px' }} />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={6}>
                             <TextField name='tel' onChange={handleChange} size='small' label="เบอร์โทร" fullWidth variant="outlined" value={member.tel} sx={{ marginBottom: '10px' }} />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={6}>
                             <TextField name='lineID' onChange={handleChange} size='small' label="LineID" fullWidth variant="outlined" value={member.lineID} sx={{ marginBottom: '10px' }} />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={6}>
                             <Autocomplete
                                 disablePortal
                                 id="combo-box-demo"
@@ -205,6 +206,11 @@ const AccountDetails: React.FC<UserFormProps> = ({ members }) => {
                     </Button>
                 </div>
             </form>
+            <div className='w-60 h-80' style={{
+          display: isMobile ? 'block' : 'none'
+        }}>
+          {/* Display bugs empty div */}
+        </div>
         </div>
     );
 };

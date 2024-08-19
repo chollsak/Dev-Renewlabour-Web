@@ -6,6 +6,7 @@ import { Box, Typography } from '@mui/material'
 import UpdateInformationCard from '../../../../../public/components/UpdateinformationCard'
 import axios from 'axios'
 import PageLoader from '../../../../../public/components/Loading/Loading2'
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -16,7 +17,7 @@ export default function Home({
 }: {
     params: { person_id: string; outlanderNo: string };
 }) {
-
+    const isMobile = useMediaQuery('(max-width:600px)');
     const [persons, setPersons] = useState<any[]>([])
     const [fileOther, setFileOther] = useState<any[]>([]);
 
@@ -46,6 +47,11 @@ export default function Home({
                     <div style={{ marginTop: '20px' }}>
                         <UpdateInformationCard persons={persons} fileOther={fileOther} params={params} />
                     </div>
+                    <div className='w-60 h-80' style={{
+          display: isMobile ? 'block' : 'none'
+        }}>
+          {/* Display bugs empty div */}
+        </div>
                 </Layout>
             )}
 

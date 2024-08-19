@@ -4,7 +4,7 @@ import Layout from '../../../../public/components/Layout'
 import UpdateAdmin from '../../../../public/components/UpdateAdminForm'
 import axios from 'axios';
 import PageLoader from '../../../../public/components/Loading/Loading2';
-
+import useMediaQuery from '@mui/material/useMediaQuery';
 export default function Home({
     params,
 }: {
@@ -12,7 +12,7 @@ export default function Home({
 }) {
 
     const [members, setMembers] = useState<any[]>([]);
-
+    const isMobile = useMediaQuery('(max-width:600px)');
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -33,6 +33,11 @@ export default function Home({
             ) : (
                 <Layout>
                     <UpdateAdmin members={members} params={params} />
+                    <div className='w-60 h-80' style={{
+          display: isMobile ? 'block' : 'none'
+        }}>
+          {/* Display bugs empty div */}
+        </div>
                 </Layout>
             )}
         </>

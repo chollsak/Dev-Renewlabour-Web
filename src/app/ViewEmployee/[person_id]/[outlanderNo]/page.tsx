@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../../../../../public/components/Layout';
 import axios from 'axios';
-import { Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import PersonsAvatar from '@/components/personsAvatar';
 import moment from 'moment';
@@ -28,7 +28,6 @@ export default function Home({
 }: {
     params: { person_id: string; outlanderNo: string };
 }) {
-
     const [persons, setPersons] = useState<any[]>([]);
     const [fileOther, setFileOther] = useState<any[]>([]);
 
@@ -172,128 +171,140 @@ export default function Home({
         router.push(`/UpdateEmployee/${params.person_id}/${params.outlanderNo}`);
     };
 
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
     return (
         <>
             {persons.length === 0 ? (
                 <PageLoader />
             ) : (
                 <Layout>
-                    <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle }} marginLeft={2}>รายละเอียดเเรงงาน</Typography>
-                        <IconButton color="primary" onClick={handleEditClick}>
+                    <div style={{ marginBottom: '20px', display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between' }}>
+                        <Typography variant="h5" fontWeight={600} sx={{ ...FontStyle, textAlign: isMobile ? 'center' : 'left' }} marginLeft={isMobile ? 0 : 2}>
+                            รายละเอียดเเรงงาน
+                        </Typography>
+                        <IconButton color="primary" onClick={handleEditClick} sx={{ alignSelf: isMobile ? 'center' : 'flex-start' }}>
                             <EditIcon />
                         </IconButton>
                     </div>
                     <div>
                         <Card className='flex-wrap'>
-                            <CardContent className='flex gap-5 flex-wrap'>
-                                <div className='w-1/5 h-fit flex flex-col gap-2 text-center justify-center items-center border-r-2 p-1'>
-                                    <PersonsAvatar outlanderNo={persons[0].outlanderNo} picpath={persons[0].picpath} />
-                                    <Box>
-                                        <Typography variant='h6' sx={{ fontWeight: '600' }}>{persons[0].firstname + " " + persons[0].lastname}</Typography>
-                                        <Typography sx={{ color: 'gray' }}>{persons[0].firstnameth + " " + persons[0].lastnameth}</Typography>
-                                    </Box>
-                                    <Chip sx={FontStyle} variant='solid' color={color} className="p-2">
-                                        {status}
-                                    </Chip>
-                                </div>
-                                <div className='grid grid-rows-3 grid-flow-col gap-1 ml-6'>
-                                    <div className='flex flex-col'>
-                                        <div className='text-gray-500'>ข้อมูลส่วนตัวเเรงงาน</div>
-                                        <div className='flex space-x-10'>
-                                            <div className='flex gap-2'>
-                                                <Typography className='text-gray-600'>คำนำหน้า: </Typography>
-                                                <Typography fontWeight={600}>{persons[0].prefixth}/{persons[0].prefix}</Typography>
-                                            </div>
-                                            <div className='flex gap-2'>
-                                                <Typography className='text-gray-600'>ชื่อเล่น: </Typography>
-                                                <Typography fontWeight={600}>{persons[0].nickname}</Typography>
-                                            </div>
-                                            <div className='flex gap-2'>
-                                                <Typography className='text-gray-600'>เลขประจำตัว: </Typography>
-                                                <Typography fontWeight={600}>{persons[0].outlanderNo}</Typography>
-                                            </div>
-                                            <div className='flex gap-2'>
-                                                <Typography className='text-gray-600'>สัญชาติ: </Typography>
-                                                <Typography fontWeight={600}>{persons[0].nationality}</Typography>
+                            <CardContent className='flex flex-col gap-4 p-4'>
+                                <div className={`flex ${isMobile ? 'flex-col items-center' : 'flex-row items-start'}`}>
+                                    <div className='w-full sm:w-1/5 h-fit flex flex-col gap-2 text-center justify-center items-center border-r-2 p-1'>
+                                        <PersonsAvatar outlanderNo={persons[0].outlanderNo} picpath={persons[0].picpath} />
+                                        <Box>
+                                            <Typography variant='h6' sx={{ fontWeight: '600' }}>{persons[0].firstname + " " + persons[0].lastname}</Typography>
+                                            <Typography sx={{ color: 'gray' }}>{persons[0].firstnameth + " " + persons[0].lastnameth}</Typography>
+                                        </Box>
+                                        <Chip sx={{ ...FontStyle, fontSize: isMobile ? '14px' : '16px' }} variant='solid' color={color} className="p-2">
+                                            {status}
+                                        </Chip>
+                                    </div>
+                                    <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-3'} gap-4 ml-0 sm:ml-6 mt-4 sm:mt-0`}>
+                                        <div className='flex flex-col'>
+                                            <div className='text-gray-500'>ข้อมูลส่วนตัวเเรงงาน</div>
+                                            <div className='flex flex-col gap-2'>
+                                                <div className='flex gap-2'>
+                                                    <Typography className='text-gray-600'>คำนำหน้า: </Typography>
+                                                    <Typography fontWeight={600}>{persons[0].prefixth}/{persons[0].prefix}</Typography>
+                                                </div>
+                                                <div className='flex gap-2'>
+                                                    <Typography className='text-gray-600'>ชื่อเล่น: </Typography>
+                                                    <Typography fontWeight={600}>{persons[0].nickname}</Typography>
+                                                </div>
+                                                <div className='flex gap-2'>
+                                                    <Typography className='text-gray-600'>เลขประจำตัว: </Typography>
+                                                    <Typography fontWeight={600}>{persons[0].outlanderNo}</Typography>
+                                                </div>
+                                                <div className='flex gap-2'>
+                                                    <Typography className='text-gray-600'>สัญชาติ: </Typography>
+                                                    <Typography fontWeight={600}>{persons[0].nationality}</Typography>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className='flex flex-col'>
-                                        <div className='text-gray-500' >ข้อมูลที่ทำงานเบื้องต้น</div>
-                                        <div className='flex space-x-10'>
-                                            <div className='flex gap-2'>
-                                                <Typography className='text-gray-600'>บริษัท: </Typography>
-                                                <a href='#'> <Typography color={'primary'} fontWeight={600}>{persons[0].cpn_n}</Typography></a>
-                                            </div>
-                                            <div className='flex gap-2'>
-                                                <Typography className='text-gray-600'>สาขา: </Typography>
-                                                <Typography fontWeight={600}>{persons[0].branch}</Typography>
-                                            </div>
-                                            <div className='flex gap-2'>
-                                                <Typography className='text-gray-600'>จังหวัด: </Typography>
-                                                <Typography fontWeight={600}>{persons[0].cpn_prov}</Typography>
+                                        <div className='flex flex-col'>
+                                            <div className='text-gray-500' >ข้อมูลที่ทำงานเบื้องต้น</div>
+                                            <div className='flex flex-col gap-2'>
+                                                <div className='flex gap-2'>
+                                                    <Typography className='text-gray-600'>บริษัท: </Typography>
+                                                    <a href='#'> <Typography color={'primary'} fontWeight={600}>{persons[0].cpn_n}</Typography></a>
+                                                </div>
+                                                <div className='flex gap-2'>
+                                                    <Typography className='text-gray-600'>สาขา: </Typography>
+                                                    <Typography fontWeight={600}>{persons[0].branch}</Typography>
+                                                </div>
+                                                <div className='flex gap-2'>
+                                                    <Typography className='text-gray-600'>จังหวัด: </Typography>
+                                                    <Typography fontWeight={600}>{persons[0].cpn_prov}</Typography>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className='flex flex-col'>
-                                        <div className='text-gray-500 mb-1'>ตรวจสอบ</div>
-                                        <div className='flex space-x-10'>
-                                            {data.map((item: any, index: any) => (
-                                                item.type &&
-                                                <Box key={index} mb={2}>
-                                                    <ButtonJoy className='rounded-md' color={item.type === 'workpermit' ? buttonColor(convertBEtoCE(item.endDate)) : buttonColor(item.endDate)} onClick={() => handleOpen(item)}>
-                                                        {item.type === 'ninetydays' ? '90 วัน' : item.type === 'workpermit' ? 'Work Permit' : item.type.toUpperCase()}
-                                                    </ButtonJoy>
-                                                </Box>
-                                            ))}
-                                            <Dialog open={open} onClose={handleClose}>
-                                                <DialogTitle>{selectedData?.type.toUpperCase()}</DialogTitle>
-                                                <DialogContent>
-                                                    <Typography>ID: {selectedData?.id}</Typography>
-                                                    <Typography>Start Date: {moment(selectedData?.startDate).format('LL')}</Typography>
-                                                    <Typography>End Date: {moment(selectedData?.endDate).format('LL')}</Typography>
-                                                    <Button variant="contained" color="primary"
-                                                        href={`${process.env.NEXT_PUBLIC_FILE_API}/download/persons/${persons[0].outlanderNo}/${selectedData?.type.toLowerCase()}/${selectedData?.path}`}
-                                                        download
-                                                        target="_blank"
-                                                        rel="noopener noreferrer">
-                                                        {"Download " + selectedData?.type.toUpperCase()}
-                                                    </Button>
-                                                </DialogContent>
-                                                <DialogActions>
-                                                    <Button onClick={handleClose}>Close</Button>
-                                                </DialogActions>
-                                            </Dialog>
-                                            {fileOther.length === 0 ? <></> : (
-                                                <Box>
-                                                    <Box>
-                                                        <ButtonJoy color='primary' onClick={() => handleOpenOtherFile()}>Other File</ButtonJoy>
+                                        <div className='flex flex-col'>
+                                            <div className='text-gray-500 mb-1'>ตรวจสอบ</div>
+                                            <div className='flex flex-col gap-2'>
+                                                {data.map((item: any, index: any) => (
+                                                    item.type &&
+                                                    <Box key={index} mb={2}>
+                                                        <ButtonJoy className='rounded-md' color={item.type === 'workpermit' ? buttonColor(convertBEtoCE(item.endDate)) : buttonColor(item.endDate)} onClick={() => handleOpen(item)}>
+                                                            {item.type === 'ninetydays' ? '90 วัน' : item.type === 'workpermit' ? 'Work Permit' : item.type.toUpperCase()}
+                                                        </ButtonJoy>
                                                     </Box>
-                                                    <Dialog open={openFile} onClose={handleCloseOtherFile}>
-                                                        <DialogTitle>ไฟล์อื่นๆ ทั้งหมด</DialogTitle>
-                                                        <DialogContent>
-                                                            {fileOther.map((item: any, index: any) => (
-                                                                <Box key={index} mb={2}>
-                                                                    <Button variant="contained" color="primary"
-                                                                        href={`${process.env.NEXT_PUBLIC_FILE_API}/download/persons/${persons[0].outlanderNo}/otherfile/${item?.fileo_path}`}
-                                                                        download
-                                                                        target="_blank"
-                                                                        rel="noopener noreferrer">
-                                                                        {item?.fileo_path}
-                                                                    </Button>
-                                                                </Box>
-                                                            ))}
-                                                        </DialogContent>
-                                                    </Dialog>
-                                                </Box>
-                                            )}
+                                                ))}
+                                                <Dialog open={open} onClose={handleClose}>
+                                                    <DialogTitle>{selectedData?.type.toUpperCase()}</DialogTitle>
+                                                    <DialogContent>
+                                                        <Typography>ID: {selectedData?.id}</Typography>
+                                                        <Typography>Start Date: {moment(selectedData?.startDate).format('LL')}</Typography>
+                                                        <Typography>End Date: {moment(selectedData?.endDate).format('LL')}</Typography>
+                                                        <Button variant="contained" color="primary"
+                                                            href={`${process.env.NEXT_PUBLIC_FILE_API}/download/persons/${persons[0].outlanderNo}/${selectedData?.type.toLowerCase()}/${selectedData?.path}`}
+                                                            download
+                                                            target="_blank"
+                                                            rel="noopener noreferrer">
+                                                            {"Download " + selectedData?.type.toUpperCase()}
+                                                        </Button>
+                                                    </DialogContent>
+                                                    <DialogActions>
+                                                        <Button onClick={handleClose}>Close</Button>
+                                                    </DialogActions>
+                                                </Dialog>
+                                                {fileOther.length === 0 ? <></> : (
+                                                    <Box>
+                                                        <Box>
+                                                            <ButtonJoy color='primary' onClick={() => handleOpenOtherFile()}>Other File</ButtonJoy>
+                                                        </Box>
+                                                        <Dialog open={openFile} onClose={handleCloseOtherFile}>
+                                                            <DialogTitle>ไฟล์อื่นๆ ทั้งหมด</DialogTitle>
+                                                            <DialogContent>
+                                                                {fileOther.map((item: any, index: any) => (
+                                                                    <Box key={index} mb={2}>
+                                                                        <Button variant="contained" color="primary"
+                                                                            href={`${process.env.NEXT_PUBLIC_FILE_API}/download/persons/${persons[0].outlanderNo}/otherfile/${item?.fileo_path}`}
+                                                                            download
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer">
+                                                                            {item?.fileo_path}
+                                                                        </Button>
+                                                                    </Box>
+                                                                ))}
+                                                            </DialogContent>
+                                                        </Dialog>
+                                                    </Box>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </CardContent>
                         </Card>
                     </div>
+                    <div className='w-60 h-80' style={{
+          display: isMobile ? 'block' : 'none'
+        }}>
+          {/* Display bugs empty div */}
+        </div>
                 </Layout>
             )}
         </>

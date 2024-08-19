@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
 
 
   return (
-    <footer style={footerStyle}>
+    <footer style={{ ...footerStyle}}>
       <div style={innerDivStyle}>
       {new Date().getFullYear()}<p style={textStyle}>© <span style={FontStyle}>Renewlabour. All rights reserved.</span> </p>
       </div>

@@ -9,7 +9,7 @@ export default function PageLoader() {
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 800); // Hide after 300 ms
+        }, 800); // Hide after 800 ms
 
         return () => clearTimeout(timer);
     }, []);
@@ -32,9 +32,18 @@ export default function PageLoader() {
             background: 'white', // Deep maroon background
             zIndex: 1400, // Ensure it is on top of other content
             pointerEvents: 'none', // Prevents interaction with the background
+            overflow: 'hidden', // Prevents scrolling within this component
             '& img': {
-                width: '600', // Full width of its container
-                maxHeight: '600' // Max height to stay within the viewport
+                width: '50vw', // Adjust to 50% of the viewport width
+                maxWidth: '600px', // Max width for larger screens
+                maxHeight: '50vh', // Max height to stay within the viewport
+            },
+            '@media (max-width: 600px)': { // Media query for mobile screens
+                '& img': {
+                    width: '70vw', // Adjust to 70% of the viewport width on smaller screens
+                    maxWidth: '400px', // Max width for smaller screens
+                    maxHeight: '30vh', // Max height for smaller screens
+                }
             }
         }}>
             <Box component="img" src="/Logo/logo.png" alt="Loading" />
