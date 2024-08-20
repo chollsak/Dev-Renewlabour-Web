@@ -12,7 +12,7 @@ interface LayoutSession {
   session: any;
 }
 
-export default function employeePage() {
+export default function EmployeePage() {  // <-- Renamed to start with an uppercase letter
   const isMobile = useMediaQuery('(max-width:600px)');
 
   const FontStyle: React.CSSProperties = {

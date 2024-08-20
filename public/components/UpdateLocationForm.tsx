@@ -26,6 +26,7 @@ import { uploadProfilePicture } from '@/core/axiosEmployee';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { CreateInput } from "thai-address-autocomplete-react";
 import LogosAvatar from '@/components/logosAvatar';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const InputThaiAddress = CreateInput();
 
@@ -55,6 +56,8 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
         province: companys[0]?.cpn_prov, // จังหวัด changwat
         zipcode: companys[0]?.cpn_zip, // รหัสไปรษณีย์ postal code
     });
+
+    const isMobile = useMediaQuery('(max-width:600px)');
 
     const handleChange = (scope: any) => (value: any) => {
         setAddress((oldAddr) => ({
@@ -178,8 +181,8 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                             className='border-4 border-[#2074d4]'
                                             sx={{
                                                 marginRight: 2,
-                                                width: '200px',
-                                                height: '200px',
+                                                width: isMobile ? '120px' : '200px',
+                                                height: isMobile ? '120px' : '200px',
                                                 cursor: 'pointer',
                                                 '&:hover': {
                                                     cursor: 'pointer',
@@ -194,7 +197,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     </label>
                                 </Box>
                             </Grid>
-                            <Grid item xs={4}>
+                            <Grid item xs={isMobile ? 12 : 4}>
                                 <TextField
                                     label="ชื่อบริษัท (ชื่อสาขาย่อย ถ้ามี โดยชื่อสาขาย่อยต้องอยู่ในวงเล็บด้วย)"
                                     variant="outlined"
@@ -206,8 +209,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item md={8}>
-                            </Grid>
+
                             <Grid item xs={4}>
                                 <TextField
                                     label="บ้านเลขที่"
@@ -274,7 +276,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     sx={{ width: '100%', margin: 1 }}
                                 />
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={6}>
                                 <label>ตำบล</label>
                                 <InputThaiAddress.District
                                     value={address['district']}
@@ -282,7 +284,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     onSelect={handleSelect}
                                     style={{ width: '100%', margin: '8px' }} />
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={6}>
                                 <label>อำเภอ</label>
                                 <InputThaiAddress.Amphoe
                                     value={address['amphoe']}
@@ -291,7 +293,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     style={{ width: '100%', margin: '8px' }}
                                 />
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={6}>
                                 <label>จังหวัด</label>
                                 <InputThaiAddress.Province
                                     value={address['province']}
@@ -300,7 +302,7 @@ const UpdateLocationForm: React.FC<UserFormProps> = ({ companys, params }) => {
                                     style={{ width: '100%', margin: '8px' }}
                                 />
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={6}>
                                 <label>รหัสไปรษณีย์</label>
                                 <InputThaiAddress.Zipcode
                                     value={address['zipcode']}

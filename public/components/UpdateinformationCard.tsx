@@ -26,6 +26,7 @@ import { useRouter } from 'next/navigation';
 import ButtonJoy from '@mui/joy/Button';
 import moment from 'moment';
 import PersonsAvatar from '@/components/personsAvatar';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
@@ -38,7 +39,7 @@ interface UserFormProps {
 }
 
 const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
-
+    const isMobile = useMediaQuery('(max-width:600px)');
     const [data, setData] = useState<any[]>([])
     const router = useRouter(); // Use the useRouter hook
 
@@ -228,15 +229,18 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                                 />
                                 <label htmlFor="icon-button-file">
                                     <Box sx={{ display: 'flex', alignItems: 'center', margin: 1 }}>
-                                        <Avatar sx={{
-                                            marginRight: 2,
-                                            width: '200px',
-                                            height: '200px',
-                                            cursor: 'pointer',
-                                            '&:hover': {
+                                        <Avatar
+                                            className='border-4 bg-gradient-to-r from-cyan-500 to-blue-500'
+
+                                            sx={{
+                                                marginRight: 2,
+                                                width: isMobile ? '120px' : '200px',
+                                                height: isMobile ? '120px' : '200px',
                                                 cursor: 'pointer',
-                                            },
-                                        }}>
+                                                '&:hover': {
+                                                    cursor: 'pointer',
+                                                },
+                                            }}>
                                             {profilePicture ? (
                                                 <Avatar src={URL.createObjectURL(profilePicture)} sx={{ width: 200, height: 200 }} alt="No Picture" />
                                             ) : (
@@ -249,7 +253,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                         </Grid>
                         <Typography variant="h6" className='m-2 p-2' fontWeight={600} sx={{ ...FontStyle }}>ข้อมูลส่วนบุคคล</Typography>
                         <Grid container spacing={2}>
-                            <Grid item xs={4}>
+                            <Grid item xs={isMobile ? 12 : 4}>
                                 <FormControl fullWidth>
                                     <InputLabel>คำนำหน้าชื่อ ภาษาอังกฤษ</InputLabel>
                                     <Select
@@ -265,7 +269,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={4}>
+                            <Grid item xs={isMobile ? 6 : 4}>
                                 <TextField
                                     label="ชื่อจริง ภาษาอังกฤษ"
                                     name='firstname'
@@ -276,7 +280,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                                     onChange={(e) => setPerson({ ...person, firstname: e.target.value })}
                                 />
                             </Grid>
-                            <Grid item xs={4}>
+                            <Grid item xs={isMobile ? 6 : 4}>
                                 <TextField
                                     label="นามสกุล ภาษาอังกฤษ"
                                     name='lastname'
@@ -288,7 +292,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                                 />
                             </Grid>
                             <Grid container spacing={2} marginLeft={0.05}>
-                                <Grid item xs={4}>
+                                <Grid item xs={isMobile ? 12 : 4}>
                                     <FormControl fullWidth>
                                         <InputLabel>คำนำหน้าชื่อ ภาษาไทย</InputLabel>
                                         <Select
@@ -304,7 +308,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={isMobile ? 6 : 4}>
                                     <TextField
                                         label="ชื่อจริง ภาษาไทย"
                                         name='firstnameth'
@@ -315,7 +319,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                                         onChange={(e) => setPerson({ ...person, firstnameth: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={isMobile ? 6 : 4}>
                                     <TextField
                                         label="นามสกุล ภาษาไทย"
                                         name='lastnameth'
@@ -328,7 +332,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                                 </Grid>
                             </Grid>
                             <Grid container spacing={2} marginLeft={0.05}>
-                                <Grid item xs={2}>
+                                <Grid item xs={3}>
                                     <TextField
                                         label="ชื่อเล่น"
                                         name='nickname'
@@ -339,7 +343,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                                         onChange={(e) => setPerson({ ...person, nickname: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs={3}>
                                     <TextField
                                         label="สัญชาติ"
                                         name='nationality'
@@ -350,7 +354,7 @@ const UserForm: React.FC<UserFormProps> = ({ persons, fileOther, params }) => {
                                         onChange={(e) => setPerson({ ...person, nationality: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={6}>
                                     <TextField
                                         label="หมายเลขรหัสต่างด้าว"
                                         name='outlanderNo'

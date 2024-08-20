@@ -27,13 +27,15 @@ import { useRouter } from 'next/navigation'
 import ButtonJoy from '@mui/joy/Button';
 import moment from 'moment';
 import { PhotoCamera } from '@mui/icons-material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const FontStyle: React.CSSProperties = {
     fontFamily: 'Kanit, sans-serif',
 };
 
-const UserForm: React.FC = () => {
 
+const UserForm: React.FC = () => {
+    const isMobile = useMediaQuery('(max-width:600px)');
     const [data, setData] = useState<any[]>([])
     const router = useRouter(); // Use the useRouter hook
     useEffect(() => {
@@ -49,6 +51,7 @@ const UserForm: React.FC = () => {
         fetchData();
     }, []); // Empty dependency array means this useEffect runs once on mount
 
+    
     const [person, setPerson] = useState({
         prefix: '',
         firstname: '',
@@ -236,8 +239,8 @@ const UserForm: React.FC = () => {
                                             className='border-4 bg-gradient-to-r from-cyan-500 to-blue-500'
                                             sx={{
                                                 marginRight: 2,
-                                                width: '200px',
-                                                height: '200px',
+                                                width: isMobile ? '120px' : '200px',
+                                                height: isMobile ? '120px' : '200px',
                                                 cursor: 'pointer',
                                                 '&:hover': {
                                                     cursor: 'pointer',
@@ -255,15 +258,16 @@ const UserForm: React.FC = () => {
                         </Grid>
                         <Typography variant="h6" fontWeight={600} sx={{ ...FontStyle }}>ข้อมูลส่วนบุคคล</Typography>
                         <Grid container spacing={2}>
-                            <Grid item xs={4}>
+                            <Grid item xs={isMobile ? 12 : 4}>
                                 <FormControl fullWidth>
                                     <InputLabel>คำนำหน้าชื่อ ภาษาอังกฤษ</InputLabel>
                                     <Select
                                         name="prefix"
                                         value={person.prefix}
-                                        label="คำนำหน้าชื่อ ภาษาอังกฤษ"
+                                        label={"คำนำหน้าชื่อ ภาษาอังกฤษ"}
                                         onChange={handleChange}
                                         sx={{ width: '100%', margin: 1, height: "40px" }}
+                                        
                                     >
                                         <MenuItem value="Mr.">Mr.</MenuItem>
                                         <MenuItem value="Mrs.">Mrs.</MenuItem>
@@ -271,7 +275,7 @@ const UserForm: React.FC = () => {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={4}>
+                            <Grid item xs={isMobile ? 6 : 4}>
                                 <TextField
                                     label="ชื่อจริง ภาษาอังกฤษ"
                                     name='firstname'
@@ -282,7 +286,7 @@ const UserForm: React.FC = () => {
                                     onChange={(e) => setPerson({ ...person, firstname: e.target.value })}
                                 />
                             </Grid>
-                            <Grid item xs={4}>
+                            <Grid item xs={isMobile ? 6 : 4}>
                                 <TextField
                                     label="นามสกุล ภาษาอังกฤษ"
                                     name='lastname'
@@ -294,7 +298,7 @@ const UserForm: React.FC = () => {
                                 />
                             </Grid>
                             <Grid container spacing={2} marginLeft={0.05}>
-                                <Grid item xs={4}>
+                                <Grid item xs={isMobile ? 12 : 4}>
                                     <FormControl fullWidth>
                                         <InputLabel>คำนำหน้าชื่อ ภาษาไทย</InputLabel>
                                         <Select
@@ -310,7 +314,7 @@ const UserForm: React.FC = () => {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={isMobile ? 6 : 4}>
                                     <TextField
                                         label="ชื่อจริง ภาษาไทย"
                                         name='firstnameth'
@@ -321,7 +325,7 @@ const UserForm: React.FC = () => {
                                         onChange={(e) => setPerson({ ...person, firstnameth: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={isMobile ? 6 : 4}>
                                     <TextField
                                         label="นามสกุล ภาษาไทย"
                                         name='lastnameth'
@@ -334,7 +338,7 @@ const UserForm: React.FC = () => {
                                 </Grid>
                             </Grid>
                             <Grid container spacing={2} marginLeft={0.05}>
-                                <Grid item xs={2}>
+                                <Grid item xs={3}>
                                     <TextField
                                         label="ชื่อเล่น"
                                         name='nickname'
@@ -345,7 +349,7 @@ const UserForm: React.FC = () => {
                                         onChange={(e) => setPerson({ ...person, nickname: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs={3}>
                                     <TextField
                                         label="สัญชาติ"
                                         name='nationality'
@@ -356,7 +360,7 @@ const UserForm: React.FC = () => {
                                         onChange={(e) => setPerson({ ...person, nationality: e.target.value })}
                                     />
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={6}>
                                     <TextField
                                         required
                                         label="หมายเลขรหัสต่างด้าว"
@@ -405,7 +409,13 @@ const UserForm: React.FC = () => {
                     </Box>
                 </form>
             </CardContent>
+            <div className='w-60 h-80' style={{
+          display: isMobile ? 'block' : 'none'
+        }}>
+          {/* Display bugs empty div */}
+        </div>
         </Card>
+        
     );
 };
 

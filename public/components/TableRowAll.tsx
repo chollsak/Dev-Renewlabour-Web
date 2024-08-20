@@ -172,13 +172,13 @@ const TableRowAll: React.FC<TableRowProps> = ({ row }) => {
 
     return (
         <tr key={row.person_id}>
-            <TableCell sx={{ color: 'Black', width: isSmallScreen ? '35%' : '15%', fontSize: dynamicFontSize, ...FontStyle }}>
+            <TableCell sx={{ color: 'Black', width: isSmallScreen ? '20%' : '15%', fontSize: dynamicFontSize, ...FontStyle }}>
                 {row.firstnameth + ' ' + row.lastnameth}
             </TableCell>
-            <TableCell sx={{ color: 'Black', width: isSmallScreen ? '25%' : 'fit-content', fontSize: dynamicFontSize, ...FontStyle }}>
+            <TableCell sx={{ color: 'Black', width: isSmallScreen ? '10%' : '10%', fontSize: dynamicFontSize, ...FontStyle }}>
                 {row.nickname}
             </TableCell>
-            <TableCell sx={{ color: color, width: isSmallScreen ? '15%' : '10%', fontWeight: '600', fontSize: dynamicFontSize, ...FontStyle }}>
+            <TableCell sx={{ color: color, width: isSmallScreen ? '10%' : '12%', fontWeight: '600', fontSize: dynamicFontSize, ...FontStyle }}>
                 {status}
             </TableCell>
             <TableCell sx={{ color: 'Black', fontWeight: '600', width: isSmallScreen ? '30%' : 'fit-content', fontSize: dynamicFontSize, ...FontStyle }}>
