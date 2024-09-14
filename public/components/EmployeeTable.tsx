@@ -185,7 +185,7 @@ const MyTable: React.FC = () => {
                                 <TableCell align='inherit' sx={{ color: 'white', fontWeight: '600', fontSize: isSmallScreen ? '0.57rem' : '1rem', ...FontStyle }}>Visa</TableCell>
                                 <TableCell sx={{ color: 'white', fontWeight: '600', fontSize: isSmallScreen ? '0.8rem'  : '1rem', ...FontStyle }}>Passport</TableCell>
                                 <TableCell sx={{ color: 'white', fontWeight: '600', fontSize: isSmallScreen ? '0.8rem'  : '1rem', ...FontStyle }}>ใบอนุญาตทำงาน</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600', fontSize: isSmallScreen ? '0.8rem'  : '1rem', ...FontStyle }}>เอกสาร 90 วัน</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: '600', fonAtSize: isSmallScreen ? '0.8rem'  : '1rem', ...FontStyle }}>เอกสาร 90 วัน</TableCell>
                                 <TableCell sx={{ color: 'white', fontWeight: '600', fontSize: isSmallScreen ? '0.8rem'  : '1rem', ...FontStyle }}>จัดการ</TableCell>
                             </TableRow>
                         </TableHead>

@@ -27,18 +27,18 @@ const ExportButton = () => {
     return (
         <Button
             variant='contained'
-            className='font-bold bg-gradient-to-r from-emerald-400 to-emerald-700 rounded-full'
+            className='font-bold bg-gradient-to-r from-emerald-400 to-emerald-700 rounded-full h-10'
             onClick={handleExport}
             sx={{
-                p: isSmallScreen ? '0.5rem' : '1rem',
-                fontSize: isSmallScreen ? '0.7rem' : '1rem',
+                p: isSmallScreen ? '0.2rem' : '0.5rem',
+                fontSize: isSmallScreen ? '0.5rem' : '0.7rem',
             }}
         >
             <span className='p-1'>Export</span>
             <Box
                 component={'img'}
                 sx={{
-                    width: isSmallScreen ? '1.5rem' : '2.5rem',
+                    width: isSmallScreen ? '1.0rem' : '1.5rem',
                     height: 'auto',
                 }}
                 src='https://static.vecteezy.com/system/resources/previews/027/179/360/original/microsoft-excel-icon-logo-symbol-free-png.png'
